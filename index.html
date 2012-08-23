@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Org-ruby by wallyqs</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Org-ruby</h1>
+        <p class="header">Ruby gem to parse org-mode texts and turn them into HTML or textile.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/wallyqs/org-ruby/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/wallyqs/org-ruby/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/wallyqs/org-ruby">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/wallyqs">wallyqs</a></p>
+
+
+      </header>
+      <section>
+        <h1>org-ruby</h1>
+
+<blockquote>
+<pre><code>by Brian Dewey
+http://github.com/bdewey/org-ruby
+</code></pre>
+</blockquote>
+
+<h2>DESCRIPTION</h2>
+
+<p>This gem contains Ruby routines for parsing org-mode files.The most
+significant thing this library does today is convert org-mode files to
+HTML or textile. Currently, you cannot do much to customize the
+conversion. The supplied textile conversion is optimized for
+extracting "content" from the org file as opposed to "metadata." </p>
+
+<h2>FEATURES</h2>
+
+<ul>
+<li>Converts org-mode files to HTML or Textile</li>
+<li>Supports tables, block quotes, and block code</li>
+<li>Supports bold, italic, underline, strikethrough, and code inline formatting.</li>
+<li>Supports hyperlinks that are in double-brackets</li>
+<li>Supports +.org+ views in Rails through Tilt.</li>
+</ul><h2>HOW TO</h2>
+
+<p>From the command line:</p>
+
+<div class="highlight"><pre>     <span class="n">org</span><span class="o">-</span><span class="n">ruby</span> <span class="n">sample</span><span class="o">.</span><span class="n">org</span>
+</pre></div>
+
+<p>...will output a HTML version of sample.org.</p>
+
+<div class="highlight"><pre>     <span class="n">org</span><span class="o">-</span><span class="n">ruby</span> <span class="o">--</span><span class="n">translate</span> <span class="n">textile</span> <span class="n">sample</span><span class="o">.</span><span class="n">org</span>
+</pre></div>
+
+<p>...will output a textile version of sample.org.</p>
+
+<p>From Ruby code you can do:</p>
+
+<div class="highlight"><pre>     <span class="n">org_mode_text</span> <span class="o">=</span> <span class="no">Orgmode</span><span class="o">::</span><span class="no">Parser</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+     <span class="n">html</span> <span class="o">=</span> <span class="n">org_mode_text</span><span class="o">.</span><span class="n">to_html</span>
+</pre></div>
+
+<p>...and it will construct a new <code>Parser</code> object, then turn it into HTML.</p>
+
+<h2>INSTALL</h2>
+
+<div class="highlight"><pre><span class="n">gem</span> <span class="n">install</span> <span class="n">org</span><span class="o">-</span><span class="n">ruby</span>
+</pre></div>
+
+<h2>LICENSE</h2>
+
+<p>(The MIT License)</p>
+
+<p>Copyright (c) 2009 Brian Dewey</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
