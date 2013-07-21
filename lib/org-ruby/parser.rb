@@ -209,6 +209,29 @@ module Orgmode
       rp.to_html
     end
 
+    def to_org
+      mark_trees_for_export
+      export_options = { :export_todo => export_todo? }
+      output = ""
+      output_buffer = OrgOutputBuffer.new(output, export_options)
+
+      translate(@header_lines, output_buffer)
+      @headlines.each do |headline|
+        next if headline.export_state == :exclude
+        case headline.export_state
+        when :exclude
+          # NOTHING
+        when :headline_only
+          translate(headline.body_lines[0, 1], output_buffer)
+        when :all
+          translate(headline.body_lines, output_buffer)
+        end
+      end
+      output << "\n"
+
+      output
+    end
+
     ######################################################################
     private
 

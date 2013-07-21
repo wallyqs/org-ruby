@@ -208,5 +208,14 @@ describe Orgmode::Parser do
       end
     end
   end
+
+  describe "Org to Org export" do
+    ORG_TO_ORG_EXAMPLES_DIR = File.join(File.dirname(__FILE__), "org_to_org_examples")
+
+    it "should be possible to export to Org again" do
+      content = File.open("#{ORG_TO_ORG_EXAMPLES_DIR}/basic.org").read
+      Orgmode::Parser.new(content).to_org.should_not be_empty
+    end
+  end
 end
 
