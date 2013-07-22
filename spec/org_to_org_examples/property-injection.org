@@ -1,0 +1,19 @@
+#+TITLE: Injection of properties to drawer
+
+* TODO Load this headline and then export it back
+  :PROPERTIES:
+  :DATE:     2013-07-22
+  :NOTEBOOK: org-dev
+  :END:
+
+The headlines will start from now.
+
+** Second headline
+
+And here is the content from this headline
+
+*** Third headline
+
+#+begin_src ruby :results output
+puts "I have some text here..."
+#+end_src

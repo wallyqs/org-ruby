@@ -22,10 +22,6 @@ puts "I have some text here..."
 
 : puts "This is also code"
 
-*** COMMENT This headline will not be in the output
-
-Since it is not marked for export.
-
 * Back to the first level
 # Nothing else
 
@@ -36,4 +32,3 @@ p a.empty?
 
 #+RESULTS:
 : false
-

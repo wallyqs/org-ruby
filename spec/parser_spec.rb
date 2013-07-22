@@ -214,7 +214,22 @@ describe Orgmode::Parser do
 
     it "should be possible to export to Org again" do
       content = File.open("#{ORG_TO_ORG_EXAMPLES_DIR}/basic.org").read
-      Orgmode::Parser.new(content).to_org.should_not be_empty
+      org = Orgmode::Parser.new(content).to_org
+      org.should_not be_empty
+    end
+
+    it "should be possible to inject properties to parsed Org content" do
+      content = File.open("#{ORG_TO_ORG_EXAMPLES_DIR}/property-injection.org").read
+      org = Orgmode::Parser.new(content)
+      org.headlines.count.should == 3
+      property_drawer = org.headlines.first.property_drawer
+      property_drawer['ID'] = 'YXNkZml1aGFzZGlhc2lkZmg'
+      property_drawer['SLUG'] = 'load-this-headline-and-then-export-it-back'
+      result = org.to_org
+      result.should_not be_empty
+      expected_result = File.open("#{ORG_TO_ORG_EXAMPLES_DIR}/property-injection-result.org").read
+      expected_result << "\n"
+      expected_result.should == result
     end
   end
 end
