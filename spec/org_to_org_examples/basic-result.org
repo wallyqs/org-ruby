@@ -2,8 +2,8 @@
 
 * TODO Load this headline and then export it back
   :PROPERTIES:
-  :DATE:     2013-07-22
-  :THIS:     Won't be in the output
+  :DATE:      2013-07-22
+  :THIS:      Won't be in the output
   :END:
 
 The headlines will start from now.

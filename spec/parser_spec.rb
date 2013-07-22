@@ -216,6 +216,9 @@ describe Orgmode::Parser do
       content = File.open("#{ORG_TO_ORG_EXAMPLES_DIR}/basic.org").read
       org = Orgmode::Parser.new(content).to_org
       org.should_not be_empty
+      expected_result = File.open("#{ORG_TO_ORG_EXAMPLES_DIR}/basic-result.org").read
+      expected_result << "\n"
+      expected_result.should == org
     end
 
     it "should be possible to inject properties to parsed Org content" do
