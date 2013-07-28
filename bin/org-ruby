@@ -17,7 +17,7 @@ options_parser = OptionParser.new do |opts|
     options[:debug] = true
   end
 
-  opts.on("-t", "--translate FORMAT", [:html, :textile],
+  opts.on("-t", "--translate FORMAT", [:html, :textile, :org],
           "Translate the ORG file to the specified format.") do |v|
     options[:format] = v
   end
@@ -43,6 +43,7 @@ begin
     $DEBUG = true if options[:debug]
     puts p.to_html if options[:format] == :html
     puts p.to_textile if options[:format] == :textile
+    puts p.to_org if options[:format] == :org
   end
 rescue OptionParser::ParseError
   puts options_parser
