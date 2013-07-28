@@ -14,6 +14,7 @@ module Orgmode
         if not line.property_drawer.empty?
           @buffer << "  :PROPERTIES:\n"
           line.property_drawer.each do |key, value|
+            # TODO: Implement proper indentation here
             @buffer << "  :#{key}:      #{value}\n"
           end
           @buffer << "  :END:\n"
