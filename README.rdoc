@@ -58,7 +58,7 @@ Brief list of features supported:
 == Projects using it
 
 * Used at {github/markup}[https://github.com/github/markup] for rendering +.org+ files
-* The {Gollum}[https://github.com/gollum/gollum] uses it too
+* The {Gollum}[https://github.com/gollum/gollum] project uses it too
 * Can be used with Jekyll for building a site: {example here}[https://github.com/wallyqs/yet-another-jekyll-org-template]
 
 == License
