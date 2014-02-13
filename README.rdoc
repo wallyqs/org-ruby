@@ -4,7 +4,6 @@
 An {Org mode}[http://orgmode.org] parser written in Ruby.
 
 <em>Originally by Brian Dewey</em>
-<em>Currently maintained by Waldemar Quevedo</em>
 
 == Installation
 
@@ -40,6 +39,8 @@ Not all of the {Org mode features}[http://orgmode.org/manual/] are implemented y
 Currently, the development of the gem is mostly oriented towards
 giving support for exporting Org mode into other formats.
 
+Brief list of features supported:
+
 * Converts Org mode files to HTML, Textile or Markdown.
 * Supports tables, block quotes, code blocks, and html blocks
 * Supports bold, italic, underline, strikethrough, and code inline formatting.
@@ -52,11 +53,11 @@ giving support for exporting Org mode into other formats.
 == Contributing
 
 * If you see a feature missing, please create an issue so that the maintainer considers its implementation
-* Also, PRs are always welcome! Before submitting make sure to check what breaks by running +rake spec+
+* Also, PRs are always welcome! Before submitting make sure to check what breaks by running <code>rake spec</code>
 
-== Projects using +org-ruby+
+== Projects using it
 
-* Used at {github/markup}[https://github.com/github/markup] for rendering +*.org+ files
+* Used at {github/markup}[https://github.com/github/markup] for rendering +.org+ files
 * The {Gollum}[https://github.com/gollum/gollum] uses it too
 * Can be used with Jekyll for building a site: {example here}[https://github.com/wallyqs/yet-another-jekyll-org-template]
 
