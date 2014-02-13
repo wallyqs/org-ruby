@@ -1,11 +1,10 @@
-= org-ruby
-<em>Originally by Brian Dewey</em> (http://github.com/bdewey/org-ruby)
-
+= OrgRuby
 {<img src="https://secure.travis-ci.org/wallyqs/org-ruby.png?branch=master" alt="Build Status" />}[http://travis-ci.org/wallyqs/org-ruby]
 
-An {org-mode}[http://orgmode.org] parser written in Ruby. The most significant thing this library does today is convert org-mode files to HTML or Textile.
-Currently, you cannot do much to customize the conversion. The supplied textile conversion is optimized for extracting 
-“content” from the orgfile as opposed to “metadata.”
+An {Org mode}[http://orgmode.org] parser written in Ruby.
+
+<em>Originally by Brian Dewey</em>
+<em>Currently maintained by Waldemar Quevedo</em>
 
 == Installation
 
@@ -13,7 +12,7 @@ Currently, you cannot do much to customize the conversion. The supplied textile 
 
 == Usage
 
-From Ruby code:
+From Ruby:
 
      require 'org-ruby'
 
@@ -29,30 +28,37 @@ From Ruby code:
      Orgmode::Parser.new("* Hello world!).to_markdown
      # => "# Hello world!\n" 
 
-It can also be used from the command line:
+The supported output exporters can be also called from the command line:
 
-     org-ruby sample.org --translate html
-
-...will output a HTML version of sample.org.
-
-     org-ruby --translate textile sample.org
-
-...will output a textile version of sample.org.
-
+     org-ruby --translate html     sample.org
+     org-ruby --translate textile  sample.org
      org-ruby --translate markdown sample.org
 
-...will output a markdown version of sample.org.
+== Current status
 
-== Features
+Not all of the {Org mode features}[http://orgmode.org/manual/] are implemented yet.
+Currently, the development of the gem is mostly oriented towards
+giving support for exporting Org mode into other formats.
 
-* Converts org-mode files to HTML or Textile
+* Converts Org mode files to HTML, Textile or Markdown.
 * Supports tables, block quotes, code blocks, and html blocks
 * Supports bold, italic, underline, strikethrough, and code inline formatting.
-* Supports hyperlinks that are in double-brackets
-* Supports definition lists
+* Supports hyperlinks
+* Supports lists
 * Supports footnotes
 * Supports +.org+ views in Rails through Tilt.
 * Code syntax highlight of code blocks using Pygments.rb or Coderay when available
+
+== Contributing
+
+* If you see a feature missing, please create an issue so that the maintainer considers its implementation
+* Also, PRs are always welcome! Before submitting make sure to check what breaks by running +rake spec+
+
+== Projects using +org-ruby+
+
+* Used at {github/markup}[https://github.com/github/markup] for rendering +*.org+ files
+* The {Gollum}[https://github.com/gollum/gollum] uses it too
+* Can be used with Jekyll for building a site: {example here}[https://github.com/wallyqs/yet-another-jekyll-org-template]
 
 == License
 
