@@ -105,6 +105,33 @@ describe Orgmode::Line do
     end
   end
 
+  context "when a block has header arguments" do
+    cases = {
+      "#+begin_src :hello world" => {
+        ':hello' => 'world'
+      },
+      "#+begin_src ruby -n -r -l \"asdf\" asdf asdf :asdf asdf" => {
+        ':asdf' => 'asdf'
+      },
+      "#+begin_src ruby :results \"he:llo\" :results :hello :tangle somewhere.rb :exports code :shebang #!/bin/bash" => {
+        ':results' => '"he:llo"', ':tangle' => 'somewhere.rb', ':exports' => 'code', ':shebang' => '#!/bin/bash'
+      },
+      "#+begin_src clojure :results :hello :tangle somewhere.rb :exports code" => {
+        ':tangle' => 'somewhere.rb', ':exports' => 'code'
+      },
+      "#+begin_src js :results output :hello :tangle somewhere.rb :exports code" => {
+        ':results' => 'output', ':tangle' => 'somewhere.rb', ':exports' => 'code'
+      }
+    }
+
+    cases.each_pair do |example, expected|
+      it "should recognize #{example}" do 
+        line = Orgmode::Line.new example
+        line.block_header_arguments.should == expected
+      end
+    end
+  end
+
   pending "should accept assigned types" do
     cases = {
       "# this looks like a comment" => :comment,
