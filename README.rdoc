@@ -16,15 +16,15 @@ From Ruby:
      require 'org-ruby'
 
      # Renders HTML
-     Orgmode::Parser.new("* Hello world!).to_html
+     Orgmode::Parser.new("* Hello world!").to_html
      # => "<h1>Hello world!</h1>\n"
 
      # Renders Textile
-     Orgmode::Parser.new("* Hello world!).to_textile
+     Orgmode::Parser.new("* Hello world!").to_textile
      # => "h1. Hello world!\n" 
 
      # Renders Markdown
-     Orgmode::Parser.new("* Hello world!).to_markdown
+     Orgmode::Parser.new("* Hello world!").to_markdown
      # => "# Hello world!\n" 
 
 The supported output exporters can be also called from the command line:
