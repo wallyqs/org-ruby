@@ -1,0 +1,123 @@
+#+TITLE: Support for :exports options from code blocks
+
+According to the [[http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks][Org mode docs]], it is possible to customize whether
+the code block will be exported or not.
+
+* About the ~#+RESULTS:~ block
+
+  Using Org Babel features, it is possible to set ~:results output~
+  to a code block and render the results within a ~#+RESULTS:~ code block:
+
+  #+begin_src ruby :results output
+  puts "Hello world"
+  #+end_src
+
+  #+RESULTS:
+  : Hello world
+
+  One thing about the ~#+RESULTS:~ code blocks, is that they exist in several forms:
+
+  1) As an accumulated group of inline examples:
+
+     #+RESULTS:
+     : like
+     : this
+     : etc...
+
+  2) As an example code block.
+
+     #+begin_src ruby :results output
+     10.times {|n| puts n }
+     #+end_src
+
+     #+RESULTS:
+     #+begin_example
+     0
+     1
+     2
+     3
+     4
+     5
+     6
+     7
+     8
+     9
+     #+end_example
+
+  3) Also, in case ~:results output code~ is used, the results would be a src block of the same language as the original one.
+
+     #+begin_src ruby :results output code
+     counter = 0
+     10.times { puts "puts '#{counter += 1}'" } # Displayed in first code block
+     puts counter # Displayed in second code block
+     #+end_src
+
+     #+RESULTS:
+     #+begin_src ruby
+     puts '1'
+     puts '2'
+     puts '3'
+     puts '4'
+     puts '5'
+     puts '6'
+     puts '7'
+     puts '8'
+     puts '9'
+     puts '10'
+     10
+     #+end_src
+
+     #+RESULTS:
+     : 10
+
+* TODO :exports code
+
+Only the code would be in the output,
+the same as when no option is set.
+
+#+begin_src js :exports code :results output
+var message = "Hello world!";
+
+console.log(message);
+#+end_src
+
+#+RESULTS:
+: Hello world!
+
+* TODO :exports none
+
+This omits both the resulting block,
+and the code block itself.
+
+#+begin_src python :results output :exports none
+print 1 # :P
+#+end_src
+
+#+RESULTS:
+: 1
+
+* TODO :exports both
+
+#+begin_src ruby
+Math::PI
+#+end_src
+
+#+RESULTS:
+: 3.141592653589793
+
+* TODO :exports results
+
+This option can't be completely supported by OrgRuby since
+we would have to eval the code block using :lang,
+so Org Babel features would have to be implemented as well.
+
+But in case the resulting block is within the Org mode file,
+the code block will be omitted and only the results block
+would appear.
+
+#+begin_src ruby :exports results
+Math::PI
+#+end_src
+
+#+RESULTS:
+: 3.141592653589793

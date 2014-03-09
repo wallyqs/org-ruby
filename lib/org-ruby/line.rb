@@ -207,6 +207,17 @@ module Orgmode
       header_arguments
     end
 
+    # TODO: COMMENT block should be considered here
+    def block_should_be_exported?
+      export_state = block_header_arguments[':exports']
+      case
+      when (export_state == nil or export_state == 'both' or export_state == 'code')
+        true
+      when (export_state == 'none' or export_state == 'results')
+        false
+      end
+    end
+
     InlineExampleRegexp = /^\s*:\s/
 
     # Test if the line matches the "inline example" case:
@@ -294,9 +305,13 @@ module Orgmode
       when metadata?
         :metadata
       when block_type
-        case block_type.downcase.to_sym
-        when :center, :comment, :example, :html, :quote, :src
-          block_type.downcase.to_sym
+        if block_should_be_exported?
+          case block_type.downcase.to_sym
+          when :center, :comment, :example, :html, :quote, :src
+            block_type.downcase.to_sym
+          else
+            :comment
+          end
         else
           :comment
         end

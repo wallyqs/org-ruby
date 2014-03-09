@@ -167,7 +167,7 @@ module Orgmode
           @link_abbrevs[link_abbrev_data[0]] = link_abbrev_data[1]
         end
 
-        mode = :normal if line.end_block? and mode == line.paragraph_type
+        mode = :normal if line.end_block? and [line.paragraph_type, :comment].include?(mode)
         mode = :normal if line.property_drawer_end_block? and mode == :property_drawer
 
         case mode
