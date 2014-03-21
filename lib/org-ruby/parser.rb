@@ -167,7 +167,7 @@ module Orgmode
           @link_abbrevs[link_abbrev_data[0]] = link_abbrev_data[1]
         end
 
-        mode = :normal if line.end_block? and mode == line.paragraph_type
+        mode = :normal if line.end_block? and [line.paragraph_type, :comment].include?(mode)
         mode = :normal if line.property_drawer_end_block? and mode == :property_drawer
 
         case mode
@@ -183,6 +183,8 @@ module Orgmode
           table_header_set = false if !line.table?
 
         when :example, :html, :src
+          set_mode_for_results_block_contents(previous_line, line) if previous_line
+
           # As long as we stay in code mode, force lines to be code.
           # Don't try to interpret structural items, like headings and tables.
           line.assigned_paragraph_type = :code
@@ -196,7 +198,21 @@ module Orgmode
           end
 
           mode = line.paragraph_type if line.begin_block?
-          mode = :property_drawer if previous_line and previous_line.property_drawer_begin_block?
+
+          if previous_line
+            set_mode_for_results_block_contents(previous_line, line)
+
+            mode = :property_drawer if previous_line.property_drawer_begin_block?
+          end
+
+          # We treat the results code block differently since the exporting can be omitted
+          if line.begin_block?
+            if line.results_block_should_be_exported?
+              @next_results_block_should_be_exported = true
+            else
+              @next_results_block_should_be_exported = false
+            end
+          end
         end
 
         if mode == :property_drawer and @current_headline
@@ -256,6 +272,15 @@ module Orgmode
       # @todo: support ":minlevel"
 
       include_data
+    end
+
+    def set_mode_for_results_block_contents(previous_line, line)
+      if previous_line.start_of_results_code_block? \
+        or previous_line.assigned_paragraph_type == :comment
+        unless @next_results_block_should_be_exported or line.paragraph_type == :blank
+          line.assigned_paragraph_type = :comment
+        end
+      end
     end
 
     # Creates a new parser from the data in a given file

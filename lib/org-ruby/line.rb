@@ -158,7 +158,13 @@ module Orgmode
       table_row? or table_separator? or table_header?
     end
 
-    BlockRegexp = /^\s*#\+(BEGIN|END)_(\w*)\s*([0-9A-Za-z_\-]*)?/i
+    #
+    # 1) block delimiters
+    # 2) block type (src, example, html...) 
+    # 3) switches (e.g. -n -r -l "asdf")
+    # 4) header arguments (:hello world)
+    #
+    BlockRegexp = /^\s*#\+(BEGIN|END)_(\w*)\s*([0-9A-Za-z_\-]*)?\s*([^\":\n]*\"[^\"\n*]*\"[^\":\n]*|[^\":\n]*)?\s*([^\n]*)?/i
 
     def begin_block?
       @line =~ BlockRegexp && $1 =~ /BEGIN/i
@@ -178,6 +184,48 @@ module Orgmode
 
     def code_block?
       block_type =~ /^(EXAMPLE|SRC)$/i
+    end
+
+    def block_switches
+      $4 if @line =~ BlockRegexp
+    end
+
+    def block_header_arguments
+      header_arguments = { }
+
+      if @line =~ BlockRegexp
+        header_arguments_string = $5
+        harray = header_arguments_string.split(' ')
+        harray.each_with_index do |arg, i|
+          next_argument = harray[i + 1]
+          if arg =~ /^:/ and not (next_argument.nil? or next_argument =~ /^:/)
+            header_arguments[arg] = next_argument
+          end
+        end
+      end
+
+      header_arguments
+    end
+
+    # TODO: COMMENT block should be considered here
+    def block_should_be_exported?
+      export_state = block_header_arguments[':exports']
+      case
+      when ['both', 'code', nil, ''].include?(export_state)
+        true
+      when ['none', 'results'].include?(export_state)
+        false
+      end
+    end
+
+    def results_block_should_be_exported?
+      export_state = block_header_arguments[':exports']
+      case
+      when ['results', 'both'].include?(export_state)
+        true
+      when ['code', 'none', nil, ''].include?(export_state)
+        false
+      end
     end
 
     InlineExampleRegexp = /^\s*:\s/
@@ -224,6 +272,12 @@ module Orgmode
       end
     end
 
+    ResultsBlockStartsRegexp = /^\s*#\+RESULTS:\s*$/i
+
+    def start_of_results_code_block?
+      @line =~ ResultsBlockStartsRegexp
+    end
+
     LinkAbbrevRegexp = /^\s*#\+LINK:\s*(\w+)\s+(.+)$/i
 
     def link_abbrev?
@@ -267,9 +321,13 @@ module Orgmode
       when metadata?
         :metadata
       when block_type
-        case block_type.downcase.to_sym
-        when :center, :comment, :example, :html, :quote, :src
-          block_type.downcase.to_sym
+        if block_should_be_exported?
+          case block_type.downcase.to_sym
+          when :center, :comment, :example, :html, :quote, :src
+            block_type.downcase.to_sym
+          else
+            :comment
+          end
         else
           :comment
         end

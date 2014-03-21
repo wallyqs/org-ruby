@@ -60,7 +60,8 @@ module Orgmode
     def insert(line)
       # Prepares the output buffer to receive content from a line.
       # As a side effect, this may flush the current accumulated text.
-      @logger.debug "Looking at #{line.paragraph_type}(#{current_mode}) : #{line.to_s}"
+      @logger.debug "Looking at #{line.paragraph_type}|#{line.assigned_paragraph_type}(#{current_mode}) : #{line.to_s}"
+
       # We try to get the lang from #+BEGIN_SRC blocks
       @block_lang = line.block_lang if line.begin_block?
       unless should_accumulate_output?(line)
@@ -70,6 +71,8 @@ module Orgmode
 
       # Adds the current line to the output buffer
       case
+      when line.assigned_paragraph_type == :comment
+        # Don't add to buffer
       when line.raw_text?
         @buffer << "\n" << line.output_text if line.raw_text_tag == @buffer_tag
       when preserve_whitespace?
@@ -187,7 +190,7 @@ module Orgmode
       # Special case: Only end-block line closes block
       pop_mode if line.end_block? and line.paragraph_type == current_mode
 
-      unless line.paragraph_type == :blank
+      unless line.paragraph_type == :blank or line.assigned_paragraph_type == :comment
         if (@list_indent_stack.empty? or
             @list_indent_stack.last <= line.indent or
             mode_is_block? current_mode)

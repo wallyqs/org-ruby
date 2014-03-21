@@ -1,0 +1,196 @@
+<p class="title">Support for :exports options from code blocks</p>
+<p>According to the <a href="http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks">Org mode docs</a>, it is possible to customize whether
+  the code block will be exported or not.</p>
+<h1>About the <code>#+RESULTS:</code> block</h1>
+<p>Using Org Babel features, it is possible to set <code>:results output</code>
+  to a code block and render the results within a <code>#+RESULTS:</code> code block:</p>
+<pre class="src" lang="org">#+begin_src ruby :results output :exports both
+puts &quot;Hello world&quot;
+#+end_src
+#+RESULTS:
+: Hello world
+</pre>
+<p>One thing about the <code>#+RESULTS:</code> code blocks, is that they exist in several forms:</p>
+<ol>
+  <li>As an accumulated group of inline examples:
+    <pre class="src" lang="org">#+begin_src python :results output :exports both
+print &quot;like&quot;
+print &quot;this&quot;
+print &quot;etc...&quot;
+#+end_src
+#+RESULTS:
+: like
+: this
+: etc...
+    </pre>
+  </li>
+  <li>As an example code block.
+    <pre class="src" lang="org">#+begin_src ruby :results output :exports both
+10.times {|n| puts n }
+#+end_src
+#+RESULTS:
+#+begin_example
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+#+end_example
+    </pre>
+  </li>
+  <li>Also, in case <code>:results output code</code> is used, the results would
+    be a src block of the same language as the original one.
+    <pre class="src" lang="org">#+begin_src ruby :results output code
+counter = 0
+10.times { puts &quot;puts &#39;#{counter += 1}&#39;&quot; } # Displayed in first code block
+puts counter # Displayed in second code block
+#+end_src
+#+RESULTS:
+#+begin_src ruby
+puts &#39;1&#39;
+puts &#39;2&#39;
+puts &#39;3&#39;
+puts &#39;4&#39;
+puts &#39;5&#39;
+puts &#39;6&#39;
+puts &#39;7&#39;
+puts &#39;8&#39;
+puts &#39;9&#39;
+puts &#39;10&#39;
+10
+#+end_src
+#+RESULTS:
+: 10
+    </pre>
+  </li>
+</ol>
+<h1>Default options</h1>
+<p>The default is to export only the code blocks.</p>
+<p>The following is an code block written in Emacs Lisp
+  and its result should not be exported.</p>
+<pre class="src" lang="emacs-lisp">
+(message &quot;hello world&quot;)
+</pre>
+<p>The following is a code block written in Python
+  and its result should not be exported.</p>
+<pre class="src" lang="python">
+for i in range(0,12):
+  print &quot;import this&quot;
+</pre>
+<p>
+</p>
+<h1>:exports code</h1>
+<p>Only the code would be in the output,
+  the same as when no option is set.</p>
+<pre class="src" lang="js">
+var message = &quot;Hello world!&quot;;
+
+console.log(message);
+</pre>
+<p>And as block example too:</p>
+<pre class="src" lang="js">
+var message = &quot;Hello world!&quot;;
+for (var i = 0; i&lt; 10; i++) {
+  console.log(message);
+}
+</pre>
+<p>
+</p>
+<h1>:exports none</h1>
+<p>This omits both the resulting block,
+  and the code block itself.</p>
+<p>This should work as well when using an example block.</p>
+<p>
+</p>
+<h1>:exports both</h1>
+<pre class="src" lang="ruby">
+Math::PI + 1
+</pre>
+<pre class="example">
+4.14159265358979
+</pre>
+<p>Should behave the same when within a block example.</p>
+<pre class="src" lang="ruby">
+hello = &lt;&lt;HELLO
+The following is a text
+that will contain at least 10 lines or more
+so that when C-c C-c is pressed
+and Emacs lisp
+evals what is inside of the block,
+enough lines would be created
+such that an example block 
+would appear underneath the
+block that was executed.
+This happens after 10 lines by default.
+HELLO
+</pre>
+<pre class="example">
+The following is a text
+that will contain at least 10 lines or more
+so that when C-c C-c is pressed
+and Emacs lisp
+evals what is inside of the block,
+enough lines would be created
+such that an example block 
+would appear underneath the
+block that was executed.
+This happens after 10 lines by default.
+</pre>
+<h1>:exports results</h1>
+<p>This option can&#8217;t be completely supported by OrgRuby since
+  we would have to eval the code block using :lang,
+  so Org Babel features would have to be implemented as well.</p>
+<p>But in case the resulting block is within the Org mode file,
+  the code block will be omitted and only the results block
+  would appear.</p>
+<pre class="example">
+3.141592653589793
+</pre>
+<p>The same should happen when a block example is used instead:</p>
+<pre class="example">
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+</pre>
+<h1>When results are graphics&#8230;</h1>
+<p>A code block which is evaled within a Org mode buffer
+  using Org babel features will have its results appear within
+  another code block prepended with a <code>#+RESULTS</code> directive.</p>
+<p>A results block could also not be another example block,
+  and just consist from a link to a file. This happens
+  when the output is a graphic for example:</p>
+<ul>
+  <li>Exports none</li>
+  <li>Exports code
+    <pre class="src" lang="dot">
+digraph workflow {
+  a -&gt; c;
+  b -&gt; c;
+}
+    </pre>
+  </li>
+  <li>Exports both
+    <pre class="src" lang="dot">
+digraph workflow {
+  a -&gt; c;
+  b -&gt; c;
+}
+    </pre>
+    <p><img src="workflow.png" alt="workflow.png" /></p>
+  </li>
+  <li>Exports results
+    <p><img src="workflow.png" alt="workflow.png" /></p>
+  </li>
+</ul>

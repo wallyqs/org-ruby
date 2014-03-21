@@ -1,0 +1,272 @@
+#+TITLE: Support for :exports options from code blocks
+#+startup: showeverything
+
+According to the [[http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks][Org mode docs]], it is possible to customize whether
+the code block will be exported or not.
+
+* About the ~#+RESULTS:~ block
+
+  Using Org Babel features, it is possible to set ~:results output~
+  to a code block and render the results within a ~#+RESULTS:~ code block:
+
+  #+begin_src org
+    ,#+begin_src ruby :results output :exports both
+    puts "Hello world"
+    ,#+end_src
+    
+    ,#+RESULTS:
+    : Hello world
+  #+end_src
+
+  One thing about the ~#+RESULTS:~ code blocks, is that they exist in several forms:
+
+  1) As an accumulated group of inline examples:
+
+     #+begin_src org
+       ,#+begin_src python :results output :exports both
+       print "like"
+       print "this"
+       print "etc..."
+       ,#+end_src
+       
+       ,#+RESULTS:
+       : like
+       : this
+       : etc...
+     #+end_src
+
+  2) As an example code block.
+
+     #+begin_src org
+       ,#+begin_src ruby :results output :exports both
+       10.times {|n| puts n }
+       ,#+end_src
+       
+       ,#+RESULTS:
+       ,#+begin_example
+       0
+       1
+       2
+       3
+       4
+       5
+       6
+       7
+       8
+       9
+       ,#+end_example
+     #+end_src
+
+  3) Also, in case ~:results output code~ is used, the results would
+     be a src block of the same language as the original one.
+
+     #+begin_src org
+       ,#+begin_src ruby :results output code
+       counter = 0
+       10.times { puts "puts '#{counter += 1}'" } # Displayed in first code block
+       puts counter # Displayed in second code block
+       ,#+end_src
+       
+       ,#+RESULTS:
+       ,#+begin_src ruby
+       puts '1'
+       puts '2'
+       puts '3'
+       puts '4'
+       puts '5'
+       puts '6'
+       puts '7'
+       puts '8'
+       puts '9'
+       puts '10'
+       10
+       ,#+end_src
+       
+       ,#+RESULTS:
+       : 10
+     #+end_src
+
+* DONE Default options
+
+The default is to export only the code blocks.
+
+The following is an code block written in Emacs Lisp
+and its result should not be exported.
+
+#+begin_src emacs-lisp
+(message "hello world")
+#+end_src
+
+#+RESULTS:
+: hello world
+
+The following is a code block written in Python
+and its result should not be exported.
+
+#+begin_src python :results output
+for i in range(0,12):
+  print "import this"
+#+end_src
+
+#+RESULTS:
+#+begin_example
+import this
+import this
+import this
+import this
+import this
+import this
+import this
+import this
+import this
+import this
+import this
+import this
+#+end_example
+
+* DONE :exports code
+
+Only the code would be in the output,
+the same as when no option is set.
+
+#+begin_src js :exports code :results output
+var message = "Hello world!";
+
+console.log(message);
+#+end_src
+
+#+RESULTS:
+: Hello world!
+
+And as block example too:
+
+#+begin_src js :exports code :results output
+var message = "Hello world!";
+for (var i = 0; i< 10; i++) {
+  console.log(message);
+}
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+#+end_example
+
+* DONE :exports none
+
+This omits both the resulting block,
+and the code block itself.
+
+#+begin_src python :results output :exports none
+print 1 # :P
+#+end_src
+
+#+RESULTS:
+: 1
+
+This should work as well when using an example block.
+
+#+begin_src python :results output :exports none
+for i in range(0,10):
+  print 1 # :P
+#+end_src
+
+#+RESULTS:
+#+begin_example
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+#+end_example
+
+* DONE :exports both
+
+#+begin_src ruby :exports both
+Math::PI + 1
+#+end_src
+
+#+RESULTS:
+: 4.14159265358979
+
+Should behave the same when within a block example.
+
+#+begin_src ruby :exports both
+hello = <<HELLO
+The following is a text
+that will contain at least 10 lines or more
+so that when C-c C-c is pressed
+and Emacs lisp
+evals what is inside of the block,
+enough lines would be created
+such that an example block 
+would appear underneath the
+block that was executed.
+This happens after 10 lines by default.
+HELLO
+#+end_src
+
+#+RESULTS:
+#+begin_example
+The following is a text
+that will contain at least 10 lines or more
+so that when C-c C-c is pressed
+and Emacs lisp
+evals what is inside of the block,
+enough lines would be created
+such that an example block 
+would appear underneath the
+block that was executed.
+This happens after 10 lines by default.
+#+end_example
+
+* DONE :exports results
+
+This option can't be completely supported by OrgRuby since
+we would have to eval the code block using :lang,
+so Org Babel features would have to be implemented as well.
+
+But in case the resulting block is within the Org mode file,
+the code block will be omitted and only the results block
+would appear.
+
+#+begin_src ruby :exports results
+Math::PI
+#+end_src
+
+#+RESULTS:
+: 3.141592653589793
+
+The same should happen when a block example is used instead:
+
+#+begin_src ruby :results output :exports results
+10.times { puts "any string" }
+#+end_src
+
+#+RESULTS:
+#+begin_example
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+#+end_example
