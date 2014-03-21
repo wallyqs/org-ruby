@@ -164,3 +164,33 @@ any string
 any string
 any string
 </pre>
+<h1>When results are graphics&#8230;</h1>
+<p>A code block which is evaled within a Org mode buffer
+  using Org babel features will have its results appear within
+  another code block prepended with a <code>#+RESULTS</code> directive.</p>
+<p>A results block could also not be another example block,
+  and just consist from a link to a file. This happens
+  when the output is a graphic for example:</p>
+<ul>
+  <li>Exports none</li>
+  <li>Exports code
+    <pre class="src" lang="dot">
+digraph workflow {
+  a -&gt; c;
+  b -&gt; c;
+}
+    </pre>
+  </li>
+  <li>Exports both
+    <pre class="src" lang="dot">
+digraph workflow {
+  a -&gt; c;
+  b -&gt; c;
+}
+    </pre>
+    <p><img src="workflow.png" alt="workflow.png" /></p>
+  </li>
+  <li>Exports results
+    <p><img src="workflow.png" alt="workflow.png" /></p>
+  </li>
+</ul>

@@ -270,3 +270,61 @@ any string
 any string
 any string
 #+end_example
+
+* DONE When results are graphics...
+
+A code block which is evaled within a Org mode buffer
+using Org babel features will have its results appear within
+another code block prepended with a ~#+RESULTS~ directive.
+
+A results block could also not be another example block,
+and just consist from a link to a file. This happens
+when the output is a graphic for example:
+
+- Exports none
+
+  #+begin_src dot :exports none :results graphics :file workflow.png
+    digraph workflow {
+      a -> c;
+      b -> c;
+    }
+  #+end_src
+
+  #+RESULTS:
+  [[file:workflow.png]]
+
+- Exports code
+
+  #+begin_src dot :exports code :results graphics :file workflow.png
+    digraph workflow {
+      a -> c;
+      b -> c;
+    }
+  #+end_src
+
+  #+RESULTS:
+  [[file:workflow.png]]
+
+- Exports both
+
+  #+begin_src dot :exports both :results graphics :file workflow.png
+    digraph workflow {
+      a -> c;
+      b -> c;
+    }
+  #+end_src
+
+  #+RESULTS:
+  [[file:workflow.png]]
+
+- Exports results
+
+  #+begin_src dot :exports results :results graphics :file workflow.png
+    digraph workflow {
+      a -> c;
+      b -> c;
+    }
+  #+end_src
+
+  #+RESULTS:
+  [[file:workflow.png]]

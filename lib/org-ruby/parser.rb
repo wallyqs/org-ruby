@@ -183,14 +183,7 @@ module Orgmode
           table_header_set = false if !line.table?
 
         when :example, :html, :src
-          if previous_line
-            if previous_line.start_of_results_code_block? \
-              or previous_line.assigned_paragraph_type == :comment
-              unless @next_results_block_should_be_exported or line.paragraph_type == :blank
-                line.assigned_paragraph_type = :comment
-              end
-            end
-          end
+          set_mode_for_results_block_contents(previous_line, line) if previous_line
 
           # As long as we stay in code mode, force lines to be code.
           # Don't try to interpret structural items, like headings and tables.
@@ -207,12 +200,7 @@ module Orgmode
           mode = line.paragraph_type if line.begin_block?
 
           if previous_line
-            if previous_line.start_of_results_code_block? \
-              or previous_line.assigned_paragraph_type == :comment
-              unless @next_results_block_should_be_exported or line.paragraph_type == :blank
-                line.assigned_paragraph_type = :comment
-              end
-            end
+            set_mode_for_results_block_contents(previous_line, line)
 
             mode = :property_drawer if previous_line.property_drawer_begin_block?
           end
@@ -284,6 +272,15 @@ module Orgmode
       # @todo: support ":minlevel"
 
       include_data
+    end
+
+    def set_mode_for_results_block_contents(previous_line, line)
+      if previous_line.start_of_results_code_block? \
+        or previous_line.assigned_paragraph_type == :comment
+        unless @next_results_block_should_be_exported or line.paragraph_type == :blank
+          line.assigned_paragraph_type = :comment
+        end
+      end
     end
 
     # Creates a new parser from the data in a given file
