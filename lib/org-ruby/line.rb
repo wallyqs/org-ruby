@@ -211,9 +211,19 @@ module Orgmode
     def block_should_be_exported?
       export_state = block_header_arguments[':exports']
       case
-      when (export_state == nil or export_state == 'both' or export_state == 'code')
+      when ['both', 'code', nil, ''].include?(export_state)
         true
-      when (export_state == 'none' or export_state == 'results')
+      when ['none', 'results'].include?(export_state)
+        false
+      end
+    end
+
+    def results_block_should_be_exported?
+      export_state = block_header_arguments[':exports']
+      case
+      when ['results', 'both'].include?(export_state)
+        true
+      when ['code', 'none', nil, ''].include?(export_state)
         false
       end
     end
@@ -260,6 +270,12 @@ module Orgmode
       else
         @line =~ InBufferSettingRegexp
       end
+    end
+
+    ResultsBlockStartsRegexp = /^\s*#\+RESULTS:\s*$/i
+
+    def start_of_results_code_block?
+      @line =~ ResultsBlockStartsRegexp
     end
 
     LinkAbbrevRegexp = /^\s*#\+LINK:\s*(\w+)\s+(.+)$/i

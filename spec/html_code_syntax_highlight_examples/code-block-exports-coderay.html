@@ -47,21 +47,21 @@ print &quot;etc...&quot;
     be a src block of the same language as the original one.
     <pre class="src" lang="org">#+begin_src ruby :results output code
 counter = 0
-10.times { puts &quot;puts &#39;#{counter += 1}&#39;&quot; } # Displayed in first code block
+10.times { puts &quot;puts '#{counter += 1}'&quot; } # Displayed in first code block
 puts counter # Displayed in second code block
 #+end_src
 #+RESULTS:
 #+begin_src ruby
-puts &#39;1&#39;
-puts &#39;2&#39;
-puts &#39;3&#39;
-puts &#39;4&#39;
-puts &#39;5&#39;
-puts &#39;6&#39;
-puts &#39;7&#39;
-puts &#39;8&#39;
-puts &#39;9&#39;
-puts &#39;10&#39;
+puts '1'
+puts '2'
+puts '3'
+puts '4'
+puts '5'
+puts '6'
+puts '7'
+puts '8'
+puts '9'
+puts '10'
 10
 #+end_src
 #+RESULTS:
@@ -79,8 +79,8 @@ puts &#39;10&#39;
 <p>The following is a code block written in Python
   and its result should not be exported.</p>
 <pre class="src" lang="python">
-for i in range(0,12):
-  print &quot;import this&quot;
+<span style="color:#080;font-weight:bold">for</span> i <span style="color:#080;font-weight:bold">in</span> <span style="color:#369;font-weight:bold">range</span>(<span style="color:#00D">0</span>,<span style="color:#00D">12</span>):
+  <span style="color:#080;font-weight:bold">print</span> <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">import this</span><span style="color:#710">&quot;</span></span>
 </pre>
 <p>
 </p>
@@ -88,14 +88,14 @@ for i in range(0,12):
 <p>Only the code would be in the output,
   the same as when no option is set.</p>
 <pre class="src" lang="js">
-var message = &quot;Hello world!&quot;;
+<span style="color:#080;font-weight:bold">var</span> message = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello world!</span><span style="color:#710">&quot;</span></span>;
 
 console.log(message);
 </pre>
 <p>And as block example too:</p>
 <pre class="src" lang="js">
-var message = &quot;Hello world!&quot;;
-for (var i = 0; i&lt; 10; i++) {
+<span style="color:#080;font-weight:bold">var</span> message = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&quot;</span><span style="color:#D20">Hello world!</span><span style="color:#710">&quot;</span></span>;
+<span style="color:#080;font-weight:bold">for</span> (<span style="color:#080;font-weight:bold">var</span> i = <span style="color:#00D">0</span>; i&lt; <span style="color:#00D">10</span>; i++) {
   console.log(message);
 }
 </pre>
@@ -109,14 +109,14 @@ for (var i = 0; i&lt; 10; i++) {
 </p>
 <h1>:exports both</h1>
 <pre class="src" lang="ruby">
-Math::PI + 1
+<span style="color:#036;font-weight:bold">Math</span>::<span style="color:#036;font-weight:bold">PI</span> + <span style="color:#00D">1</span>
 </pre>
 <pre class="example">
 4.14159265358979
 </pre>
 <p>Should behave the same when within a block example.</p>
 <pre class="src" lang="ruby">
-hello = &lt;&lt;HELLO
+hello = <span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#710">&lt;&lt;HELLO</span></span><span style="background-color:hsla(0,100%,50%,0.05)"><span style="color:#D20">
 The following is a text
 that will contain at least 10 lines or more
 so that when C-c C-c is pressed
@@ -126,8 +126,8 @@ enough lines would be created
 such that an example block 
 would appear underneath the
 block that was executed.
-This happens after 10 lines by default.
-HELLO
+This happens after 10 lines by default.</span><span style="color:#710">
+HELLO</span></span>
 </pre>
 <pre class="example">
 The following is a text

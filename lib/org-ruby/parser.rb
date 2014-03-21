@@ -183,6 +183,15 @@ module Orgmode
           table_header_set = false if !line.table?
 
         when :example, :html, :src
+          if previous_line
+            if previous_line.start_of_results_code_block? \
+              or previous_line.assigned_paragraph_type == :comment
+              unless @next_results_block_should_be_exported or line.paragraph_type == :blank
+                line.assigned_paragraph_type = :comment
+              end
+            end
+          end
+
           # As long as we stay in code mode, force lines to be code.
           # Don't try to interpret structural items, like headings and tables.
           line.assigned_paragraph_type = :code
@@ -196,7 +205,26 @@ module Orgmode
           end
 
           mode = line.paragraph_type if line.begin_block?
-          mode = :property_drawer if previous_line and previous_line.property_drawer_begin_block?
+
+          if previous_line
+            if previous_line.start_of_results_code_block? \
+              or previous_line.assigned_paragraph_type == :comment
+              unless @next_results_block_should_be_exported or line.paragraph_type == :blank
+                line.assigned_paragraph_type = :comment
+              end
+            end
+
+            mode = :property_drawer if previous_line.property_drawer_begin_block?
+          end
+
+          # We treat the results code block differently since the exporting can be omitted
+          if line.begin_block?
+            if line.results_block_should_be_exported?
+              @next_results_block_should_be_exported = true
+            else
+              @next_results_block_should_be_exported = false
+            end
+          end
         end
 
         if mode == :property_drawer and @current_headline
