@@ -96,13 +96,19 @@ desc "Alias for testcase:list"
 task :testcase => ["testcase:list"]
 
 task :test do
+  exit_status = nil
+
   puts "Testing without CodeRay nor Pygments for code syntax highlight"
   system('bundle --without pygments:coderay > /dev/null 2>&1')
-  system('bundle exec rake spec')
+  exit_status = system('bundle exec rake spec')
+
   puts "Testing with CodeRay for code syntax highlight"
   system('bundle --without pygments > /dev/null 2>&1')
-  system('bundle exec rake spec')
+  exit_status = system('bundle exec rake spec')
+
   puts "Testing with Pygments for code syntax highlight"
   system('bundle --without coderay > /dev/null 2>&1')
-  system('bundle exec rake spec')
+  exit_status = system('bundle exec rake spec')
+
+  exit exit_status
 end

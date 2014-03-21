@@ -138,7 +138,7 @@ module Orgmode
           @buffer.gsub!(/\A\n/, "") if @new_paragraph == :start
           @new_paragraph = true
         else
-          # *NOTE* Don't use escape_buffer! through its sensitivity to @<text> forms
+          # *NOTE* Don't use escape_string! through its sensitivity to @@html:<text>@@ forms
           @buffer = escapeHTML @buffer
         end
 
@@ -171,8 +171,6 @@ module Orgmode
           push_mode(:definition_descr, indent)
           @output << inline_formatting(d[2].strip + d[3])
           @new_paragraph = nil
-          # FIXME: Need to restore tags once again (this should be done in escape_buffer!)
-          @output.gsub!(/@(<[^<>\n]*>)/, "\\1")
 
         when :horizontal_rule
           add_paragraph unless @new_paragraph == :start
@@ -232,22 +230,22 @@ module Orgmode
        mode == :table_separator or mode == :table_header)
     end
 
-    # Escapes any HTML content in the output accumulation buffer @buffer.
-    def escape_buffer!
-      @buffer.gsub!(/&/, "&amp;")
+    # Escapes any HTML content in string
+    def escape_string! str
+      str.gsub!(/&/, "&amp;")
       # Escapes the left and right angular brackets but construction
-      # @<text> which is formatted to <text>
-      @buffer.gsub! /<([^<>\n]*)/ do |match|
-        if $`[-1..-1] == "@" and $'[0..0] == ">" then $&
-        else "&lt;#{$1}"
-        end
+      # @@html:<text>@@ which is formatted to <text>
+      str.gsub! /<([^<>\n]*)/ do |match|
+        ($`[-7..-1] == "@@html:" and $'[0..2] == ">@@") ? $& : "&lt;#{$1}"
       end
-      @buffer.gsub! /([^<>\n]*)>/ do |match|
-        if $`[-2..-1] == "@<" then $&
-        else "#{$1}&gt;"
-        end
+      str.gsub! /([^<>\n]*)>/ do |match|
+        $`[-8..-1] == "@@html:<" ? $& : "#{$1}&gt;"
       end
-      @buffer.gsub!(/@(<[^<>\n]*>)/, "\\1")
+      str.gsub! /@@html:(<[^<>\n]*>)@@/, "\\1"
+    end
+
+    def quote_tags str
+      str.gsub /(<[^<>\n]*>)/, "@@html:\\1@@"
     end
 
     def buffer_indentation
@@ -277,18 +275,21 @@ module Orgmode
           s = escapeHTML s
           "<#{Tags[marker][:open]}>#{s}</#{Tags[marker][:close]}>"
         else
-          "@<#{Tags[marker][:open]}>#{s}@</#{Tags[marker][:close]}>"
+          quote_tags("<#{Tags[marker][:open]}>") + s +
+            quote_tags("</#{Tags[marker][:close]}>")
         end
       end
+
       if @options[:use_sub_superscripts] then
         @re_help.rewrite_subp str do |type, text|
           if type == "_" then
-            "@<sub>#{text}@</sub>"
+            quote_tags("<sub>") + text + quote_tags("</sub>")
           elsif type == "^" then
-            "@<sup>#{text}@</sup>"
+            quote_tags("<sup>") + text + quote_tags("</sup>")
           end
         end
       end
+
       @re_help.rewrite_links str do |link, defi|
         [link, defi].compact.each do |text|
           # We don't support search links right now. Get rid of it.
@@ -302,38 +303,44 @@ module Orgmode
         defi ||= link unless link =~ @re_help.org_image_file_regexp
 
         if defi =~ @re_help.org_image_file_regexp
-          defi = "@<img src=\"#{defi}\" alt=\"#{defi}\" />"
+          defi = quote_tags "<img src=\"#{defi}\" alt=\"#{defi}\" />"
         end
 
         if defi
           link = @options[:link_abbrevs][link] if @options[:link_abbrevs].has_key? link
-          "@<a href=\"#{link}\">#{defi}@</a>"
+          quote_tags("<a href=\"#{link}\">") + defi + quote_tags("</a>")
         else
-          "@<img src=\"#{link}\" alt=\"#{link}\" />"
+          quote_tags "<img src=\"#{link}\" alt=\"#{link}\" />"
         end
       end
+
       if @output_type == :table_row
-        str.gsub!(/^\|\s*/, "@<td>")
-        str.gsub!(/\s*\|$/, "@</td>")
-        str.gsub!(/\s*\|\s*/, "@</td>@<td>")
+        str.gsub! /^\|\s*/, quote_tags("<td>")
+        str.gsub! /\s*\|$/, quote_tags("</td>")
+        str.gsub! /\s*\|\s*/, quote_tags("</td><td>")
       end
+
       if @output_type == :table_header
-        str.gsub!(/^\|\s*/, "@<th>")
-        str.gsub!(/\s*\|$/, "@</th>")
-        str.gsub!(/\s*\|\s*/, "@</th>@<th>")
+        str.gsub! /^\|\s*/, quote_tags("<th>")
+        str.gsub! /\s*\|$/, quote_tags("</th>")
+        str.gsub! /\s*\|\s*/, quote_tags("</th><th>")
       end
+
       if @options[:export_footnotes] then
         @re_help.rewrite_footnote str do |name, defi|
           # TODO escape name for url?
           @footnotes[name] = defi if defi
-          "@<sup>@<a class=\"footref\" name=\"fnr.#{name}\" href=\"#fn.#{name}\">#{name}@</a>@</sup>"
+          quote_tags("<sup><a class=\"footref\" name=\"fnr.#{name}\" href=\"#fn.#{name}\">") +
+            name + quote_tags("</a></sup>")
         end
       end
+
       # Two backslashes \\ at the end of the line make a line break without breaking paragraph.
       if @output_type != :table_row and @output_type != :table_header then
-        str.sub!(/\\\\$/, "@<br />")
+        str.sub! /\\\\$/, quote_tags("<br />")
       end
-      escape_buffer!
+
+      escape_string! str
       Orgmode.special_symbols_to_html str
       str = @re_help.restore_code_snippets str
     end
@@ -360,9 +367,10 @@ module Orgmode
     end
 
     def strip_code_block!
-      @code_block_indent ||= 0
-      strip_regexp = Regexp.new("^" + " " * @code_block_indent)
-      @buffer.gsub!(strip_regexp, "")
+      if @code_block_indent and @code_block_indent > 0
+        strip_regexp = Regexp.new("^" + " " * @code_block_indent)
+        @buffer.gsub!(strip_regexp, "")
+      end
       @code_block_indent = nil
 
       # Strip proctective commas generated by Org mode (C-c ')

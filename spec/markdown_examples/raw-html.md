@@ -17,6 +17,6 @@ This should be escaped: `<html><script type="text/javascript">(function(){})</sc
 
 This should be escaped: `<html><script type`"text/javascript">(function(){})</script></html>=
 
-This should be escaped: `@<script type="text/javascript">(function(){})@</script>`
+This should be escaped: `@@html:<script type="text/javascript">@@(function(){})@@html:</script>@@`
 
-This should be escaped: `@<script type`"text/javascript">(function(){})@</script>=
+This should be escaped: `@@html:<script type`"text/javascript">@@(function(){})@@html:</script>@@=
