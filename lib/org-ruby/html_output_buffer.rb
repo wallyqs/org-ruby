@@ -294,7 +294,6 @@ module Orgmode
         [link, defi].compact.each do |text|
           # We don't support search links right now. Get rid of it.
           text.sub!(/\A(file:[^\s]+)::[^\s]*?\Z/, "\\1")
-          text.sub!(/\A(file:[^\s]+)\.org\Z/i, "\\1.html")
           text.sub!(/\Afile:(?=[^\s]+\Z)/, "")
         end
 
