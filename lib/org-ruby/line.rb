@@ -24,14 +24,14 @@ module Orgmode
     # type. This will then affect the value of +paragraph_type+.
     attr_accessor :assigned_paragraph_type
 
-    def initialize(line, parser = nil)
+    def initialize(line, parser=nil, assigned_paragraph_type=nil)
       @parser = parser
       @line = line
       @indent = 0
       @line =~ /\s*/
+      @assigned_paragraph_type = assigned_paragraph_type
       determine_paragraph_type
       determine_major_mode
-      @assigned_paragraph_type = nil
       @indent = $&.length unless blank?
     end
 
@@ -272,6 +272,12 @@ module Orgmode
       end
     end
 
+    # #+TITLE: is special because even though that it can be
+    # written many times in the document, its value will be that of the last one
+    def title?
+      @assigned_paragraph_type == :title
+    end
+
     ResultsBlockStartsRegexp = /^\s*#\+RESULTS:\s*$/i
 
     def start_of_results_code_block?
@@ -331,6 +337,8 @@ module Orgmode
         else
           :comment
         end
+      when title?
+        :title
       when raw_text? # order is important! Raw text can be also a comment
         :raw_text
       when comment?

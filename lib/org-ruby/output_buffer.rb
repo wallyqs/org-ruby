@@ -73,6 +73,8 @@ module Orgmode
       case
       when line.assigned_paragraph_type == :comment
         # Don't add to buffer
+      when line.title?
+        @buffer << line.output_text
       when line.raw_text?
         @buffer << "\n" << line.output_text if line.raw_text_tag == @buffer_tag
       when preserve_whitespace?
