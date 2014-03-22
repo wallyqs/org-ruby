@@ -1,4 +1,14 @@
-== 0.9.1 / 2013-02-13
+== 0.9.2 / 2014-03-22
+
+* Fix Org mode syntax for escaping html: Syntax actually now is @@html:<text>@@ 
+
+* Fix '#+TITLE:' to render as a h1 headline
+
+* Remove rewriting links to '.org' files as '.html'
+
+* Implement :exports options for code blocks
+
+== 0.9.1 / 2014-02-13
 
 * Backport CGI::escapeHTML function from Ruby to have same output among different Ruby versions
 
