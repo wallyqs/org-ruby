@@ -272,6 +272,17 @@ module Orgmode
       end
     end
 
+    # #+TITLE: is special because even though that it can be
+    # written many times in the document, its value will be that of the last one
+    def title?
+      is_title = false
+      in_buffer_setting? do |buffer_setting, _|
+        is_title = true if buffer_setting == 'TITLE'
+      end
+
+      is_title
+    end
+
     ResultsBlockStartsRegexp = /^\s*#\+RESULTS:\s*$/i
 
     def start_of_results_code_block?
@@ -331,6 +342,8 @@ module Orgmode
         else
           :comment
         end
+      when title?
+        :title
       when raw_text? # order is important! Raw text can be also a comment
         :raw_text
       when comment?

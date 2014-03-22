@@ -14,37 +14,33 @@ module Orgmode
   class HtmlOutputBuffer < OutputBuffer
 
     HtmlBlockTag = {
-      :paragraph => "p",
-      :ordered_list => "ol",
-      :unordered_list => "ul",
-      :list_item => "li",
-      :definition_list => "dl",
-      :definition_term => "dt",
+      :paragraph        => "p",
+      :ordered_list     => "ol",
+      :unordered_list   => "ul",
+      :list_item        => "li",
+      :definition_list  => "dl",
+      :definition_term  => "dt",
       :definition_descr => "dd",
-      :table => "table",
-      :table_row => "tr",
-      :quote => "blockquote",
-      :example => "pre",
-      :src => "pre",
-      :inline_example => "pre",
-      :center => "div",
-      :heading1 => "h1",
-      :heading2 => "h2",
-      :heading3 => "h3",
-      :heading4 => "h4",
-      :heading5 => "h5",
-      :heading6 => "h6"
+      :table            => "table",
+      :table_row        => "tr",
+      :quote            => "blockquote",
+      :example          => "pre",
+      :src              => "pre",
+      :inline_example   => "pre",
+      :center           => "div",
+      :heading1         => "h1",
+      :heading2         => "h2",
+      :heading3         => "h3",
+      :heading4         => "h4",
+      :heading5         => "h5",
+      :heading6         => "h6",
+      :title            => "h1"
     }
 
     attr_reader :options
 
     def initialize(output, opts = {})
       super(output)
-      if opts[:decorate_title] then
-        @title_decoration = " class=\"title\""
-      else
-        @title_decoration = ""
-      end
       @buffer_tag = "HTML"
       @options = opts
       @new_paragraph = :start
@@ -71,8 +67,8 @@ module Orgmode
                         " class=\"example\""
                       when mode == :center
                         " style=\"text-align: center\""
-                      else
-                        @title_decoration
+                      when @options[:decorate_title]
+                        " class=\"title\""
                       end
 
           add_paragraph unless @new_paragraph == :start
@@ -81,7 +77,7 @@ module Orgmode
           @logger.debug "#{mode}: <#{HtmlBlockTag[mode]}#{css_class}>"
           @output << "<#{HtmlBlockTag[mode]}#{css_class}>"
           # Entering a new mode obliterates the title decoration
-          @title_decoration = ""
+          @options[:decorate_title] = ""
         end
       end
     end
