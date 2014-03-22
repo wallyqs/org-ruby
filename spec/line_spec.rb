@@ -132,7 +132,7 @@ describe Orgmode::Line do
     end
   end
 
-  pending "should accept assigned types" do
+  context "when initializing" do
     cases = {
       "# this looks like a comment" => :comment,
       "  1. This looks like an ordered list" => :ordered_list,
@@ -141,6 +141,13 @@ describe Orgmode::Line do
       "\n" => :blank,
       " |-----+-----+--------|  \n" => :table_separator
     }
+
+    cases.each_pair do |example, expected|
+      it "should accept '#{example}' with assigned type #{expected}" do 
+        line = Orgmode::Line.new(example, nil, expected)
+        line.assigned_paragraph_type.should == expected
+      end
+    end
   end
 
   it "should parse in-buffer settings" do
