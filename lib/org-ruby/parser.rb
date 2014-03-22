@@ -329,7 +329,7 @@ module Orgmode
         :decorate_title        => @in_buffer_settings["TITLE"],
         :export_heading_number => export_heading_number?,
         :export_todo           => export_todo?,
-        :use_sub_superscripts  =>  use_sub_superscripts?,
+        :use_sub_superscripts  => use_sub_superscripts?,
         :export_footnotes      => export_footnotes?,
         :link_abbrevs          => @link_abbrevs
       }
@@ -337,14 +337,13 @@ module Orgmode
       output = ""
       output_buffer = HtmlOutputBuffer.new(output, export_options)
 
-      # if @in_buffer_settings["TITLE"]
+      if @in_buffer_settings["TITLE"]
 
-      #   # If we're given a new title, then just create a new line
-      #   # for that title.
-      #   title = Line.new(@in_buffer_settings["TITLE"], self)
-      #   title.assigned_paragraph_type = :title
-      #   translate([title], output_buffer)
-      # end
+        # If we're given a new title, then just create a new line
+        # for that title.
+        title = Line.new(@in_buffer_settings["TITLE"], self, :title)
+        translate([title], output_buffer)
+      end
       translate(@header_lines, output_buffer) unless skip_header_lines?
 
       # If we've output anything at all, remove the :decorate_title option.

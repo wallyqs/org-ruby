@@ -77,7 +77,7 @@ module Orgmode
           @logger.debug "#{mode}: <#{HtmlBlockTag[mode]}#{css_class}>"
           @output << "<#{HtmlBlockTag[mode]}#{css_class}>"
           # Entering a new mode obliterates the title decoration
-          @options[:decorate_title] = ""
+          @options[:decorate_title] = nil
         end
       end
     end

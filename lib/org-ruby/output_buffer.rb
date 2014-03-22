@@ -71,7 +71,7 @@ module Orgmode
 
       # Adds the current line to the output buffer
       case
-      when (line.assigned_paragraph_type == :comment)
+      when line.assigned_paragraph_type == :comment
         # Don't add to buffer
       when line.title?
         @buffer << line.output_text
