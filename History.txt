@@ -1,3 +1,7 @@
+== 0.9.3 / 2014-03-25
+
+* Fix code blocks prepended comma stripping
+
 == 0.9.2 / 2014-03-22
 
 * Fix Org mode syntax for escaping html: Syntax actually now is @@html:<text>@@ 
