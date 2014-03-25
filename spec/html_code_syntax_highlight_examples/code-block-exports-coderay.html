@@ -4,20 +4,24 @@
 <h1>About the <code>#+RESULTS:</code> block</h1>
 <p>Using Org Babel features, it is possible to set <code>:results output</code>
   to a code block and render the results within a <code>#+RESULTS:</code> code block:</p>
-<pre class="src" lang="org">#+begin_src ruby :results output :exports both
+<pre class="src" lang="org">
+#+begin_src ruby :results output :exports both
 puts &quot;Hello world&quot;
 #+end_src
+
 #+RESULTS:
 : Hello world
 </pre>
 <p>One thing about the <code>#+RESULTS:</code> code blocks, is that they exist in several forms:</p>
 <ol>
   <li>As an accumulated group of inline examples:
-    <pre class="src" lang="org">#+begin_src python :results output :exports both
+    <pre class="src" lang="org">
+#+begin_src python :results output :exports both
 print &quot;like&quot;
 print &quot;this&quot;
 print &quot;etc...&quot;
 #+end_src
+
 #+RESULTS:
 : like
 : this
@@ -25,9 +29,11 @@ print &quot;etc...&quot;
     </pre>
   </li>
   <li>As an example code block.
-    <pre class="src" lang="org">#+begin_src ruby :results output :exports both
+    <pre class="src" lang="org">
+#+begin_src ruby :results output :exports both
 10.times {|n| puts n }
 #+end_src
+
 #+RESULTS:
 #+begin_example
 0
@@ -45,11 +51,13 @@ print &quot;etc...&quot;
   </li>
   <li>Also, in case <code>:results output code</code> is used, the results would
     be a src block of the same language as the original one.
-    <pre class="src" lang="org">#+begin_src ruby :results output code
+    <pre class="src" lang="org">
+#+begin_src ruby :results output code
 counter = 0
 10.times { puts &quot;puts '#{counter += 1}'&quot; } # Displayed in first code block
 puts counter # Displayed in second code block
 #+end_src
+
 #+RESULTS:
 #+begin_src ruby
 puts '1'
@@ -64,6 +72,7 @@ puts '9'
 puts '10'
 10
 #+end_src
+
 #+RESULTS:
 : 10
     </pre>
