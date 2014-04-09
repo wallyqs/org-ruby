@@ -331,7 +331,8 @@ module Orgmode
         :export_todo           => export_todo?,
         :use_sub_superscripts  => use_sub_superscripts?,
         :export_footnotes      => export_footnotes?,
-        :link_abbrevs          => @link_abbrevs
+        :link_abbrevs          => @link_abbrevs,
+        :skip_syntax_highlight => @parser_options[:skip_syntax_highlight]
       }
       export_options[:skip_tables] = true if not export_tables?
       output = ""
