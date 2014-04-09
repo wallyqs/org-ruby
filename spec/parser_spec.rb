@@ -195,19 +195,18 @@ describe Orgmode::Parser do
 
   describe "Export to HTML test cases with code syntax highlight" do
     code_syntax_examples_directory = File.join(File.dirname(__FILE__), "html_code_syntax_highlight_examples")
+    files = []
 
     # Include the code syntax highlight support tests
     if defined? CodeRay
       # Use CodeRay for syntax highlight (pure Ruby solution)
       org_files = File.expand_path(File.join(code_syntax_examples_directory, "*-coderay.org"))
+      files = Dir.glob(org_files)
     elsif defined? Pygments
       # Use pygments (so that it works with Jekyll, Gollum and possibly Github)
       org_files = File.expand_path(File.join(code_syntax_examples_directory, "*-pygments.org"))
-    else
-      # Do not use syntax coloring for source code blocks
-      org_files = File.expand_path(File.join(code_syntax_examples_directory, "*-no-color.org"))
+      files = Dir.glob(org_files)
     end
-    files = Dir.glob(org_files)
 
     files.each do |file|
       basename = File.basename(file, ".org")
@@ -224,6 +223,41 @@ describe Orgmode::Parser do
       end
 
       it "should render #{basename}.org to HTML using Tilt templates" do
+        ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = 'true'
+        expected = IO.read(org_filename)
+        template = Tilt.new(file).render
+        template.should == expected
+        ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = ''
+      end
+    end
+  end
+
+  describe "Export to HTML test cases with code syntax highlight disabled" do
+    code_syntax_examples_directory = File.join(File.dirname(__FILE__), "html_code_syntax_highlight_examples")
+
+    # Do not use syntax coloring for source code blocks
+    org_files = File.expand_path(File.join(code_syntax_examples_directory, "*-no-color.org"))
+    files = Dir.glob(org_files)
+
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      org_filename = File.join(code_syntax_examples_directory, basename + ".html")
+      org_filename = File.expand_path(org_filename)
+
+      it "should convert #{basename}.org to HTML" do
+        expected = IO.read(org_filename)
+        expected.should be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), {
+                                       :allow_include_files   => true,
+                                       :skip_syntax_highlight => true
+                                     })
+        actual = parser.to_html
+        actual.should be_kind_of(String)
+        actual.should == expected
+      end
+
+      it "should render #{basename}.org to HTML using Tilt templates",
+      :if => (defined? Coderay or defined? Pygments) do
         ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = 'true'
         expected = IO.read(org_filename)
         template = Tilt.new(file).render

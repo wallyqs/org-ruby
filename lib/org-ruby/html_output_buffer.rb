@@ -1,14 +1,3 @@
-begin
-  require 'pygments'
-rescue LoadError
-  # Pygments is not supported so we try instead with CodeRay
-  begin
-    require 'coderay'
-  rescue LoadError
-    # No code syntax highlighting
-  end
-end
-
 module Orgmode
 
   class HtmlOutputBuffer < OutputBuffer
@@ -47,6 +36,19 @@ module Orgmode
       @footnotes = {}
       @unclosed_tags = []
       @logger.debug "HTML export options: #{@options.inspect}"
+
+      unless @options[:skip_syntax_highlight]
+        begin
+          require 'pygments'
+        rescue LoadError
+          # Pygments is not supported so we try instead with CodeRay
+          begin
+            require 'coderay'
+          rescue LoadError
+            # No code syntax highlighting
+          end
+        end
+      end
     end
 
     # Output buffer is entering a new mode. Use this opportunity to
@@ -57,7 +59,7 @@ module Orgmode
 
       if HtmlBlockTag[mode]
         unless ((mode_is_table?(mode) and skip_tables?) or
-                (mode == :src and defined? Pygments))
+                (mode == :src and !@options[:skip_syntax_highlight] and defined? Pygments))
           css_class = case
                       when (mode == :src and @block_lang.empty?)
                         " class=\"src\""
@@ -88,7 +90,7 @@ module Orgmode
       m = super(mode)
       if HtmlBlockTag[m]
         unless ((mode_is_table?(m) and skip_tables?) or
-                (m == :src and defined? Pygments))
+                (m == :src and !@options[:skip_syntax_highlight] and defined? Pygments))
           add_paragraph if @new_paragraph
           @new_paragraph = true
           @logger.debug "</#{HtmlBlockTag[m]}>"
@@ -107,6 +109,8 @@ module Orgmode
         # NOTE: CodeRay and Pygments already escape the html once, so
         # no need to escapeHTML
         case
+        when (current_mode == :src and @options[:skip_syntax_highlight])
+          @buffer = escapeHTML @buffer
         when (current_mode == :src and defined? Pygments)
           lang = normalize_lang @block_lang
           @output << "\n" unless @new_paragraph == :start
