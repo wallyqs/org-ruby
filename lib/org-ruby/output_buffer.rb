@@ -250,8 +250,8 @@ module Orgmode
       false
     end
 
-    def buffer_indentation
-      return false
-    end
+    def buffer_indentation; false; end
+    def flush!; false; end
+    def output_footnotes!; false; end
   end                           # class OutputBuffer
 end                             # module Orgmode
