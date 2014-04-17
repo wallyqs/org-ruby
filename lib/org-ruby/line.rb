@@ -24,12 +24,16 @@ module Orgmode
     # type. This will then affect the value of +paragraph_type+.
     attr_accessor :assigned_paragraph_type
 
+    # In case more contextual info is needed we can put here
+    attr_accessor :properties
+
     def initialize(line, parser=nil, assigned_paragraph_type=nil)
       @parser = parser
       @line = line
       @indent = 0
       @line =~ /\s*/
       @assigned_paragraph_type = assigned_paragraph_type
+      @properties = { }
       determine_paragraph_type
       determine_major_mode
       @indent = $&.length unless blank?

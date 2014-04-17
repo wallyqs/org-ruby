@@ -85,6 +85,21 @@ describe Orgmode::Parser do
     p.export_tables?.should be_false
   end
 
+  it "should add code block name as a line property" do
+    example = <<EXAMPLE
+* Sample
+
+#+name: hello_world
+#+begin_src sh :results output
+echo 'hello world'
+#+end_src
+EXAMPLE
+    o = Orgmode::Parser.new(example)
+    h = o.headlines.first
+    line = h.body_lines.find { |l| l.to_s == "#+begin_src sh :results output"}
+    line.properties['block_name'].should == 'hello_world'
+  end
+
   context "with a table that begins with a separator line" do
     let(:parser) { Orgmode::Parser.new(data) }
     let(:data) { Pathname.new(File.dirname(__FILE__)).join('data', 'tables.org').read }
