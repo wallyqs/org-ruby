@@ -183,7 +183,10 @@ module Orgmode
           table_header_set = false if !line.table?
 
         when :example, :html, :src
-          set_mode_for_results_block_contents(previous_line, line) if previous_line
+          if previous_line
+            set_name_for_code_block(previous_line, line)
+            set_mode_for_results_block_contents(previous_line, line)
+          end
 
           # As long as we stay in code mode, force lines to be code.
           # Don't try to interpret structural items, like headings and tables.
@@ -200,6 +203,7 @@ module Orgmode
           mode = line.paragraph_type if line.begin_block?
 
           if previous_line
+            set_name_for_code_block(previous_line, line)
             set_mode_for_results_block_contents(previous_line, line)
 
             mode = :property_drawer if previous_line.property_drawer_begin_block?
@@ -272,6 +276,12 @@ module Orgmode
       # @todo: support ":minlevel"
 
       include_data
+    end
+
+    def set_name_for_code_block(previous_line, line)
+      previous_line.in_buffer_setting? do |key, value|
+        line.properties['block_name'] = value if key.downcase == 'name'
+      end
     end
 
     def set_mode_for_results_block_contents(previous_line, line)
