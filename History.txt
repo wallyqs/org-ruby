@@ -1,3 +1,11 @@
+== 0.9.6 / 2014-05-06
+
+* Support named results blocks
+
+== 0.9.5 / 2014-04-24
+
+* Small bugfix to remove warning due to VERSION being repeated
+
 == 0.9.4 / 2014-04-18
 
 * Track block names within the line properties
