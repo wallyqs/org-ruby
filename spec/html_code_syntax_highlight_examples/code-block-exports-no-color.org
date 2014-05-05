@@ -328,3 +328,139 @@ when the output is a graphic for example:
 
   #+RESULTS:
   [[file:workflow.png]]
+
+* When blocks have a name, the results should be the same
+** exports code
+#+name: hello_js_exports_code_short
+#+begin_src js :exports code :results output
+var message = "Hello world!";
+
+console.log(message);
+#+end_src
+
+#+RESULTS: hello_js_exports_code_short
+: Hello world!
+
+#+name: hello_js_exports_code_long
+#+begin_src js :exports code :results output
+var message = "Hello world!";
+for (var i = 0; i< 10; i++) {
+  console.log(message);
+}
+#+end_src
+
+#+RESULTS: hello_js_exports_code_long
+#+begin_example
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+Hello world!
+#+end_example
+
+
+** exports none
+
+#+name: hello_python_exports_none_short
+#+begin_src python :results output :exports none
+print 1 # :P
+#+end_src
+
+#+RESULTS: hello_python_exports_none_short
+: 1
+
+#+name: hello_python_exports_none_long
+#+begin_src python :results output :exports none
+for i in range(0,10):
+  print 1 # :P
+#+end_src
+
+#+RESULTS: hello_python_exports_none_long
+#+begin_example
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+#+end_example
+
+
+** exports both
+
+#+name: hello_ruby_exports_both_short
+#+begin_src ruby :exports both
+Math::PI + 1
+#+end_src
+
+#+RESULTS: hello_ruby_exports_both_short
+: 4.141592653589793
+
+#+name: hello_ruby_exports_both_long
+#+begin_src ruby :exports both
+hello = <<HELLO
+The following is a text
+that will contain at least 10 lines or more
+so that when C-c C-c is pressed
+and Emacs lisp
+evals what is inside of the block,
+enough lines would be created
+such that an example block 
+would appear underneath the
+block that was executed.
+This happens after 10 lines by default.
+HELLO
+#+end_src
+
+#+RESULTS: hello_ruby_exports_both_long
+#+begin_example
+The following is a text
+that will contain at least 10 lines or more
+so that when C-c C-c is pressed
+and Emacs lisp
+evals what is inside of the block,
+enough lines would be created
+such that an example block 
+would appear underneath the
+block that was executed.
+This happens after 10 lines by default.
+#+end_example
+
+** exports results
+
+#+name: hello_ruby_exports_results_short
+#+begin_src ruby :exports results
+Math::PI
+#+end_src
+
+#+RESULTS: hello_ruby_exports_results_short
+: 3.141592653589793
+
+#+name: hello_ruby_exports_results_long
+#+begin_src ruby :results output :exports results
+10.times { puts "any string" }
+#+end_src
+
+#+RESULTS: hello_ruby_exports_results_long
+#+begin_example
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+any string
+#+end_example
+

@@ -282,7 +282,7 @@ module Orgmode
       @assigned_paragraph_type == :title
     end
 
-    ResultsBlockStartsRegexp = /^\s*#\+RESULTS:\s*$/i
+    ResultsBlockStartsRegexp = /^\s*#\+RESULTS:\s*(\w+)?$/i
 
     def start_of_results_code_block?
       @line =~ ResultsBlockStartsRegexp
