@@ -59,6 +59,7 @@ Brief list of features supported:
 
 * Used at {github/markup}[https://github.com/github/markup] for rendering +.org+ files
 * The {Gollum}[https://github.com/gollum/gollum] project uses it too
+* {Gitlab}[https://www.gitlab.com/] includes it for rendering Org files with syntax highlighting
 * Can be used with Jekyll for building a site: {example here}[https://github.com/wallyqs/yet-another-jekyll-org-template]
 
 == License
