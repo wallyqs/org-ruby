@@ -294,9 +294,9 @@ module Orgmode
     end
 
     # Creates a new parser from the data in a given file
-    def self.load(fname)
+    def self.load(fname, opts = {})
       lines = IO.readlines(fname)
-      return self.new(lines)
+      return self.new(lines, opts = {})
     end
 
     # Saves the loaded orgmode file as a textile file.
@@ -314,8 +314,11 @@ module Orgmode
     # Exports the Org mode content into Markdown format
     def to_markdown
       mark_trees_for_export
+      export_options = {
+        :markup_file        => @parser_options[:markup_file]
+      }
       output = ""
-      output_buffer = MarkdownOutputBuffer.new(output)
+      output_buffer = MarkdownOutputBuffer.new(output, export_options)
 
       translate(@header_lines, output_buffer)
       @headlines.each do |headline|
@@ -342,7 +345,8 @@ module Orgmode
         :use_sub_superscripts  => use_sub_superscripts?,
         :export_footnotes      => export_footnotes?,
         :link_abbrevs          => @link_abbrevs,
-        :skip_syntax_highlight => @parser_options[:skip_syntax_highlight]
+        :skip_syntax_highlight => @parser_options[:skip_syntax_highlight],
+        :markup_file           => @parser_options[:markup_file]
       }
       export_options[:skip_tables] = true if not export_tables?
       output = ""

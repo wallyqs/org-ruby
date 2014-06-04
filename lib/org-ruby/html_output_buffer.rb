@@ -36,6 +36,7 @@ module Orgmode
       @footnotes = {}
       @unclosed_tags = []
       @logger.debug "HTML export options: #{@options.inspect}"
+      @custom_blocktags = {} if @options[:markup_file]
 
       unless @options[:skip_syntax_highlight]
         begin
@@ -48,6 +49,10 @@ module Orgmode
             # No code syntax highlighting
           end
         end
+      end
+
+      if @options[:markup_file]
+        do_custom_markup
       end
     end
 

@@ -304,5 +304,145 @@ EXAMPLE
       end
     end
   end
+
+  describe "Export to Markdown with incorrect custom markup test cases" do
+    # The following tests export Markdown to the default markup of org-ruby
+    # since the YAML file only contains the incorrect keys
+    data_directory = File.join(File.dirname(__FILE__), "markdown_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      default_html_name = File.join(data_directory, basename + "_default.md")
+      default_html_name = File.expand_path(default_html_name)
+      custom_markup_file = File.join(data_directory, "incorrect_markup_for_markdown.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to Markdown with the default markup" do
+        expected = IO.read(default_html_name)
+        expected.should be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_markdown
+        actual.should be_kind_of(String)
+        actual.should == expected
+      end
+    end
+  end
+
+  describe "Export to Markdown with missing custom markup file test cases" do
+    # The following tests export Markdown to the default markup of org-ruby
+    # since the YAML file only contains the incorrect keys
+    data_directory = File.join(File.dirname(__FILE__), "markdown_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      default_html_name = File.join(data_directory, basename + "_default.md")
+      default_html_name = File.expand_path(default_html_name)
+      custom_markup_file = File.join(data_directory, "this_file_does_not_exists.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to Markdown with the default markup" do
+        expected = IO.read(default_html_name)
+        expected.should be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_markdown
+        actual.should be_kind_of(String)
+        actual.should == expected
+      end
+    end
+  end
+
+  describe "Export to Markdown with custom markup test cases" do
+    data_directory = File.join(File.dirname(__FILE__), "markdown_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      markdown_name = File.join(data_directory, basename + ".md")
+      markdown_name = File.expand_path(markdown_name)
+      custom_markup_file = File.join(data_directory, "custom_markup_for_markdown.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to Markdown with custom markup" do
+        expected = IO.read(markdown_name)
+        expected.should be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), {:allow_include_files => false, :markup_file => custom_markup_file })
+        actual = parser.to_markdown
+        actual.should be_kind_of(String)
+        actual.should == expected
+      end
+    end
+  end
+
+  describe "Export to HTML with incorrect custom markup test cases" do
+    # The following tests export HTML to the default markup of org-ruby
+    # since the YAML file only contains the incorrect keys
+    data_directory = File.join(File.dirname(__FILE__), "html_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      default_html_name = File.join(data_directory, basename + "_default.html")
+      default_html_name = File.expand_path(default_html_name)
+      custom_markup_file = File.join(data_directory, "incorrect_markup_for_html.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to HTML with the default markup" do
+        expected = IO.read(default_html_name)
+        expected.should be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_html
+        actual.should be_kind_of(String)
+        actual.should == expected
+      end
+    end
+  end
+
+  describe "Export to HTML with missing custom markup file test cases" do
+    # The following tests export HTML to the default markup of org-ruby
+    # since the YAML file is missing.
+    data_directory = File.join(File.dirname(__FILE__), "html_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      default_html_name = File.join(data_directory, basename + "_default.html")
+      default_html_name = File.expand_path(default_html_name)
+      custom_markup_file = File.join(data_directory, "this_file_does_not_exists.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to HTML with the default markup" do
+        expected = IO.read(default_html_name)
+        expected.should be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_html
+        actual.should be_kind_of(String)
+        actual.should == expected
+      end
+    end
+  end
+
+  describe "Export to HTML with custom markup test cases" do
+    data_directory = File.join(File.dirname(__FILE__), "html_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      custom_html_name = File.join(data_directory, basename + ".html")
+      custom_html_name = File.expand_path(custom_html_name)
+      custom_markup_file = File.join(data_directory, "custom_markup_for_html.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to HTML with custom markup" do
+        expected = IO.read(custom_html_name)
+        expected.should be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_html
+        actual.should be_kind_of(String)
+        actual.should == expected
+      end
+    end
+  end
 end
 

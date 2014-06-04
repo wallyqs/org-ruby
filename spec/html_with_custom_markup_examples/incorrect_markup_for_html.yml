@@ -1,0 +1,12 @@
+---
+:Block:
+  :quotes: pre
+  :examples: blockquote
+  :sources: blockquote
+:HTMLTags:
+  "*":
+    :open: strong
+    :close: strong
+  "/":
+    :open: em
+    :close: em
