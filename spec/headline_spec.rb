@@ -3,12 +3,12 @@ require 'spec_helper'
 describe Orgmode::Headline do
 
   it "should recognize headlines that start with asterisks" do
-    Orgmode::Headline.headline?("*** test\n").should_not be_nil
+    expect(Orgmode::Headline.headline?("*** test\n")).to be_truthy
   end
 
   it "should reject headlines without headlines at the start" do
-    Orgmode::Headline.headline?("  nope!").should be_nil
-    Orgmode::Headline.headline?("  tricked you!!!***").should be_nil
+    expect(Orgmode::Headline.headline?("  nope!")).to be_nil
+    expect(Orgmode::Headline.headline?("  tricked you!!!***")).to be_nil
   end
 
   it "should reject improper initialization" do
@@ -38,7 +38,7 @@ describe Orgmode::Headline do
   it "should understand tags" do
     h = Orgmode::Headline.new "*** sample :tag:tag2:\n"
     h.headline_text.should eql("sample")
-    h.should have(2).tags
+    expect(h.tags.count).to eq(2)
     h.tags[0].should eql("tag")
     h.tags[1].should eql("tag2")
   end
@@ -46,7 +46,7 @@ describe Orgmode::Headline do
   it "should understand a single tag" do
     h = Orgmode::Headline.new "*** sample :tag:\n"
     h.headline_text.should eql("sample")
-    h.should have(1).tags
+    expect(h.tags.count).to eq(1)
     h.tags[0].should eql("tag")
   end
 

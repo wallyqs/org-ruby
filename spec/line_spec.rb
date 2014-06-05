@@ -6,13 +6,13 @@ describe Orgmode::Line do
     comments = ["# hello", "#hello" ]
     comments.each do |c|
       line = Orgmode::Line.new c
-      line.comment?.should be_true
+      expect(line.comment?).to be_truthy
     end
 
     not_comments = ["", "\n", "hello\n", "  foo ### bar\n"]
     not_comments.each do |c|
       line = Orgmode::Line.new c
-      line.comment?.should_not be_true
+      expect(line.comment?).to be_falsy
     end
   end
 
@@ -20,13 +20,13 @@ describe Orgmode::Line do
     blank = ["", " ", "\t", "\n", "  \t\t\n\n"]
     blank.each do |b|
       line = Orgmode::Line.new b
-      line.blank?.should be_true
+      expect(line.blank?).to be_truthy
     end
   end
 
   [": inline", " : inline", "\t\t:\tinline"].each do |inline_example|
     it "should recognize this inline example: #{inline_example}" do
-      Orgmode::Line.new(inline_example).inline_example?.should be_true
+      expect(Orgmode::Line.new(inline_example).inline_example?).to be_truthy
     end
   end
 
@@ -39,29 +39,29 @@ describe Orgmode::Line do
   list_formats.each do |list|
     it "should recognize this list format: '#{list}'" do
       line = Orgmode::Line.new list
-      line.plain_list?.should be_true
+      expect(line.plain_list?).to be_truthy
     end
   end
 
   ["-foo", "+foo", "1.foo", "2.foo"].each do |invalid_list|
     it "should not recognize this invalid list: '#{invalid_list}'" do
       line = Orgmode::Line.new invalid_list
-      line.plain_list?.should_not be_true
+      expect(line.plain_list?).to be_falsy
     end
   end
 
   it "should recognize horizontal rules" do
-    Orgmode::Line.new("-----").horizontal_rule?.should be_true
-    Orgmode::Line.new("----------").horizontal_rule?.should be_true
-    Orgmode::Line.new("   \t ----- \t\t\t").horizontal_rule?.should be_true
-    Orgmode::Line.new("----").horizontal_rule?.should_not be_true
+    expect(Orgmode::Line.new("-----").horizontal_rule?).to be_truthy
+    expect(Orgmode::Line.new("----------").horizontal_rule?).to be_truthy
+    expect(Orgmode::Line.new("   \t ----- \t\t\t").horizontal_rule?).to be_truthy
+    expect(Orgmode::Line.new("----").horizontal_rule?).to be_falsy
   end
 
   it "should recognize table rows" do
-    Orgmode::Line.new("| One   | Two   | Three |").table_row?.should be_true
-    Orgmode::Line.new("  |-------+-------+-------|\n").table_separator?.should be_true
-    Orgmode::Line.new("| Four  | Five  | Six   |").table_row?.should be_true
-    Orgmode::Line.new("| Seven | Eight | Nine  |").table_row?.should be_true
+   expect(Orgmode::Line.new("| One   | Two   | Three |").table_row?).to be_truthy
+   expect(Orgmode::Line.new("  |-------+-------+-------|\n").table_separator?).to be_truthy
+   expect(Orgmode::Line.new("| Four  | Five  | Six   |").table_row?).to be_truthy
+   expect(Orgmode::Line.new("| Seven | Eight | Nine  |").table_row?).to be_truthy
   end
 
   it "should recognize indentation" do
@@ -94,13 +94,13 @@ describe Orgmode::Line do
 
     begin_examples.each_key do |str|
       line = Orgmode::Line.new str
-      line.begin_block?.should be_true
+      expect(line.begin_block?).to be_truthy
       line.block_type.should eql(begin_examples[str])
     end
 
     end_examples.each_key do |str|
       line = Orgmode::Line.new str
-      line.end_block?.should be_true
+      expect(line.end_block?).to be_truthy
       line.block_type.should eql(end_examples[str])
     end
   end
@@ -159,14 +159,14 @@ describe Orgmode::Line do
     }
     cases.each_pair do |key, value|
       l = Orgmode::Line.new key
-      l.in_buffer_setting?.should be_true
+      expect(l.in_buffer_setting?).to be_truthy
       called = nil
       l.in_buffer_setting? do |k, v|
         k.should eql(value[:key])
         v.should eql(value[:value])
         called = true
       end
-      called.should be_true
+      expect(called).to be true
     end
   end
 
@@ -186,14 +186,14 @@ describe Orgmode::Line do
   end
 
   it "should recognize an included file" do
-    Orgmode::Line.new("#+INCLUDE: \"~/somefile.org\"").include_file?.should be_true
+    expect(Orgmode::Line.new("#+INCLUDE: \"~/somefile.org\"").include_file?).to be_truthy
   end
 
   it "should recognize an included file with specific lines" do
-    Orgmode::Line.new("#+INCLUDE: \"~/somefile.org\" :lines \"4-18\"").include_file?.should be_true
+    expect(Orgmode::Line.new("#+INCLUDE: \"~/somefile.org\" :lines \"4-18\"").include_file?).to be_truthy
   end
 
   it "should recognize an included code file" do
-    Orgmode::Line.new("#+INCLUDE: \"~/somefile.org\" src ruby").include_file?.should be_true
+    expect(Orgmode::Line.new("#+INCLUDE: \"~/somefile.org\" src ruby").include_file?).to be_truthy
   end
 end
