@@ -27,11 +27,24 @@ From Ruby:
      Orgmode::Parser.new("* Hello world!").to_markdown
      # => "# Hello world!\n" 
 
+     # Renders HTML with custom markup
+     Orgmode::Parser.new("* *今日学べ* /終始ー誠意/", {markup_file: "html.tags.yml" }).to_html
+     # => "<h1><strong>今日学べ</strong> <em>終始ー誠意</em></h1>\n"
+
+     # Renders Markdown with custom markup
+     Orgmode::Parser.new("* *今日学べ* /終始ー誠意/", {markup_file: "md.tags.yml"}).to_markdown
+     # => "# __今日学べ__ _終始ー誠意_\n"
+
+     # More information on how to use Custom Markup at the end of this file
+     
+
 The supported output exporters can be also called from the command line:
 
      org-ruby --translate html     sample.org
      org-ruby --translate textile  sample.org
      org-ruby --translate markdown sample.org
+     org-ruby --markup html.tags.yml   sample.org
+     org-ruby --markup md.tags.yml --translate markdown sample.org
 
 == Current status
 
@@ -49,6 +62,102 @@ Brief list of features supported:
 * Supports footnotes
 * Supports +.org+ views in Rails through Tilt.
 * Code syntax highlight of code blocks using Pygments.rb or Coderay when available
+
+== Custom Markup
+
+Org-ruby supports custom markups for HTML and Markdown. The custom
+markup needs to be in the form of a YAML file with the following keys
+and values:
+
+=== HTML Blocktags:
+
+     ---
+     :HtmlBlockTag:
+       :paragraph: p
+       :ordered_list: ol
+       :unordered_list: ul
+       :list_item: li
+       :definition_list: dl
+       :definition_term: dt
+       :definition_descr: dd
+       :table: table
+       :table_row: tr
+       :quote: blockquote
+       :example: pre
+       :src: pre
+       :inline_example: pre
+       :center: div
+       :heading1: h1
+       :heading2: h2
+       :heading3: h3
+       :heading4: h4
+       :heading5: h5
+       :heading6: h6
+       :title: h1
+
+For example, you only want to change the blockquote HTML tag to be
+translated, your YAML file would look like this:
+     
+     ---
+     :HtmlBlockTag:
+       :quote: pre
+
+This will change the HTML markup to be translated in the blockquote
+element.
+
+=== HTML Emphasis:
+     
+     ---
+     :Tags:
+       "*":
+         :open: b
+         :close: b
+       "/": 
+         :open: i
+         :close: i 
+       "_":  
+         :open: span style=\"text-decoration:underline;\"
+         :close: span
+       "=":   
+         :open: code
+         :close: code
+       "~":   
+         :open: code
+         :close:  code
+       "+":
+         :open: del
+         :close: del 
+
+Let's say that you prefer <strong> over <b> in the Bold emphasis
+element of Org-mode, your YAML file should look like this:
+
+     ---
+     :Tags:
+       "*":
+         :open: strong
+         :close: strong
+       "/":
+         :open: em
+         :close: em
+
+=== Markdown:
+    
+     ---
+     :MarkdownMap:
+       "*": "**"
+       "/": "*"
+       "_": "*"
+       "=": "`"
+       "~": "`"
+       "+": "~~"
+
+Let's say that you prefer underscores for Bold and Italics elements in
+Markdown, your YAML file should look like this:
+
+     ---
+     :MarkdownMap:
+       "*": "__"
+       "/": "_"
 
 == Contributing
 
