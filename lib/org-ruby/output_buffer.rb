@@ -161,7 +161,7 @@ module Orgmode
     end
 
     def no_valid_markup_found
-      self.class == 'MarkdownOutputBuffer' ? tags = 'MarkdownMap' : tags = 'HtmlBlockTag or Tags'
+      self.class.to_s == 'Orgmode::MarkdownOutputBuffer' ? tags = 'MarkdownMap' : tags = 'HtmlBlockTag or Tags'
       @logger.debug "Setting Custom Markup failed. No #{tags} key where found in: #{@options[:markup_file]}."
       @logger.debug "Continuing export with default markup."
     end
