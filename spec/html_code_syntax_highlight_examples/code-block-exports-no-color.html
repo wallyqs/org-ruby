@@ -4,17 +4,19 @@
 <h1>About the <code>#+RESULTS:</code> block</h1>
 <p>Using Org Babel features, it is possible to set <code>:results output</code>
   to a code block and render the results within a <code>#+RESULTS:</code> code block:</p>
-<div class="highlight"><pre>#+begin_src ruby :results output :exports both
+<pre class="src" lang="org">
+#+begin_src ruby :results output :exports both
 puts &quot;Hello world&quot;
 #+end_src
 
 #+RESULTS:
 : Hello world
-</pre></div>
+</pre>
 <p>One thing about the <code>#+RESULTS:</code> code blocks, is that they exist in several forms:</p>
 <ol>
   <li>As an accumulated group of inline examples:
-<div class="highlight"><pre>#+begin_src python :results output :exports both
+    <pre class="src" lang="org">
+#+begin_src python :results output :exports both
 print &quot;like&quot;
 print &quot;this&quot;
 print &quot;etc...&quot;
@@ -24,10 +26,11 @@ print &quot;etc...&quot;
 : like
 : this
 : etc...
-</pre></div>
+    </pre>
   </li>
   <li>As an example code block.
-<div class="highlight"><pre>#+begin_src ruby :results output :exports both
+    <pre class="src" lang="org">
+#+begin_src ruby :results output :exports both
 10.times {|n| puts n }
 #+end_src
 
@@ -44,11 +47,12 @@ print &quot;etc...&quot;
 8
 9
 #+end_example
-</pre></div>
+    </pre>
   </li>
   <li>Also, in case <code>:results output code</code> is used, the results would
     be a src block of the same language as the original one.
-<div class="highlight"><pre>#+begin_src ruby :results output code
+    <pre class="src" lang="org">
+#+begin_src ruby :results output code
 counter = 0
 10.times { puts &quot;puts &#39;#{counter += 1}&#39;&quot; } # Displayed in first code block
 puts counter # Displayed in second code block
@@ -71,35 +75,39 @@ puts &#39;10&#39;
 
 #+RESULTS:
 : 10
-</pre></div>
+    </pre>
   </li>
 </ol>
 <h1>Default options</h1>
 <p>The default is to export only the code blocks.</p>
 <p>The following is an code block written in Emacs Lisp
   and its result should not be exported.</p>
-<div class="highlight"><pre><span class="p">(</span><span class="nf">message</span> <span class="s">&quot;hello world&quot;</span><span class="p">)</span>
-</pre></div>
+<pre class="src" lang="emacs-lisp">
+(message &quot;hello world&quot;)
+</pre>
 <p>The following is a code block written in Python
   and its result should not be exported.</p>
-<div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">12</span><span class="p">):</span>
-  <span class="k">print</span> <span class="s">&quot;import this&quot;</span>
-</pre></div>
+<pre class="src" lang="python">
+for i in range(0,12):
+  print &quot;import this&quot;
+</pre>
 <p>
 </p>
 <h1>:exports code</h1>
 <p>Only the code would be in the output,
   the same as when no option is set.</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
+<pre class="src" lang="js">
+var message = &quot;Hello world!&quot;;
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
-</pre></div>
+console.log(message);
+</pre>
 <p>And as block example too:</p>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
-<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
+<pre class="src" lang="js">
+var message = &quot;Hello world!&quot;;
+for (var i = 0; i&lt; 10; i++) {
+  console.log(message);
+}
+</pre>
 <p>
 </p>
 <h1>:exports none</h1>
@@ -109,25 +117,27 @@ puts &#39;10&#39;
 <p>
 </p>
 <h1>:exports both</h1>
-<div class="highlight"><pre><span class="no">Math</span><span class="o">::</span><span class="no">PI</span> <span class="o">+</span> <span class="mi">1</span>
-</pre></div>
+<pre class="src" lang="ruby">
+Math::PI + 1
+</pre>
 <pre class="example">
 4.14159265358979
 </pre>
 <p>Should behave the same when within a block example.</p>
-<div class="highlight"><pre><span class="n">hello</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="no">HELLO</span>
-<span class="sh">The following is a text</span>
-<span class="sh">that will contain at least 10 lines or more</span>
-<span class="sh">so that when C-c C-c is pressed</span>
-<span class="sh">and Emacs lisp</span>
-<span class="sh">evals what is inside of the block,</span>
-<span class="sh">enough lines would be created</span>
-<span class="sh">such that an example block </span>
-<span class="sh">would appear underneath the</span>
-<span class="sh">block that was executed.</span>
-<span class="sh">This happens after 10 lines by default.</span>
-<span class="no">HELLO</span>
-</pre></div>
+<pre class="src" lang="ruby">
+hello = &lt;&lt;HELLO
+The following is a text
+that will contain at least 10 lines or more
+so that when C-c C-c is pressed
+and Emacs lisp
+evals what is inside of the block,
+enough lines would be created
+such that an example block 
+would appear underneath the
+block that was executed.
+This happens after 10 lines by default.
+HELLO
+</pre>
 <pre class="example">
 The following is a text
 that will contain at least 10 lines or more
@@ -173,18 +183,20 @@ any string
 <ul>
   <li>Exports none</li>
   <li>Exports code
-<div class="highlight"><pre>digraph workflow {
+    <pre class="src" lang="dot">
+digraph workflow {
   a -&gt; c;
   b -&gt; c;
 }
-</pre></div>
+    </pre>
   </li>
   <li>Exports both
-<div class="highlight"><pre>digraph workflow {
+    <pre class="src" lang="dot">
+digraph workflow {
   a -&gt; c;
   b -&gt; c;
 }
-</pre></div>
+    </pre>
     <p><img src="workflow.png" alt="workflow.png" /></p>
   </li>
   <li>Exports results
@@ -193,39 +205,43 @@ any string
 </ul>
 <h1>When blocks have a name, the results should be the same</h1>
 <h2>exports code</h2>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
+<pre class="src" lang="js">
+var message = &quot;Hello world!&quot;;
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
-</pre></div>
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
-<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
-<span class="p">}</span>
-</pre></div>
+console.log(message);
+</pre>
+<pre class="src" lang="js">
+var message = &quot;Hello world!&quot;;
+for (var i = 0; i&lt; 10; i++) {
+  console.log(message);
+}
+</pre>
 <p>
 </p>
 <h2>exports none</h2>
 <p>
 </p>
 <h2>exports both</h2>
-<div class="highlight"><pre><span class="no">Math</span><span class="o">::</span><span class="no">PI</span> <span class="o">+</span> <span class="mi">1</span>
-</pre></div>
+<pre class="src" lang="ruby">
+Math::PI + 1
+</pre>
 <pre class="example">
 4.141592653589793
 </pre>
-<div class="highlight"><pre><span class="n">hello</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="no">HELLO</span>
-<span class="sh">The following is a text</span>
-<span class="sh">that will contain at least 10 lines or more</span>
-<span class="sh">so that when C-c C-c is pressed</span>
-<span class="sh">and Emacs lisp</span>
-<span class="sh">evals what is inside of the block,</span>
-<span class="sh">enough lines would be created</span>
-<span class="sh">such that an example block </span>
-<span class="sh">would appear underneath the</span>
-<span class="sh">block that was executed.</span>
-<span class="sh">This happens after 10 lines by default.</span>
-<span class="no">HELLO</span>
-</pre></div>
+<pre class="src" lang="ruby">
+hello = &lt;&lt;HELLO
+The following is a text
+that will contain at least 10 lines or more
+so that when C-c C-c is pressed
+and Emacs lisp
+evals what is inside of the block,
+enough lines would be created
+such that an example block 
+would appear underneath the
+block that was executed.
+This happens after 10 lines by default.
+HELLO
+</pre>
 <pre class="example">
 The following is a text
 that will contain at least 10 lines or more
