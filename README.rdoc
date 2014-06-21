@@ -28,15 +28,14 @@ From Ruby:
      # => "# Hello world!\n" 
 
      # Renders HTML with custom markup
-     Orgmode::Parser.new("* *今日学べ* /終始ー誠意/", {markup_file: "html.tags.yml" }).to_html
-     # => "<h1><strong>今日学べ</strong> <em>終始ー誠意</em></h1>\n"
+     Orgmode::Parser.new("* *Custom* /Markup/", {markup_file: "html.tags.yml" }).to_html
+     # => "<h1><strong>Custom</strong> <em>Markup</em></h1>\n"
 
      # Renders Markdown with custom markup
-     Orgmode::Parser.new("* *今日学べ* /終始ー誠意/", {markup_file: "md.tags.yml"}).to_markdown
-     # => "# __今日学べ__ _終始ー誠意_\n"
+     Orgmode::Parser.new("* *Custom* /Markup/", {markup_file: "md.tags.yml"}).to_markdown
+     # => "# __Custom__ _Markup_\n"
 
      # More information on how to use Custom Markup at the end of this file
-     
 
 The supported output exporters can be also called from the command line:
 
