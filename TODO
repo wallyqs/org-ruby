@@ -3,7 +3,22 @@
 #+startup:      showeverything
 #+options:      todo:t
 
-* TODO Update reproducible benchmark
+* Current version in use at Github
+
+Currently using: 0.9.1 
+Version would be bumped to: 0.9.7
+
+** Changelog for Github
+
+ - Fix Org mode syntax for escaping html: Syntax actually now is =@@html:<text>@@=
+ - Fix '#=TITLE:' to render as a h1 headline
+   https://github.com/github/markup/issues/309
+ - Remove rewriting links to '.org' files as '.html'
+   https://github.com/github/markup/issues/100   
+ - Implement :exports options for code blocks
+ - Fix code blocks prepended comma stripping
+ - Bugfix: Recognize =#+RESULTS: block from named blocks=
+
 * 0.10.X
 
 Purpose of this series of releases is latest features
@@ -15,9 +30,6 @@ for support in other tools and catchup with Org mode 0.8.0 features.
 
 - [ ] Support =#+MACRO=
 
-- [ ] Cross references
-  https://github.com/wallyqs/org-ruby/issues/11
-
 - [ ] Use docopt
 
 - [ ] Adopt OrgSpec instead of Rake tasks for when adding a new feature
@@ -26,20 +38,24 @@ for support in other tools and catchup with Org mode 0.8.0 features.
 
 Purpose of these series of releases is stable support for Github adoption.
 
-** [0/1] 0.9.8
+** [0/4] 0.9.8
 
 - [ ] Read only task lists
   https://github.com/wallyqs/org-ruby/issues/15
 
-** [1/5]  0.9.7
+- [ ] Table of contents support
+  https://github.com/wallyqs/org-ruby/issues/17
+
+- [ ] Improve the footnotes support
+  https://github.com/wallyqs/org-ruby/issues/2
+
+- [ ] Support cross references
+  https://github.com/wallyqs/org-ruby/issues/11
+
+** [2/2]  0.9.7
 
 - [X] Allow custom markup overwrite
   https://github.com/wallyqs/org-ruby/pull/16
 
-- [ ] Table of contents support
-  https://github.com/wallyqs/org-ruby/issues/17
+- [X] Fix issue recognizing =#+RESULTS= block
 
-- [ ] Fix issue recognizing =#+RESULTS= block
-
-- [ ] Improve the footnotes support
-  https://github.com/wallyqs/org-ruby/issues/2

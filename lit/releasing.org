@@ -5,7 +5,7 @@ Bump the current version:
 
 #+BEGIN_SRC ruby :tangle lib/org-ruby/version.rb
 module OrgRuby
-  VERSION = '0.9.6'
+  VERSION = '0.9.7'
 end
 #+END_SRC
 
