@@ -1,3 +1,0 @@
-source :rubygems
-
-gem 'org-ruby', '0.6.3'

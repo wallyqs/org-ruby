@@ -1,4 +1,0 @@
-source :rubygems
-
-# Bench with the current version in development
-gem 'org-ruby', :path => '..'
