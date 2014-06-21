@@ -5,22 +5,22 @@ describe Orgmode::RegexpHelper do
     e = Orgmode::RegexpHelper.new
     total = 0
     e.match_all("/italic/") do |border, string|
-      border.should eql("/")
-      string.should eql("italic")
+      expect(border).to eql("/")
+      expect(string).to eql("italic")
       total += 1
     end
-    total.should eql(1)
+    expect(total).to eql(1)
 
     total = 0
     borders = %w[* / ~]
     strings = %w[bold italic verbatim]
     e.match_all("This string contains *bold*, /italic/, and ~verbatim~ text.")\
     do |border, str|
-      border.should eql(borders[total])
-      str.should eql(strings[total])
+      expect(border).to eql(borders[total])
+      expect(str).to eql(strings[total])
       total += 1
     end
-    total.should eql(3)
+    expect(total).to eql(3)
   end
 
   it "should not get confused by links" do
@@ -30,7 +30,7 @@ describe Orgmode::RegexpHelper do
     e.match_all("[[http://www.bing.com/twitter]]") do |border, str|
       total += 1
     end
-    total.should eql(0)
+    expect(total).to eql(0)
   end
 
   it "should correctly perform substitutions" do
@@ -45,7 +45,7 @@ describe Orgmode::RegexpHelper do
     end
     n = e.restore_code_snippets n
 
-    n.should eql("This string contains <strong>bold</strong>, <i>italic</i>, and <code>verbatim</code> text.")
+    expect(n).to eql("This string contains <strong>bold</strong>, <i>italic</i>, and <code>verbatim</code> text.")
   end
 
   it "should allow link rewriting" do
@@ -54,10 +54,10 @@ describe Orgmode::RegexpHelper do
       text ||= link
       "\"#{text}\":#{link}"
     end
-    str.should eql("\"http://www.bing.com\":http://www.bing.com")
+    expect(str).to eql("\"http://www.bing.com\":http://www.bing.com")
     str = e.rewrite_links("<http://www.google.com>") do |link|
       "\"#{link}\":#{link}"
     end
-    str.should eql("\"http://www.google.com\":http://www.google.com")
+    expect(str).to eql("\"http://www.google.com\":http://www.google.com")
   end
 end                             # describe Orgmode::RegexpHelper

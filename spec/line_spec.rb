@@ -65,18 +65,18 @@ describe Orgmode::Line do
   end
 
   it "should recognize indentation" do
-    Orgmode::Line.new("").indent.should eql(0)
-    Orgmode::Line.new(" a").indent.should eql(1)
-    Orgmode::Line.new("   ").indent.should eql(0)
-    Orgmode::Line.new("   \n").indent.should eql(0)
-    Orgmode::Line.new("   a").indent.should eql(3)
+    expect(Orgmode::Line.new("").indent).to eql(0)
+    expect(Orgmode::Line.new(" a").indent).to eql(1)
+    expect(Orgmode::Line.new("   ").indent).to eql(0)
+    expect(Orgmode::Line.new("   \n").indent).to eql(0)
+    expect(Orgmode::Line.new("   a").indent).to eql(3)
   end
 
   it "should return paragraph type" do
-    Orgmode::Line.new("").paragraph_type.should eql(:blank)
-    Orgmode::Line.new("1. foo").paragraph_type.should eql(:list_item)
-    Orgmode::Line.new("- [ ] checkbox").paragraph_type.should eql(:list_item)
-    Orgmode::Line.new("hello!").paragraph_type.should eql(:paragraph)
+    expect(Orgmode::Line.new("").paragraph_type).to eql(:blank)
+    expect(Orgmode::Line.new("1. foo").paragraph_type).to eql(:list_item)
+    expect(Orgmode::Line.new("- [ ] checkbox").paragraph_type).to eql(:list_item)
+    expect(Orgmode::Line.new("hello!").paragraph_type).to eql(:paragraph)
   end
 
   it "should recognize BEGIN and END comments" do
@@ -95,13 +95,13 @@ describe Orgmode::Line do
     begin_examples.each_key do |str|
       line = Orgmode::Line.new str
       expect(line.begin_block?).to be_truthy
-      line.block_type.should eql(begin_examples[str])
+      expect(line.block_type).to eql(begin_examples[str])
     end
 
     end_examples.each_key do |str|
       line = Orgmode::Line.new str
       expect(line.end_block?).to be_truthy
-      line.block_type.should eql(end_examples[str])
+      expect(line.block_type).to eql(end_examples[str])
     end
   end
 
@@ -127,7 +127,7 @@ describe Orgmode::Line do
     cases.each_pair do |example, expected|
       it "should recognize #{example}" do 
         line = Orgmode::Line.new example
-        line.block_header_arguments.should == expected
+        expect(line.block_header_arguments).to eq(expected)
       end
     end
   end
@@ -145,7 +145,7 @@ describe Orgmode::Line do
     cases.each_pair do |example, expected|
       it "should accept '#{example}' with assigned type #{expected}" do 
         line = Orgmode::Line.new(example, nil, expected)
-        line.assigned_paragraph_type.should == expected
+        expect(line.assigned_paragraph_type).to eq(expected)
       end
     end
   end
@@ -162,8 +162,8 @@ describe Orgmode::Line do
       expect(l.in_buffer_setting?).to be_truthy
       called = nil
       l.in_buffer_setting? do |k, v|
-        k.should eql(value[:key])
-        v.should eql(value[:value])
+        expect(k).to eql(value[:key])
+        expect(v).to eql(value[:value])
         called = true
       end
       expect(called).to be true
@@ -181,7 +181,7 @@ describe Orgmode::Line do
 
     cases.each do |c|
       l = Orgmode::Line.new c
-      l.in_buffer_setting?.should be_nil
+      expect(l.in_buffer_setting?).to be_nil
     end
   end
 

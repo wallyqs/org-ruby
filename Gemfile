@@ -4,7 +4,7 @@ gemspec
 
 group :development, :test do
   gem 'rake'
-  gem 'rspec'
+  gem 'rspec', '>= 3'
   gem 'tilt'
 end
 
