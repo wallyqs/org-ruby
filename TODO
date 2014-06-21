@@ -1,0 +1,45 @@
+# -*- mode: org; mode: auto-fill; -*-
+#+todo:         TODO | DONE CANCELED
+#+startup:      showeverything
+#+options:      todo:t
+
+* TODO Update reproducible benchmark
+* 0.10.X
+
+Purpose of this series of releases is latest features
+for support in other tools and catchup with Org mode 0.8.0 features.
+
+** [0/4] 0.10.0
+
+- [ ] Support =#+SETUPFILE=
+
+- [ ] Support =#+MACRO=
+
+- [ ] Cross references
+  https://github.com/wallyqs/org-ruby/issues/11
+
+- [ ] Use docopt
+
+- [ ] Adopt OrgSpec instead of Rake tasks for when adding a new feature
+
+* 0.9.X
+
+Purpose of these series of releases is stable support for Github adoption.
+
+** [0/1] 0.9.8
+
+- [ ] Read only task lists
+  https://github.com/wallyqs/org-ruby/issues/15
+
+** [1/5]  0.9.7
+
+- [X] Allow custom markup overwrite
+  https://github.com/wallyqs/org-ruby/pull/16
+
+- [ ] Table of contents support
+  https://github.com/wallyqs/org-ruby/issues/17
+
+- [ ] Fix issue recognizing =#+RESULTS= block
+
+- [ ] Improve the footnotes support
+  https://github.com/wallyqs/org-ruby/issues/2
