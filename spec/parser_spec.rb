@@ -6,83 +6,83 @@ describe Orgmode::Parser do
   end
 
   it "should fail on non-existant files" do
-    lambda { parser = Orgmode::Parser.load("does-not-exist.org") }.should raise_error
+    expect { parser = Orgmode::Parser.load("does-not-exist.org") }.to raise_error
   end
 
   it "should load all of the lines" do
     parser = Orgmode::Parser.load(RememberFile)
-    parser.lines.length.should eql(53)
+    expect(parser.lines.length).to eql(53)
   end
 
   it "should find all headlines" do
     parser = Orgmode::Parser.load(RememberFile)
-    parser.should have(12).headlines
+    expect(parser.headlines.count).to eq(12)
   end
 
   it "can find a headline by index" do
     parser = Orgmode::Parser.load(RememberFile)
     line = parser.headlines[1].to_s
-    line.should eql("** YAML header in Webby\n")
+    expect(line).to eql("** YAML header in Webby\n")
   end
 
   it "should determine headline levels" do
     parser = Orgmode::Parser.load(RememberFile)
-    parser.headlines[0].level.should eql(1)
-    parser.headlines[1].level.should eql(2)
+    expect(parser.headlines[0].level).to eql(1)
+    expect(parser.headlines[1].level).to eql(2)
   end
 
   it "should include the property drawer items from a headline" do
     parser = Orgmode::Parser.load(FreeformExampleFile)
-    parser.headlines.first.property_drawer.count.should == 2
-    parser.headlines.first.property_drawer['DATE'].should == '2009-11-26'
-    parser.headlines.first.property_drawer['SLUG'].should == 'future-ideas'
+    expect(parser.headlines.first.property_drawer.count).to eq(2)
+    expect(parser.headlines.first.property_drawer['DATE']).to eq('2009-11-26')
+    expect(parser.headlines.first.property_drawer['SLUG']).to eq('future-ideas')
   end
 
   it "should put body lines in headlines" do
     parser = Orgmode::Parser.load(RememberFile)
-    parser.headlines[0].should have(1).body_lines
-    parser.headlines[1].should have(7).body_lines
+    expect(parser.headlines[0].body_lines.count).to eq(1)
+    expect(parser.headlines[1].body_lines.count).to eq(7)
   end
 
   it "should understand lines before the first headline" do
     parser = Orgmode::Parser.load(FreeformFile)
-    parser.should have(19).header_lines
+    expect(parser.header_lines.count).to eq(19)
   end
 
   it "should load in-buffer settings" do
     parser = Orgmode::Parser.load(FreeformFile)
-    parser.should have(12).in_buffer_settings
-    parser.in_buffer_settings["TITLE"].should eql("Freeform")
-    parser.in_buffer_settings["EMAIL"].should eql("bdewey@gmail.com")
-    parser.in_buffer_settings["LANGUAGE"].should eql("en")
+    expect(parser.in_buffer_settings.count).to eq(12)
+    expect(parser.in_buffer_settings["TITLE"]).to eql("Freeform")
+    expect(parser.in_buffer_settings["EMAIL"]).to eql("bdewey@gmail.com")
+    expect(parser.in_buffer_settings["LANGUAGE"]).to eql("en")
   end
 
   it "should understand OPTIONS" do
     parser = Orgmode::Parser.load(FreeformFile)
-    parser.should have(19).options
-    parser.options["TeX"].should eql("t")
-    parser.options["todo"].should eql("t")
-    parser.options["\\n"].should eql("nil")
-    parser.export_todo?.should be_true
+    expect(parser.options.count).to eq(19)
+    expect(parser.options["TeX"]).to eql("t")
+    expect(parser.options["todo"]).to eql("t")
+    expect(parser.options["\\n"]).to eql("nil")
+    expect(parser.export_todo?).to be true
     parser.options.delete("todo")
-    parser.export_todo?.should be_false
+    expect(parser.export_todo?).to be false
   end
 
   it "should skip in-buffer settings inside EXAMPLE blocks" do
     parser = Orgmode::Parser.load(FreeformExampleFile)
-    parser.should have(0).in_buffer_settings
+    expect(parser.in_buffer_settings.count).to eq(0)
   end
 
   it "should return a textile string" do
     parser = Orgmode::Parser.load(FreeformFile)
-    parser.to_textile.should be_kind_of(String)
+    expect(parser.to_textile).to be_kind_of(String)
   end
 
   it "should understand export table option" do
     fname = File.join(File.dirname(__FILE__), %w[html_examples skip-table.org])
     data = IO.read(fname)
     p = Orgmode::Parser.new(data)
-    p.export_tables?.should be_false
+    expect(p.export_tables?).to be false
   end
 
   it "should add code block name as a line property" do
@@ -97,7 +97,7 @@ EXAMPLE
     o = Orgmode::Parser.new(example)
     h = o.headlines.first
     line = h.body_lines.find { |l| l.to_s == "#+begin_src sh :results output"}
-    line.properties['block_name'].should == 'hello_world'
+    expect(line.properties['block_name']).to eq('hello_world')
   end
 
   context "with a table that begins with a separator line" do
@@ -105,7 +105,7 @@ EXAMPLE
     let(:data) { Pathname.new(File.dirname(__FILE__)).join('data', 'tables.org').read }
 
     it "should parse without errors" do
-      parser.headlines.size.should == 2
+      expect(parser.headlines.size).to eq(2)
     end
   end
 
@@ -116,16 +116,16 @@ EXAMPLE
     invalid_keywords = %w[TODOX todo inprogress Waiting done cANCELED NEXT |]
     valid_keywords.each do |kw|
       it "should match custom keyword #{kw}" do
-        (kw =~ p.custom_keyword_regexp).should be_true
+        expect(kw =~ p.custom_keyword_regexp).to be_truthy
       end
     end
     invalid_keywords.each do |kw|
       it "should not match custom keyword #{kw}" do
-        (kw =~ p.custom_keyword_regexp).should be_nil
+        expect((kw =~ p.custom_keyword_regexp)).to be_nil
       end
     end
     it "should not match blank as a custom keyword" do
-      ("" =~ p.custom_keyword_regexp).should be_nil
+      expect(("" =~ p.custom_keyword_regexp)).to be_nil
     end
   end
 
@@ -133,8 +133,8 @@ EXAMPLE
     fname = File.join(File.dirname(__FILE__), %w[html_examples export-tags.org])
     p = Orgmode::Parser.load(fname)
     it "should load tags" do
-      p.should have(2).export_exclude_tags
-      p.should have(1).export_select_tags
+      expect(p.export_exclude_tags.count).to eq(2)
+      expect(p.export_select_tags.count).to eq(1)
     end
   end
 
@@ -149,11 +149,11 @@ EXAMPLE
 
       it "should convert #{basename}.org to Textile" do
         expected = IO.read(textile_name)
-        expected.should be_kind_of(String)
+        expect(expected).to be_kind_of(String)
         parser = Orgmode::Parser.new(IO.read(file))
         actual = parser.to_textile
-        actual.should be_kind_of(String)
-        actual.should == expected
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
       end
     end
   end
@@ -171,18 +171,18 @@ EXAMPLE
 
       it "should convert #{basename}.org to HTML" do
         expected = IO.read(textile_name)
-        expected.should be_kind_of(String)
+        expect(expected).to be_kind_of(String)
         parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true })
         actual = parser.to_html
-        actual.should be_kind_of(String)
-        actual.should == expected
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
       end
 
       it "should render #{basename}.org to HTML using Tilt templates" do
         ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = 'true'
         expected = IO.read(textile_name)
         template = Tilt.new(file).render
-        template.should == expected
+        expect(template).to eq(expected)
         ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = ''
       end
     end
@@ -193,7 +193,7 @@ EXAMPLE
       org_file = File.join(data_directory, "include-file.org")
       parser = Orgmode::Parser.new(IO.read(org_file), :allow_include_files => false)
       actual = parser.to_html
-      actual.should == expected
+      expect(actual).to eq(expected)
     end
 
     it "should render #+INCLUDE when ORG_RUBY_INCLUDE_ROOT is set" do
@@ -203,7 +203,7 @@ EXAMPLE
       org_file = File.join(data_directory, "include-file.org")
       parser = Orgmode::Parser.new(IO.read(org_file))
       actual = parser.to_html
-      actual.should == expected
+      expect(actual).to eq(expected)
       ENV['ORG_RUBY_INCLUDE_ROOT'] = nil
     end
   end
@@ -222,14 +222,14 @@ EXAMPLE
 
       it "should convert #{basename}.org to HTML" do
         expected = IO.read(org_filename)
-        expected.should be_kind_of(String)
+        expect(expected).to be_kind_of(String)
         parser = Orgmode::Parser.new(IO.read(file), {
                                        :allow_include_files   => true,
                                        :skip_syntax_highlight => true
                                      })
         actual = parser.to_html
-        actual.should be_kind_of(String)
-        actual.should == expected
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
       end
 
       it "should render #{basename}.org to HTML using Tilt templates",
@@ -237,7 +237,7 @@ EXAMPLE
         ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = 'true'
         expected = IO.read(org_filename)
         template = Tilt.new(file).render
-        template.should == expected
+        expect(template).to eq(expected)
         ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = ''
       end
     end
@@ -266,18 +266,18 @@ EXAMPLE
 
           it "should convert #{basename}.org to HTML" do
             expected = IO.read(org_filename)
-            expected.should be_kind_of(String)
+            expect(expected).to be_kind_of(String)
             parser = Orgmode::Parser.new(IO.read(file), :allow_include_files => true)
             actual = parser.to_html
-            actual.should be_kind_of(String)
-            actual.should == expected
+            expect(actual).to be_kind_of(String)
+            expect(actual).to eq(expected)
           end
 
           it "should render #{basename}.org to HTML using Tilt templates" do
             ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = 'true'
             expected = IO.read(org_filename)
             template = Tilt.new(file).render
-            template.should == expected
+            expect(template).to eq(expected)
             ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] = ''
           end
         end
@@ -296,11 +296,151 @@ EXAMPLE
 
       it "should convert #{basename}.org to Markdown" do
         expected = IO.read(markdown_name)
-        expected.should be_kind_of(String)
+        expect(expected).to be_kind_of(String)
         parser = Orgmode::Parser.new(IO.read(file), :allow_include_files => false)
         actual = parser.to_markdown
-        actual.should be_kind_of(String)
-        actual.should == expected
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
+      end
+    end
+  end
+
+  describe "Export to Markdown with incorrect custom markup test cases" do
+    # The following tests export Markdown to the default markup of org-ruby
+    # since the YAML file only contains the incorrect keys
+    data_directory = File.join(File.dirname(__FILE__), "markdown_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      default_html_name = File.join(data_directory, basename + "_default.md")
+      default_html_name = File.expand_path(default_html_name)
+      custom_markup_file = File.join(data_directory, "incorrect_markup_for_markdown.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to Markdown with the default markup" do
+        expected = IO.read(default_html_name)
+        expect(expected).to be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_markdown
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
+      end
+    end
+  end
+
+  describe "Export to Markdown with missing custom markup file test cases" do
+    # The following tests export Markdown to the default markup of org-ruby
+    # since the YAML file only contains the incorrect keys
+    data_directory = File.join(File.dirname(__FILE__), "markdown_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      default_html_name = File.join(data_directory, basename + "_default.md")
+      default_html_name = File.expand_path(default_html_name)
+      custom_markup_file = File.join(data_directory, "this_file_does_not_exists.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to Markdown with the default markup" do
+        expected = IO.read(default_html_name)
+        expect(expected).to be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_markdown
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
+      end
+    end
+  end
+
+  describe "Export to Markdown with custom markup test cases" do
+    data_directory = File.join(File.dirname(__FILE__), "markdown_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      markdown_name = File.join(data_directory, basename + ".md")
+      markdown_name = File.expand_path(markdown_name)
+      custom_markup_file = File.join(data_directory, "custom_markup_for_markdown.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to Markdown with custom markup" do
+        expected = IO.read(markdown_name)
+        expect(expected).to be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), {:allow_include_files => false, :markup_file => custom_markup_file })
+        actual = parser.to_markdown
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
+      end
+    end
+  end
+
+  describe "Export to HTML with incorrect custom markup test cases" do
+    # The following tests export HTML to the default markup of org-ruby
+    # since the YAML file only contains the incorrect keys
+    data_directory = File.join(File.dirname(__FILE__), "html_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      default_html_name = File.join(data_directory, basename + "_default.html")
+      default_html_name = File.expand_path(default_html_name)
+      custom_markup_file = File.join(data_directory, "incorrect_markup_for_html.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to HTML with the default markup" do
+        expected = IO.read(default_html_name)
+        expect(expected).to be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_html
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
+      end
+    end
+  end
+
+  describe "Export to HTML with missing custom markup file test cases" do
+    # The following tests export HTML to the default markup of org-ruby
+    # since the YAML file is missing.
+    data_directory = File.join(File.dirname(__FILE__), "html_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      default_html_name = File.join(data_directory, basename + "_default.html")
+      default_html_name = File.expand_path(default_html_name)
+      custom_markup_file = File.join(data_directory, "this_file_does_not_exists.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to HTML with the default markup" do
+        expected = IO.read(default_html_name)
+        expect(expected).to be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_html
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
+      end
+    end
+  end
+
+  describe "Export to HTML with custom markup test cases" do
+    data_directory = File.join(File.dirname(__FILE__), "html_with_custom_markup_examples")
+    org_files = File.expand_path(File.join(data_directory, "*.org" ))
+    files = Dir.glob(org_files)
+    files.each do |file|
+      basename = File.basename(file, ".org")
+      custom_html_name = File.join(data_directory, basename + ".html")
+      custom_html_name = File.expand_path(custom_html_name)
+      custom_markup_file = File.join(data_directory, "custom_markup_for_html.yml")
+      custom_markup_file = File.expand_path(custom_markup_file)
+
+      it "should convert #{basename}.org to HTML with custom markup" do
+        expected = IO.read(custom_html_name)
+        expect(expected).to be_kind_of(String)
+        parser = Orgmode::Parser.new(IO.read(file), { :allow_include_files => true, :markup_file => custom_markup_file })
+        actual = parser.to_html
+        expect(actual).to be_kind_of(String)
+        expect(actual).to eq(expected)
       end
     end
   end

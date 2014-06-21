@@ -17,6 +17,10 @@ options_parser = OptionParser.new do |opts|
     options[:debug] = true
   end
 
+  opts.on("-m", "--markup <file>", "Set Custom Markup file") do |f|
+    options[:markup_file] = f
+  end
+
   opts.on("-t", "--translate FORMAT", [:html, :textile, :markdown],
           "Translate the ORG file to the specified format.") do |v|
     options[:format] = v
@@ -39,7 +43,7 @@ begin
     puts options_parser
   else
     data = IO.read(ARGV[0])
-    p = Orgmode::Parser.new(data)
+    p = Orgmode::Parser.new(data, (options[:markup_file] ? {:markup_file => options[:markup_file]} : {}))
     $DEBUG = true if options[:debug]
     puts p.to_html if options[:format] == :html
     puts p.to_textile if options[:format] == :textile

@@ -1,0 +1,491 @@
+<h1>Inline Formatting test for emphasis</h1>
+<h2>Simple feature test</h2>
+<p><b>bold</b></p>
+<p><i>italic</i></p>
+<p><code>code</code></p>
+<p><code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a></p>
+<p>http://www.gmail.com</p>
+<p><a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a></p>
+<h2>All together in one line</h2>
+<p><b>bold</b> <i>italic</i> <code>code</code> <code>verbatim</code> <span style="text-decoration:underline;">underline</span>  <del>strikethrough</del> <a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.google.com">http://www.google.com</a> http://www.gmail.com <a href="http://www.xkcd.com">helpful text link</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.google.com">http://www.google.com</a></p>
+<h2>Within code test</h2>
+<pre class="example">
+emphasis_tests = [
+&quot;*bold*&quot;,
+&quot;/italic/&quot;,
+&quot;=code=&quot;,
+&quot;~verbatim~&quot;,
+&quot;_underline_ &quot;,
+&quot;+strikethrough+&quot;,
+&quot;[[http://www.bing.com]]&quot;,
+&quot;[[http://www.google.com]]&quot;,
+&quot;[[http://www.xkcd.com][helpful text link]]&quot;,
+&quot;[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]&quot;,
+&quot;[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]&quot;,
+&quot;&lt;http://www.google.com&gt;&quot;,
+]
+
+all = emphasis_tests.map do |a|
+  emphasis_tests.map do |b|
+    [b, &#39; &#39;, a, &#39; &#39;, b, &quot;\n\n&quot;].join(&#39;&#39;)
+  end
+end
+
+all.each {|e| puts e}
+</pre>
+<h2>Mixed together test</h2>
+<pre class="example">
+emphasis_tests = [&quot;*&quot;,&quot;/&quot;,&quot;=&quot;,&quot;~&quot;,&quot;_&quot;,&quot;+&quot;]
+
+all = emphasis_tests.map do |a|
+  emphasis_tests.map do |b|
+    [[a, &#39;Answer: &#39;, b, &#39;42&#39;, b, &#39; &#39;,a, &quot;\n\n&quot;].join(&#39;&#39;),
+     [a, &#39;Answer: &#39;, b, &#39;42&#39;, b, &#39;&#39;,a, &quot;\n\n&quot;].join(&#39;&#39;)].flatten
+  end
+end
+
+all.each {|e| puts e}
+</pre>
+<p><b>Answer: *42</b> *</p>
+<p><b>Answer: *42*</b></p>
+<p>*Answer: <i>42</i> *</p>
+<p><b>Answer: /42/</b></p>
+<p>*Answer: <code>42</code> *</p>
+<p><b>Answer: =42=</b></p>
+<p>*Answer: <code>42</code> *</p>
+<p><b>Answer: ~42~</b></p>
+<p>*Answer: <span style="text-decoration:underline;">42</span> *</p>
+<p><b>Answer: _42_</b></p>
+<p>*Answer: <del>42</del> *</p>
+<p><b>Answer: +42+</b></p>
+<p>/Answer: <b>42</b> /</p>
+<p><i>Answer: *42*</i></p>
+<p><i>Answer: /42</i> /</p>
+<p><i>Answer: /42/</i></p>
+<p>/Answer: <code>42</code> /</p>
+<p><i>Answer: =42=</i></p>
+<p>/Answer: <code>42</code> /</p>
+<p><i>Answer: ~42~</i></p>
+<p>/Answer: <span style="text-decoration:underline;">42</span> /</p>
+<p><i>Answer: _42_</i></p>
+<p>/Answer: <del>42</del> /</p>
+<p><i>Answer: +42+</i></p>
+<p>=Answer: <b>42</b> =</p>
+<p><code>Answer: *42*</code></p>
+<p>=Answer: <i>42</i> =</p>
+<p><code>Answer: /42/</code></p>
+<p><code>Answer: =42</code> =</p>
+<p><code>Answer: =42=</code></p>
+<p>=Answer: <code>42</code> =</p>
+<p><code>Answer: ~42~</code></p>
+<p>=Answer: <span style="text-decoration:underline;">42</span> =</p>
+<p><code>Answer: _42_</code></p>
+<p>=Answer: <del>42</del> =</p>
+<p><code>Answer: +42+</code></p>
+<p>~Answer: <b>42</b> ~</p>
+<p><code>Answer: *42*</code></p>
+<p>~Answer: <i>42</i> ~</p>
+<p><code>Answer: /42/</code></p>
+<p>~Answer: <code>42</code> ~</p>
+<p><code>Answer: =42=</code></p>
+<p><code>Answer: ~42</code> ~</p>
+<p><code>Answer: ~42~</code></p>
+<p>~Answer: <span style="text-decoration:underline;">42</span> ~</p>
+<p><code>Answer: _42_</code></p>
+<p>~Answer: <del>42</del> ~</p>
+<p><code>Answer: +42+</code></p>
+<p>_Answer: <b>42</b> _</p>
+<p><span style="text-decoration:underline;">Answer: *42*</span></p>
+<p>_Answer: <i>42</i> _</p>
+<p><span style="text-decoration:underline;">Answer: /42/</span></p>
+<p>_Answer: <code>42</code> _</p>
+<p><span style="text-decoration:underline;">Answer: =42=</span></p>
+<p>_Answer: <code>42</code> _</p>
+<p><span style="text-decoration:underline;">Answer: ~42~</span></p>
+<p><span style="text-decoration:underline;">Answer: _42</span> _</p>
+<p><span style="text-decoration:underline;">Answer: _42_</span></p>
+<p>_Answer: <del>42</del> _</p>
+<p><span style="text-decoration:underline;">Answer: +42+</span></p>
+<p>+Answer: <b>42</b> +</p>
+<p><del>Answer: *42*</del></p>
+<p>+Answer: <i>42</i> +</p>
+<p><del>Answer: /42/</del></p>
+<p>+Answer: <code>42</code> +</p>
+<p><del>Answer: =42=</del></p>
+<p>+Answer: <code>42</code> +</p>
+<p><del>Answer: ~42~</del></p>
+<p>+Answer: <span style="text-decoration:underline;">42</span> +</p>
+<p><del>Answer: _42_</del></p>
+<p><del>Answer: +42</del> +</p>
+<p><del>Answer: +42+</del></p>
+<h2>Multiline support test :: one line</h2>
+<pre class="example">
+emphasis_tests = [&quot;*&quot;,&quot;/&quot;,&quot;=&quot;,&quot;~&quot;,&quot;_&quot;,&quot;+&quot;]
+
+all = emphasis_tests.map do |a|
+  emphasis_tests.map do |b|
+    [a, &#39;Starting the line here &#39;, &quot;\n&quot;, b, &#39;and continuing here to close&#39;, b, a, &quot;\n\n&quot;].join(&#39;&#39;)
+  end
+end
+
+all.each {|e| puts e}
+</pre>
+<p><b>Starting the line here
+  *and continuing here to close*</b></p>
+<p><b>Starting the line here
+  /and continuing here to close/</b></p>
+<p><b>Starting the line here
+  =and continuing here to close=</b></p>
+<p><b>Starting the line here
+  ~and continuing here to close~</b></p>
+<p><b>Starting the line here
+  _and continuing here to close_</b></p>
+<p><b>Starting the line here
+  +and continuing here to close+</b></p>
+<p><i>Starting the line here
+  *and continuing here to close*</i></p>
+<p><i>Starting the line here
+  /and continuing here to close/</i></p>
+<p><i>Starting the line here
+  =and continuing here to close=</i></p>
+<p><i>Starting the line here
+  ~and continuing here to close~</i></p>
+<p><i>Starting the line here
+  _and continuing here to close_</i></p>
+<p><i>Starting the line here
+  +and continuing here to close+</i></p>
+<p><code>Starting the line here
+  *and continuing here to close*</code></p>
+<p><code>Starting the line here
+  /and continuing here to close/</code></p>
+<p><code>Starting the line here
+  =and continuing here to close=</code></p>
+<p><code>Starting the line here
+  ~and continuing here to close~</code></p>
+<p><code>Starting the line here
+  _and continuing here to close_</code></p>
+<p><code>Starting the line here
+  +and continuing here to close+</code></p>
+<p><code>Starting the line here
+  *and continuing here to close*</code></p>
+<p><code>Starting the line here
+  /and continuing here to close/</code></p>
+<p><code>Starting the line here
+  =and continuing here to close=</code></p>
+<p><code>Starting the line here
+  ~and continuing here to close~</code></p>
+<p><code>Starting the line here
+  _and continuing here to close_</code></p>
+<p><code>Starting the line here
+  +and continuing here to close+</code></p>
+<p><span style="text-decoration:underline;">Starting the line here
+  *and continuing here to close*</span></p>
+<p><span style="text-decoration:underline;">Starting the line here
+  /and continuing here to close/</span></p>
+<p><span style="text-decoration:underline;">Starting the line here
+  =and continuing here to close=</span></p>
+<p><span style="text-decoration:underline;">Starting the line here
+  ~and continuing here to close~</span></p>
+<p><span style="text-decoration:underline;">Starting the line here
+  _and continuing here to close_</span></p>
+<p><span style="text-decoration:underline;">Starting the line here
+  +and continuing here to close+</span></p>
+<p><del>Starting the line here
+  *and continuing here to close*</del></p>
+<p><del>Starting the line here
+  /and continuing here to close/</del></p>
+<p><del>Starting the line here
+  =and continuing here to close=</del></p>
+<p><del>Starting the line here
+  ~and continuing here to close~</del></p>
+<p><del>Starting the line here
+  _and continuing here to close_</del></p>
+<p><del>Starting the line here
+  +and continuing here to close+</del></p>
+<h2>Multiline support test :: two lines</h2>
+<pre class="example">
+emphasis_tests = [&quot;*&quot;,&quot;/&quot;,&quot;=&quot;,&quot;~&quot;,&quot;_&quot;,&quot;+&quot;]
+
+all = emphasis_tests.map do |a|
+  emphasis_tests.map do |b|
+    [a, &#39;Starting the line here &#39;, &quot;\n&quot;, b, &#39;and continuing here&#39;, &quot;\n&quot;, &#39;to close&#39;, b, a, &quot;\n\n&quot;].join(&#39;&#39;)
+  end
+end
+
+all.each {|e| puts e}
+</pre>
+<p>*Starting the line here
+  <b>and continuing here
+  to close*</b></p>
+<p>*Starting the line here
+  /and continuing here
+  to close/*</p>
+<p>*Starting the line here
+  =and continuing here
+  to close=*</p>
+<p>*Starting the line here
+  ~and continuing here
+  to close~*</p>
+<p>*Starting the line here
+  _and continuing here
+  to close_*</p>
+<p>*Starting the line here
+  +and continuing here
+  to close+*</p>
+<p>/Starting the line here
+  *and continuing here
+  to close*/</p>
+<p>/Starting the line here
+  <i>and continuing here
+  to close/</i></p>
+<p>/Starting the line here
+  =and continuing here
+  to close=/</p>
+<p>/Starting the line here
+  ~and continuing here
+  to close~/</p>
+<p>/Starting the line here
+  _and continuing here
+  to close_/</p>
+<p>/Starting the line here
+  +and continuing here
+  to close+/</p>
+<p>=Starting the line here
+  *and continuing here
+  to close*=</p>
+<p>=Starting the line here
+  /and continuing here
+  to close/=</p>
+<p>=Starting the line here
+  <code>and continuing here
+  to close=</code></p>
+<p>=Starting the line here
+  ~and continuing here
+  to close~=</p>
+<p>=Starting the line here
+  _and continuing here
+  to close_=</p>
+<p>=Starting the line here
+  +and continuing here
+  to close+=</p>
+<p>~Starting the line here
+  *and continuing here
+  to close*~</p>
+<p>~Starting the line here
+  /and continuing here
+  to close/~</p>
+<p>~Starting the line here
+  =and continuing here
+  to close=~</p>
+<p>~Starting the line here
+  <code>and continuing here
+  to close~</code></p>
+<p>~Starting the line here
+  _and continuing here
+  to close_~</p>
+<p>~Starting the line here
+  +and continuing here
+  to close+~</p>
+<p>_Starting the line here
+  *and continuing here
+  to close*_</p>
+<p>_Starting the line here
+  /and continuing here
+  to close/_</p>
+<p>_Starting the line here
+  =and continuing here
+  to close=_</p>
+<p>_Starting the line here
+  ~and continuing here
+  to close~_</p>
+<p>_Starting the line here
+  <span style="text-decoration:underline;">and continuing here
+  to close_</span></p>
+<p>_Starting the line here
+  +and continuing here
+  to close+_</p>
+<p>+Starting the line here
+  *and continuing here
+  to close*+</p>
+<p>+Starting the line here
+  /and continuing here
+  to close/+</p>
+<p>+Starting the line here
+  =and continuing here
+  to close=+</p>
+<p>+Starting the line here
+  ~and continuing here
+  to close~+</p>
+<p>+Starting the line here
+  _and continuing here
+  to close_+</p>
+<p>+Starting the line here
+  <del>and continuing here
+  to close+</del></p>
+<h2>Together in same paragraph test</h2>
+<p><b>bold</b> <b>bold</b> <b>bold</b></p>
+<p><i>italic</i> <b>bold</b> <i>italic</i></p>
+<p><code>code</code> <b>bold</b> <code>code</code></p>
+<p><code>verbatim</code> <b>bold</b> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <b>bold</b> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <b>bold</b> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <b>bold</b> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <b>bold</b> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <b>bold</b> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <b>bold</b> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <b>bold</b> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <b>bold</b> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <i>italic</i> <b>bold</b></p>
+<p><i>italic</i> <i>italic</i> <i>italic</i></p>
+<p><code>code</code> <i>italic</i> <code>code</code></p>
+<p><code>verbatim</code> <i>italic</i> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <i>italic</i> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <i>italic</i> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <i>italic</i> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <i>italic</i> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <i>italic</i> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <i>italic</i> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <i>italic</i> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <i>italic</i> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <code>code</code> <b>bold</b></p>
+<p><i>italic</i> <code>code</code> <i>italic</i></p>
+<p><code>code</code> <code>code</code> <code>code</code></p>
+<p><code>verbatim</code> <code>code</code> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <code>code</code> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <code>code</code> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <code>code</code> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <code>code</code> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <code>code</code> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <code>code</code> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <code>code</code> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <code>code</code> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <code>verbatim</code> <b>bold</b></p>
+<p><i>italic</i> <code>verbatim</code> <i>italic</i></p>
+<p><code>code</code> <code>verbatim</code> <code>code</code></p>
+<p><code>verbatim</code> <code>verbatim</code> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <code>verbatim</code> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <code>verbatim</code> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <code>verbatim</code> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <code>verbatim</code> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <code>verbatim</code> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <code>verbatim</code> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <code>verbatim</code> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <code>verbatim</code> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <span style="text-decoration:underline;">underline</span>  <b>bold</b></p>
+<p><i>italic</i> <span style="text-decoration:underline;">underline</span>  <i>italic</i></p>
+<p><code>code</code> <span style="text-decoration:underline;">underline</span>  <code>code</code></p>
+<p><code>verbatim</code> <span style="text-decoration:underline;">underline</span>  <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <span style="text-decoration:underline;">underline</span>  <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <span style="text-decoration:underline;">underline</span>  <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <span style="text-decoration:underline;">underline</span>  <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <span style="text-decoration:underline;">underline</span>  <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <span style="text-decoration:underline;">underline</span>  <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <span style="text-decoration:underline;">underline</span>  <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <span style="text-decoration:underline;">underline</span>  <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <span style="text-decoration:underline;">underline</span>  <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <del>strikethrough</del> <b>bold</b></p>
+<p><i>italic</i> <del>strikethrough</del> <i>italic</i></p>
+<p><code>code</code> <del>strikethrough</del> <code>code</code></p>
+<p><code>verbatim</code> <del>strikethrough</del> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <del>strikethrough</del> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <del>strikethrough</del> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <del>strikethrough</del> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <del>strikethrough</del> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <del>strikethrough</del> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <del>strikethrough</del> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <del>strikethrough</del> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <del>strikethrough</del> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <a href="http://www.bing.com">http://www.bing.com</a> <b>bold</b></p>
+<p><i>italic</i> <a href="http://www.bing.com">http://www.bing.com</a> <i>italic</i></p>
+<p><code>code</code> <a href="http://www.bing.com">http://www.bing.com</a> <code>code</code></p>
+<p><code>verbatim</code> <a href="http://www.bing.com">http://www.bing.com</a> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <a href="http://www.bing.com">http://www.bing.com</a> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <a href="http://www.bing.com">http://www.bing.com</a> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.bing.com">http://www.bing.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <a href="http://www.google.com">http://www.google.com</a> <b>bold</b></p>
+<p><i>italic</i> <a href="http://www.google.com">http://www.google.com</a> <i>italic</i></p>
+<p><code>code</code> <a href="http://www.google.com">http://www.google.com</a> <code>code</code></p>
+<p><code>verbatim</code> <a href="http://www.google.com">http://www.google.com</a> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <a href="http://www.google.com">http://www.google.com</a> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <a href="http://www.google.com">http://www.google.com</a> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.google.com">http://www.google.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <a href="http://www.xkcd.com">helpful text link</a> <b>bold</b></p>
+<p><i>italic</i> <a href="http://www.xkcd.com">helpful text link</a> <i>italic</i></p>
+<p><code>code</code> <a href="http://www.xkcd.com">helpful text link</a> <code>code</code></p>
+<p><code>verbatim</code> <a href="http://www.xkcd.com">helpful text link</a> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <a href="http://www.xkcd.com">helpful text link</a> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <a href="http://www.xkcd.com">helpful text link</a> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.xkcd.com">helpful text link</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <b>bold</b></p>
+<p><i>italic</i> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <i>italic</i></p>
+<p><code>code</code> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <code>code</code></p>
+<p><code>verbatim</code> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <b>bold</b></p>
+<p><i>italic</i> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <i>italic</i></p>
+<p><code>code</code> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <code>code</code></p>
+<p><code>verbatim</code> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><b>bold</b> <a href="http://www.google.com">http://www.google.com</a> <b>bold</b></p>
+<p><i>italic</i> <a href="http://www.google.com">http://www.google.com</a> <i>italic</i></p>
+<p><code>code</code> <a href="http://www.google.com">http://www.google.com</a> <code>code</code></p>
+<p><code>verbatim</code> <a href="http://www.google.com">http://www.google.com</a> <code>verbatim</code></p>
+<p><span style="text-decoration:underline;">underline</span>  <a href="http://www.google.com">http://www.google.com</a> <span style="text-decoration:underline;">underline</span></p>
+<p><del>strikethrough</del> <a href="http://www.google.com">http://www.google.com</a> <del>strikethrough</del></p>
+<p><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.bing.com">http://www.bing.com</a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a></p>
+<p><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com">helpful text link</a></p>
+<p><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.google.com">http://www.google.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></p>
+<p><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></p>
+<p><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a></p>
+<h2>Together within a table</h2>
+<table>
+  <tr><td><b>bold</b> <b>bold</b></td><td><i>italic</i> <b>bold</b></td><td><code>code</code> <b>bold</b></td><td><code>verbatim</code> <b>bold</b></td><td><span style="text-decoration:underline;">underline</span>  <b>bold</b></td><td><del>strikethrough</del> <b>bold</b></td><td><a href="http://www.bing.com">http://www.bing.com</a> <b>bold</b></td><td><a href="http://www.google.com">http://www.google.com</a> <b>bold</b></td><td><a href="http://www.xkcd.com">helpful text link</a> <b>bold</b></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <b>bold</b></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <b>bold</b></td><td><a href="http://www.google.com">http://www.google.com</a> <b>bold</b></td></tr>
+  <tr><td><b>bold</b> <i>italic</i></td><td><i>italic</i> <i>italic</i></td><td><code>code</code> <i>italic</i></td><td><code>verbatim</code> <i>italic</i></td><td><span style="text-decoration:underline;">underline</span>  <i>italic</i></td><td><del>strikethrough</del> <i>italic</i></td><td><a href="http://www.bing.com">http://www.bing.com</a> <i>italic</i></td><td><a href="http://www.google.com">http://www.google.com</a> <i>italic</i></td><td><a href="http://www.xkcd.com">helpful text link</a> <i>italic</i></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <i>italic</i></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <i>italic</i></td><td><a href="http://www.google.com">http://www.google.com</a> <i>italic</i></td></tr>
+  <tr><td><b>bold</b> <code>code</code></td><td><i>italic</i> <code>code</code></td><td><code>code</code> <code>code</code></td><td><code>verbatim</code> <code>code</code></td><td><span style="text-decoration:underline;">underline</span>  <code>code</code></td><td><del>strikethrough</del> <code>code</code></td><td><a href="http://www.bing.com">http://www.bing.com</a> <code>code</code></td><td><a href="http://www.google.com">http://www.google.com</a> <code>code</code></td><td><a href="http://www.xkcd.com">helpful text link</a> <code>code</code></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <code>code</code></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <code>code</code></td><td><a href="http://www.google.com">http://www.google.com</a> <code>code</code></td></tr>
+  <tr><td><b>bold</b> <code>verbatim</code></td><td><i>italic</i> <code>verbatim</code></td><td><code>code</code> <code>verbatim</code></td><td><code>verbatim</code> <code>verbatim</code></td><td><span style="text-decoration:underline;">underline</span>  <code>verbatim</code></td><td><del>strikethrough</del> <code>verbatim</code></td><td><a href="http://www.bing.com">http://www.bing.com</a> <code>verbatim</code></td><td><a href="http://www.google.com">http://www.google.com</a> <code>verbatim</code></td><td><a href="http://www.xkcd.com">helpful text link</a> <code>verbatim</code></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <code>verbatim</code></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <code>verbatim</code></td><td><a href="http://www.google.com">http://www.google.com</a> <code>verbatim</code></td></tr>
+  <tr><td><b>bold</b> <span style="text-decoration:underline;">underline</span></td><td><i>italic</i> <span style="text-decoration:underline;">underline</span></td><td><code>code</code> <span style="text-decoration:underline;">underline</span></td><td><code>verbatim</code> <span style="text-decoration:underline;">underline</span></td><td><span style="text-decoration:underline;">underline</span>  <span style="text-decoration:underline;">underline</span></td><td><del>strikethrough</del> <span style="text-decoration:underline;">underline</span></td><td><a href="http://www.bing.com">http://www.bing.com</a> <span style="text-decoration:underline;">underline</span></td><td><a href="http://www.google.com">http://www.google.com</a> <span style="text-decoration:underline;">underline</span></td><td><a href="http://www.xkcd.com">helpful text link</a> <span style="text-decoration:underline;">underline</span></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <span style="text-decoration:underline;">underline</span></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <span style="text-decoration:underline;">underline</span></td><td><a href="http://www.google.com">http://www.google.com</a> <span style="text-decoration:underline;">underline</span></td></tr>
+  <tr><td><b>bold</b> <del>strikethrough</del></td><td><i>italic</i> <del>strikethrough</del></td><td><code>code</code> <del>strikethrough</del></td><td><code>verbatim</code> <del>strikethrough</del></td><td><span style="text-decoration:underline;">underline</span>  <del>strikethrough</del></td><td><del>strikethrough</del> <del>strikethrough</del></td><td><a href="http://www.bing.com">http://www.bing.com</a> <del>strikethrough</del></td><td><a href="http://www.google.com">http://www.google.com</a> <del>strikethrough</del></td><td><a href="http://www.xkcd.com">helpful text link</a> <del>strikethrough</del></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <del>strikethrough</del></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <del>strikethrough</del></td><td><a href="http://www.google.com">http://www.google.com</a> <del>strikethrough</del></td></tr>
+  <tr><td><b>bold</b> <a href="http://www.bing.com">http://www.bing.com</a></td><td><i>italic</i> <a href="http://www.bing.com">http://www.bing.com</a></td><td><code>code</code> <a href="http://www.bing.com">http://www.bing.com</a></td><td><code>verbatim</code> <a href="http://www.bing.com">http://www.bing.com</a></td><td><span style="text-decoration:underline;">underline</span>  <a href="http://www.bing.com">http://www.bing.com</a></td><td><del>strikethrough</del> <a href="http://www.bing.com">http://www.bing.com</a></td><td><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.bing.com">http://www.bing.com</a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.bing.com">http://www.bing.com</a></td><td><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.bing.com">http://www.bing.com</a></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.bing.com">http://www.bing.com</a></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.bing.com">http://www.bing.com</a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.bing.com">http://www.bing.com</a></td></tr>
+  <tr><td><b>bold</b> <a href="http://www.google.com">http://www.google.com</a></td><td><i>italic</i> <a href="http://www.google.com">http://www.google.com</a></td><td><code>code</code> <a href="http://www.google.com">http://www.google.com</a></td><td><code>verbatim</code> <a href="http://www.google.com">http://www.google.com</a></td><td><span style="text-decoration:underline;">underline</span>  <a href="http://www.google.com">http://www.google.com</a></td><td><del>strikethrough</del> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.google.com">http://www.google.com</a></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a></td></tr>
+  <tr><td><b>bold</b> <a href="http://www.xkcd.com">helpful text link</a></td><td><i>italic</i> <a href="http://www.xkcd.com">helpful text link</a></td><td><code>code</code> <a href="http://www.xkcd.com">helpful text link</a></td><td><code>verbatim</code> <a href="http://www.xkcd.com">helpful text link</a></td><td><span style="text-decoration:underline;">underline</span>  <a href="http://www.xkcd.com">helpful text link</a></td><td><del>strikethrough</del> <a href="http://www.xkcd.com">helpful text link</a></td><td><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.xkcd.com">helpful text link</a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com">helpful text link</a></td><td><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.xkcd.com">helpful text link</a></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.xkcd.com">helpful text link</a></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.xkcd.com">helpful text link</a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com">helpful text link</a></td></tr>
+  <tr><td><b>bold</b> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><i>italic</i> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><code>code</code> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><code>verbatim</code> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><span style="text-decoration:underline;">underline</span>  <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><del>strikethrough</del> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><a href="http://www.bing.com">http://www.bing.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><a href="http://www.google.com">http://www.google.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><a href="http://www.xkcd.com">helpful text link</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td><td><a href="http://www.google.com">http://www.google.com</a> <img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /></td></tr>
+  <tr><td><b>bold</b> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><i>italic</i> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><code>code</code> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><code>verbatim</code> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><span style="text-decoration:underline;">underline</span>  <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><del>strikethrough</del> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a></td></tr>
+  <tr><td><b>bold</b> <a href="http://www.google.com">http://www.google.com</a></td><td><i>italic</i> <a href="http://www.google.com">http://www.google.com</a></td><td><code>code</code> <a href="http://www.google.com">http://www.google.com</a></td><td><code>verbatim</code> <a href="http://www.google.com">http://www.google.com</a></td><td><span style="text-decoration:underline;">underline</span>  <a href="http://www.google.com">http://www.google.com</a></td><td><del>strikethrough</del> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.bing.com">http://www.bing.com</a> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.xkcd.com">helpful text link</a> <a href="http://www.google.com">http://www.google.com</a></td><td><img src="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" alt="http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg" /> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.xkcd.com"><img src="http://imgs.xkcd.com/comics/t_cells.png" alt="http://imgs.xkcd.com/comics/t_cells.png" /></a> <a href="http://www.google.com">http://www.google.com</a></td><td><a href="http://www.google.com">http://www.google.com</a> <a href="http://www.google.com">http://www.google.com</a></td></tr>
+</table>

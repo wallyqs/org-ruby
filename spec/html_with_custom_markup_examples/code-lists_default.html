@@ -1,0 +1,118 @@
+<h1>normal list should work</h1>
+<ul>
+  <li>one
+    text in the same line
+    <p>This is a paragraph</p>
+    <ul>
+      <li>A sublist
+        <ul>
+          <li>Another sublist
+            <p>Sublist paragraph</p>
+          </li>
+        </ul>
+      </li>
+      <li>2nd sublist
+        <ul>
+          <li>2nd sublist item
+            <p>Paragraph from 2nd sublist</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>two
+    <ol>
+      <li>a new list
+        <p>paragraph</p>
+      </li>
+      <li>another sublist</li>
+    </ol>
+  </li>
+  <li>final list</li>
+</ul>
+<h1>paragraphs in lists should work</h1>
+<ul>
+  <li>Foo
+    <ul>
+      <li>How does this work?
+        <p>uno dos tres</p>
+      </li>
+      <li>Should not this be a paragraph?</li>
+    </ul>
+  </li>
+  <li>Bar</li>
+</ul>
+<h1>begin example in lists should work</h1>
+<ul>
+  <li>Foo
+    <pre class="example">
+class Hello
+  def say
+    puts &#39;cheers&#39;
+  end
+end
+    </pre>
+  </li>
+  <li>Bar
+    <pre class="example">
+This gets lumped in to the above line &quot;Example&quot;
+    </pre>
+  </li>
+  <li>Hello</li>
+</ul>
+<h1>begin quote in lists should work</h1>
+<ul>
+  <li>Example
+    <ul>
+      <li>Uno
+        Lorem
+        <blockquote>
+          <p>A quote!!!</p>
+        </blockquote>
+        <p>dolor</p>
+      </li>
+      <li>Dos</li>
+    </ul>
+  </li>
+</ul>
+<h1>tables in lists should work</h1>
+<ul>
+  <li>Example
+    <ul>
+      <li>Table
+        <p>This table:</p>
+        <table>
+          <tr><td>a</td><td>b</td></tr>
+          <tr><td>0</td><td>1</td></tr>
+          <tr><td>1</td><td>2</td></tr>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>After the table
+    <p>The table should be above</p>
+  </li>
+</ul>
+<h1>definition lists should work</h1>
+<ul>
+  <li>Example
+    <dl>
+      <dt>Hello</dt><dd>Hola
+        Paragrap continues here
+        <blockquote>
+          <p>Cuando me desperte, el dinosaurio estaba alli.</p>
+        </blockquote>
+      </dd>
+      <dt>Dog</dt><dd>Perro
+        Paragraph</dd>
+    </dl>
+    <ul>
+      <li>Last sublist</li>
+    </ul>
+  </li>
+  <li>Another list
+    <ul>
+      <li>with a sublist</li>
+    </ul>
+  </li>
+</ul>

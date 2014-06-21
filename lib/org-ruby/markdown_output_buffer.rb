@@ -4,8 +4,15 @@ module Orgmode
 
   class MarkdownOutputBuffer < OutputBuffer
 
-    def initialize(output)
+    def initialize(output, opts = {})
       super(output)
+      @options = opts
+      @logger.debug "Markdown export options: #{@options.inspect}"
+      @custom_blocktags = {} if @options[:markup_file]
+
+      if @options[:markup_file]
+        do_custom_markup
+      end
     end
 
     def push_mode(mode, indent)

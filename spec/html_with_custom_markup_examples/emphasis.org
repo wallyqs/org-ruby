@@ -1,0 +1,804 @@
+* Inline Formatting test for emphasis
+** Simple feature test
+
+*bold*
+
+/italic/
+
+=code=
+
+~verbatim~
+
+_underline_ 
+
++strikethrough+
+
+[[http://www.bing.com]]
+
+[[http://www.google.com]]
+
+http://www.gmail.com
+
+[[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com>
+
+** All together in one line
+
+*bold* /italic/ =code= ~verbatim~ _underline_  +strikethrough+ [[http://www.bing.com]] [[http://www.google.com]] http://www.gmail.com [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>
+
+** Within code test
+
+#+begin_example
+emphasis_tests = [
+"*bold*",
+"/italic/",
+"=code=",
+"~verbatim~",
+"_underline_ ",
+"+strikethrough+",
+"[[http://www.bing.com]]",
+"[[http://www.google.com]]",
+"[[http://www.xkcd.com][helpful text link]]",
+"[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]",
+"[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]",
+"<http://www.google.com>",
+]
+
+all = emphasis_tests.map do |a|
+  emphasis_tests.map do |b|
+    [b, ' ', a, ' ', b, "\n\n"].join('')
+  end
+end
+
+all.each {|e| puts e}
+#+end_example
+
+** Mixed together test
+
+#+begin_example
+emphasis_tests = ["*","/","=","~","_","+"]
+
+all = emphasis_tests.map do |a|
+  emphasis_tests.map do |b|
+    [[a, 'Answer: ', b, '42', b, ' ',a, "\n\n"].join(''),
+     [a, 'Answer: ', b, '42', b, '',a, "\n\n"].join('')].flatten
+  end
+end
+
+all.each {|e| puts e}
+#+end_example
+
+*Answer: *42* *
+
+*Answer: *42**
+
+*Answer: /42/ *
+
+*Answer: /42/*
+
+*Answer: =42= *
+
+*Answer: =42=*
+
+*Answer: ~42~ *
+
+*Answer: ~42~*
+
+*Answer: _42_ *
+
+*Answer: _42_*
+
+*Answer: +42+ *
+
+*Answer: +42+*
+
+/Answer: *42* /
+
+/Answer: *42*/
+
+/Answer: /42/ /
+
+/Answer: /42//
+
+/Answer: =42= /
+
+/Answer: =42=/
+
+/Answer: ~42~ /
+
+/Answer: ~42~/
+
+/Answer: _42_ /
+
+/Answer: _42_/
+
+/Answer: +42+ /
+
+/Answer: +42+/
+
+=Answer: *42* =
+
+=Answer: *42*=
+
+=Answer: /42/ =
+
+=Answer: /42/=
+
+=Answer: =42= =
+
+=Answer: =42==
+
+=Answer: ~42~ =
+
+=Answer: ~42~=
+
+=Answer: _42_ =
+
+=Answer: _42_=
+
+=Answer: +42+ =
+
+=Answer: +42+=
+
+~Answer: *42* ~
+
+~Answer: *42*~
+
+~Answer: /42/ ~
+
+~Answer: /42/~
+
+~Answer: =42= ~
+
+~Answer: =42=~
+
+~Answer: ~42~ ~
+
+~Answer: ~42~~
+
+~Answer: _42_ ~
+
+~Answer: _42_~
+
+~Answer: +42+ ~
+
+~Answer: +42+~
+
+_Answer: *42* _
+
+_Answer: *42*_
+
+_Answer: /42/ _
+
+_Answer: /42/_
+
+_Answer: =42= _
+
+_Answer: =42=_
+
+_Answer: ~42~ _
+
+_Answer: ~42~_
+
+_Answer: _42_ _
+
+_Answer: _42__
+
+_Answer: +42+ _
+
+_Answer: +42+_
+
++Answer: *42* +
+
++Answer: *42*+
+
++Answer: /42/ +
+
++Answer: /42/+
+
++Answer: =42= +
+
++Answer: =42=+
+
++Answer: ~42~ +
+
++Answer: ~42~+
+
++Answer: _42_ +
+
++Answer: _42_+
+
++Answer: +42+ +
+
++Answer: +42++
+
+** Multiline support test :: one line
+
+#+begin_example
+emphasis_tests = ["*","/","=","~","_","+"]
+
+all = emphasis_tests.map do |a|
+  emphasis_tests.map do |b|
+    [a, 'Starting the line here ', "\n", b, 'and continuing here to close', b, a, "\n\n"].join('')
+  end
+end
+
+all.each {|e| puts e}
+#+end_example
+
+*Starting the line here 
+*and continuing here to close**
+
+*Starting the line here 
+/and continuing here to close/*
+
+*Starting the line here 
+=and continuing here to close=*
+
+*Starting the line here 
+~and continuing here to close~*
+
+*Starting the line here 
+_and continuing here to close_*
+
+*Starting the line here 
++and continuing here to close+*
+
+/Starting the line here 
+*and continuing here to close*/
+
+/Starting the line here 
+/and continuing here to close//
+
+/Starting the line here 
+=and continuing here to close=/
+
+/Starting the line here 
+~and continuing here to close~/
+
+/Starting the line here 
+_and continuing here to close_/
+
+/Starting the line here 
++and continuing here to close+/
+
+=Starting the line here 
+*and continuing here to close*=
+
+=Starting the line here 
+/and continuing here to close/=
+
+=Starting the line here 
+=and continuing here to close==
+
+=Starting the line here 
+~and continuing here to close~=
+
+=Starting the line here 
+_and continuing here to close_=
+
+=Starting the line here 
++and continuing here to close+=
+
+~Starting the line here 
+*and continuing here to close*~
+
+~Starting the line here 
+/and continuing here to close/~
+
+~Starting the line here 
+=and continuing here to close=~
+
+~Starting the line here 
+~and continuing here to close~~
+
+~Starting the line here 
+_and continuing here to close_~
+
+~Starting the line here 
++and continuing here to close+~
+
+_Starting the line here 
+*and continuing here to close*_
+
+_Starting the line here 
+/and continuing here to close/_
+
+_Starting the line here 
+=and continuing here to close=_
+
+_Starting the line here 
+~and continuing here to close~_
+
+_Starting the line here 
+_and continuing here to close__
+
+_Starting the line here 
++and continuing here to close+_
+
++Starting the line here 
+*and continuing here to close*+
+
++Starting the line here 
+/and continuing here to close/+
+
++Starting the line here 
+=and continuing here to close=+
+
++Starting the line here 
+~and continuing here to close~+
+
++Starting the line here 
+_and continuing here to close_+
+
++Starting the line here 
++and continuing here to close++
+
+** Multiline support test :: two lines
+
+#+begin_example
+emphasis_tests = ["*","/","=","~","_","+"]
+
+all = emphasis_tests.map do |a|
+  emphasis_tests.map do |b|
+    [a, 'Starting the line here ', "\n", b, 'and continuing here', "\n", 'to close', b, a, "\n\n"].join('')
+  end
+end
+
+all.each {|e| puts e}
+#+end_example
+
+*Starting the line here 
+*and continuing here
+to close**
+
+*Starting the line here 
+/and continuing here
+to close/*
+
+*Starting the line here 
+=and continuing here
+to close=*
+
+*Starting the line here 
+~and continuing here
+to close~*
+
+*Starting the line here 
+_and continuing here
+to close_*
+
+*Starting the line here 
++and continuing here
+to close+*
+
+/Starting the line here 
+*and continuing here
+to close*/
+
+/Starting the line here 
+/and continuing here
+to close//
+
+/Starting the line here 
+=and continuing here
+to close=/
+
+/Starting the line here 
+~and continuing here
+to close~/
+
+/Starting the line here 
+_and continuing here
+to close_/
+
+/Starting the line here 
++and continuing here
+to close+/
+
+=Starting the line here 
+*and continuing here
+to close*=
+
+=Starting the line here 
+/and continuing here
+to close/=
+
+=Starting the line here 
+=and continuing here
+to close==
+
+=Starting the line here 
+~and continuing here
+to close~=
+
+=Starting the line here 
+_and continuing here
+to close_=
+
+=Starting the line here 
++and continuing here
+to close+=
+
+~Starting the line here 
+*and continuing here
+to close*~
+
+~Starting the line here 
+/and continuing here
+to close/~
+
+~Starting the line here 
+=and continuing here
+to close=~
+
+~Starting the line here 
+~and continuing here
+to close~~
+
+~Starting the line here 
+_and continuing here
+to close_~
+
+~Starting the line here 
++and continuing here
+to close+~
+
+_Starting the line here 
+*and continuing here
+to close*_
+
+_Starting the line here 
+/and continuing here
+to close/_
+
+_Starting the line here 
+=and continuing here
+to close=_
+
+_Starting the line here 
+~and continuing here
+to close~_
+
+_Starting the line here 
+_and continuing here
+to close__
+
+_Starting the line here 
++and continuing here
+to close+_
+
++Starting the line here 
+*and continuing here
+to close*+
+
++Starting the line here 
+/and continuing here
+to close/+
+
++Starting the line here 
+=and continuing here
+to close=+
+
++Starting the line here 
+~and continuing here
+to close~+
+
++Starting the line here 
+_and continuing here
+to close_+
+
++Starting the line here 
++and continuing here
+to close++
+
+** Together in same paragraph test
+
+*bold* *bold* *bold*
+
+/italic/ *bold* /italic/
+
+=code= *bold* =code=
+
+~verbatim~ *bold* ~verbatim~
+
+_underline_  *bold* _underline_ 
+
++strikethrough+ *bold* +strikethrough+
+
+[[http://www.bing.com]] *bold* [[http://www.bing.com]]
+
+[[http://www.google.com]] *bold* [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] *bold* [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] *bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> *bold* <http://www.google.com>
+
+*bold* /italic/ *bold*
+
+/italic/ /italic/ /italic/
+
+=code= /italic/ =code=
+
+~verbatim~ /italic/ ~verbatim~
+
+_underline_  /italic/ _underline_ 
+
++strikethrough+ /italic/ +strikethrough+
+
+[[http://www.bing.com]] /italic/ [[http://www.bing.com]]
+
+[[http://www.google.com]] /italic/ [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] /italic/ [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] /italic/ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] /italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> /italic/ <http://www.google.com>
+
+*bold* =code= *bold*
+
+/italic/ =code= /italic/
+
+=code= =code= =code=
+
+~verbatim~ =code= ~verbatim~
+
+_underline_  =code= _underline_ 
+
++strikethrough+ =code= +strikethrough+
+
+[[http://www.bing.com]] =code= [[http://www.bing.com]]
+
+[[http://www.google.com]] =code= [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] =code= [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] =code= [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] =code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> =code= <http://www.google.com>
+
+*bold* ~verbatim~ *bold*
+
+/italic/ ~verbatim~ /italic/
+
+=code= ~verbatim~ =code=
+
+~verbatim~ ~verbatim~ ~verbatim~
+
+_underline_  ~verbatim~ _underline_ 
+
++strikethrough+ ~verbatim~ +strikethrough+
+
+[[http://www.bing.com]] ~verbatim~ [[http://www.bing.com]]
+
+[[http://www.google.com]] ~verbatim~ [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] ~verbatim~ [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> ~verbatim~ <http://www.google.com>
+
+*bold* _underline_  *bold*
+
+/italic/ _underline_  /italic/
+
+=code= _underline_  =code=
+
+~verbatim~ _underline_  ~verbatim~
+
+_underline_  _underline_  _underline_ 
+
++strikethrough+ _underline_  +strikethrough+
+
+[[http://www.bing.com]] _underline_  [[http://www.bing.com]]
+
+[[http://www.google.com]] _underline_  [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] _underline_  [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> _underline_  <http://www.google.com>
+
+*bold* +strikethrough+ *bold*
+
+/italic/ +strikethrough+ /italic/
+
+=code= +strikethrough+ =code=
+
+~verbatim~ +strikethrough+ ~verbatim~
+
+_underline_  +strikethrough+ _underline_ 
+
++strikethrough+ +strikethrough+ +strikethrough+
+
+[[http://www.bing.com]] +strikethrough+ [[http://www.bing.com]]
+
+[[http://www.google.com]] +strikethrough+ [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] +strikethrough+ [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> +strikethrough+ <http://www.google.com>
+
+*bold* [[http://www.bing.com]] *bold*
+
+/italic/ [[http://www.bing.com]] /italic/
+
+=code= [[http://www.bing.com]] =code=
+
+~verbatim~ [[http://www.bing.com]] ~verbatim~
+
+_underline_  [[http://www.bing.com]] _underline_ 
+
++strikethrough+ [[http://www.bing.com]] +strikethrough+
+
+[[http://www.bing.com]] [[http://www.bing.com]] [[http://www.bing.com]]
+
+[[http://www.google.com]] [[http://www.bing.com]] [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] [[http://www.bing.com]] [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.bing.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> [[http://www.bing.com]] <http://www.google.com>
+
+*bold* [[http://www.google.com]] *bold*
+
+/italic/ [[http://www.google.com]] /italic/
+
+=code= [[http://www.google.com]] =code=
+
+~verbatim~ [[http://www.google.com]] ~verbatim~
+
+_underline_  [[http://www.google.com]] _underline_ 
+
++strikethrough+ [[http://www.google.com]] +strikethrough+
+
+[[http://www.bing.com]] [[http://www.google.com]] [[http://www.bing.com]]
+
+[[http://www.google.com]] [[http://www.google.com]] [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] [[http://www.google.com]] [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> [[http://www.google.com]] <http://www.google.com>
+
+*bold* [[http://www.xkcd.com][helpful text link]] *bold*
+
+/italic/ [[http://www.xkcd.com][helpful text link]] /italic/
+
+=code= [[http://www.xkcd.com][helpful text link]] =code=
+
+~verbatim~ [[http://www.xkcd.com][helpful text link]] ~verbatim~
+
+_underline_  [[http://www.xkcd.com][helpful text link]] _underline_ 
+
++strikethrough+ [[http://www.xkcd.com][helpful text link]] +strikethrough+
+
+[[http://www.bing.com]] [[http://www.xkcd.com][helpful text link]] [[http://www.bing.com]]
+
+[[http://www.google.com]] [[http://www.xkcd.com][helpful text link]] [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> [[http://www.xkcd.com][helpful text link]] <http://www.google.com>
+
+*bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] *bold*
+
+/italic/ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] /italic/
+
+=code= [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] =code=
+
+~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~
+
+_underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_ 
+
++strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+
+
+[[http://www.bing.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.bing.com]]
+
+[[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>
+
+*bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] *bold*
+
+/italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] /italic/
+
+=code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] =code=
+
+~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~
+
+_underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_ 
+
++strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+
+
+[[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.bing.com]]
+
+[[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>
+
+*bold* <http://www.google.com> *bold*
+
+/italic/ <http://www.google.com> /italic/
+
+=code= <http://www.google.com> =code=
+
+~verbatim~ <http://www.google.com> ~verbatim~
+
+_underline_  <http://www.google.com> _underline_ 
+
++strikethrough+ <http://www.google.com> +strikethrough+
+
+[[http://www.bing.com]] <http://www.google.com> [[http://www.bing.com]]
+
+[[http://www.google.com]] <http://www.google.com> [[http://www.google.com]]
+
+[[http://www.xkcd.com][helpful text link]] <http://www.google.com> [[http://www.xkcd.com][helpful text link]]
+
+[[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com> [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]]
+
+[[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]
+
+<http://www.google.com> <http://www.google.com> <http://www.google.com>
+
+** Together within a table
+
+| *bold* *bold*                                                        | /italic/ *bold*                                                        | =code= *bold*                                                        | ~verbatim~ *bold*                                                        | _underline_  *bold*                                                        | +strikethrough+ *bold*                                                        | [[http://www.bing.com]] *bold*                                                        | [[http://www.google.com]] *bold*                                                        | [[http://www.xkcd.com][helpful text link]] *bold*                                                        | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] *bold*                                                        | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] *bold*                                                        | <http://www.google.com> *bold*                                                        |
+| *bold* /italic/                                                      | /italic/ /italic/                                                      | =code= /italic/                                                      | ~verbatim~ /italic/                                                      | _underline_  /italic/                                                      | +strikethrough+ /italic/                                                      | [[http://www.bing.com]] /italic/                                                      | [[http://www.google.com]] /italic/                                                      | [[http://www.xkcd.com][helpful text link]] /italic/                                                      | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] /italic/                                                      | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] /italic/                                                      | <http://www.google.com> /italic/                                                      |
+| *bold* =code=                                                        | /italic/ =code=                                                        | =code= =code=                                                        | ~verbatim~ =code=                                                        | _underline_  =code=                                                        | +strikethrough+ =code=                                                        | [[http://www.bing.com]] =code=                                                        | [[http://www.google.com]] =code=                                                        | [[http://www.xkcd.com][helpful text link]] =code=                                                        | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] =code=                                                        | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] =code=                                                        | <http://www.google.com> =code=                                                        |
+| *bold* ~verbatim~                                                    | /italic/ ~verbatim~                                                    | =code= ~verbatim~                                                    | ~verbatim~ ~verbatim~                                                    | _underline_  ~verbatim~                                                    | +strikethrough+ ~verbatim~                                                    | [[http://www.bing.com]] ~verbatim~                                                    | [[http://www.google.com]] ~verbatim~                                                    | [[http://www.xkcd.com][helpful text link]] ~verbatim~                                                    | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~                                                    | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~                                                    | <http://www.google.com> ~verbatim~                                                    |
+| *bold* _underline_                                                   | /italic/ _underline_                                                   | =code= _underline_                                                   | ~verbatim~ _underline_                                                   | _underline_  _underline_                                                   | +strikethrough+ _underline_                                                   | [[http://www.bing.com]] _underline_                                                   | [[http://www.google.com]] _underline_                                                   | [[http://www.xkcd.com][helpful text link]] _underline_                                                   | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_                                                   | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_                                                   | <http://www.google.com> _underline_                                                   |
+| *bold* +strikethrough+                                               | /italic/ +strikethrough+                                               | =code= +strikethrough+                                               | ~verbatim~ +strikethrough+                                               | _underline_  +strikethrough+                                               | +strikethrough+ +strikethrough+                                               | [[http://www.bing.com]] +strikethrough+                                               | [[http://www.google.com]] +strikethrough+                                               | [[http://www.xkcd.com][helpful text link]] +strikethrough+                                               | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+                                               | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+                                               | <http://www.google.com> +strikethrough+                                               |
+| *bold* [[http://www.bing.com]]                                           | /italic/ [[http://www.bing.com]]                                           | =code= [[http://www.bing.com]]                                           | ~verbatim~ [[http://www.bing.com]]                                           | _underline_  [[http://www.bing.com]]                                           | +strikethrough+ [[http://www.bing.com]]                                           | [[http://www.bing.com]] [[http://www.bing.com]]                                           | [[http://www.google.com]] [[http://www.bing.com]]                                           | [[http://www.xkcd.com][helpful text link]] [[http://www.bing.com]]                                           | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.bing.com]]                                           | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.bing.com]]                                           | <http://www.google.com> [[http://www.bing.com]]                                           |
+| *bold* [[http://www.google.com]]                                         | /italic/ [[http://www.google.com]]                                         | =code= [[http://www.google.com]]                                         | ~verbatim~ [[http://www.google.com]]                                         | _underline_  [[http://www.google.com]]                                         | +strikethrough+ [[http://www.google.com]]                                         | [[http://www.bing.com]] [[http://www.google.com]]                                         | [[http://www.google.com]] [[http://www.google.com]]                                         | [[http://www.xkcd.com][helpful text link]] [[http://www.google.com]]                                         | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.google.com]]                                         | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.google.com]]                                         | <http://www.google.com> [[http://www.google.com]]                                         |
+| *bold* [[http://www.xkcd.com][helpful text link]]                                             | /italic/ [[http://www.xkcd.com][helpful text link]]                                             | =code= [[http://www.xkcd.com][helpful text link]]                                             | ~verbatim~ [[http://www.xkcd.com][helpful text link]]                                             | _underline_  [[http://www.xkcd.com][helpful text link]]                                             | +strikethrough+ [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.bing.com]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.google.com]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][helpful text link]]                                             | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][helpful text link]]                                             | <http://www.google.com> [[http://www.xkcd.com][helpful text link]]                                             |
+| *bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | /italic/ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | =code= [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | ~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | _underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | +strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.bing.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | <http://www.google.com> [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] |
+| *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | /italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | =code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | <http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       |
+| *bold* <http://www.google.com>                                       | /italic/ <http://www.google.com>                                       | =code= <http://www.google.com>                                       | ~verbatim~ <http://www.google.com>                                       | _underline_  <http://www.google.com>                                       | +strikethrough+ <http://www.google.com>                                       | [[http://www.bing.com]] <http://www.google.com>                                       | [[http://www.google.com]] <http://www.google.com>                                       | [[http://www.xkcd.com][helpful text link]] <http://www.google.com>                                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>                                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>                                       | <http://www.google.com> <http://www.google.com>                                       |
+

@@ -135,6 +135,42 @@ module Orgmode
       [:example, :inline_example, :raw_text, :src].include? current_mode
     end
 
+    def do_custom_markup
+      if File.exists? @options[:markup_file]
+        load_custom_markup
+        if @custom_blocktags.empty?
+          no_valid_markup_found
+        else
+          set_custom_markup
+        end
+      else
+        no_custom_markup_file_exists
+      end
+    end
+
+    def load_custom_markup
+      require 'yaml'
+      self.class.to_s == 'Orgmode::MarkdownOutputBuffer' ? filter = '^MarkdownMap$' : filter = '^HtmlBlockTag$|^Tags$'
+      @custom_blocktags = YAML.load_file(@options[:markup_file]).select {|k| k.to_s.match(filter) }
+    end
+
+    def set_custom_markup
+      @custom_blocktags.keys.each do |k|
+        @custom_blocktags[k].each {|key,v| self.class.const_get(k.to_s)[key] = v if self.class.const_get(k.to_s).key? key}
+      end
+    end
+
+    def no_valid_markup_found
+      self.class.to_s == 'Orgmode::MarkdownOutputBuffer' ? tags = 'MarkdownMap' : tags = 'HtmlBlockTag or Tags'
+      @logger.debug "Setting Custom Markup failed. No #{tags} key where found in: #{@options[:markup_file]}."
+      @logger.debug "Continuing export with default markup."
+    end
+
+    def no_custom_markup_file_exists
+      @logger.debug "Setting Custom Markup failed. No such file exists: #{@options[:markup_file]}."
+      @logger.debug "Continuing export with default tags."
+    end
+
     ######################################################################
     private
 
