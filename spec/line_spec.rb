@@ -185,6 +185,23 @@ describe Orgmode::Line do
     end
   end
 
+  context "at the start of a results block" do
+    cases = [
+             "#+RESULTS: hello-world",
+             "#+RESULTS: ",
+             "#+RESULTS:",
+             "#+results: HELLO-WORLD",
+             "#+results: ",
+             "#+results:"
+            ]
+    cases.each do |c|
+      it "should recognize #{c}" do 
+        l = Orgmode::Line.new(c).start_of_results_code_block?
+        expect(l).to be_truthy
+      end
+    end
+  end
+
   it "should recognize an included file" do
     expect(Orgmode::Line.new("#+INCLUDE: \"~/somefile.org\"").include_file?).to be_truthy
   end
