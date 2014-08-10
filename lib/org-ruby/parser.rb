@@ -448,18 +448,13 @@ module Orgmode
 
     # Stores an in-buffer setting.
     def store_in_buffer_setting(key, value)
-      if key == "OPTIONS" then
+      if key == "OPTIONS"
 
         # Options are stored in a hash. Special-case.
-
-        value.split.each do |opt|
-          if opt =~ /^(.*):(.*?)$/ then
-            @options[$1] = $2
-          else
-            raise "Unexpected option: #{opt}"
-          end
+        value.scan(/([^ ]*):((((\(.*\))))|([^ ])*)/) do |o, v|
+          @options[o] = v
         end
-      elsif key =~ /^(TODO|SEQ_TODO|TYP_TODO)$/ then
+      elsif key =~ /^(TODO|SEQ_TODO|TYP_TODO)$/
         # Handle todo keywords specially.
         value.split.each do |keyword|
           keyword.gsub!(/\(.*\)/, "") # Get rid of any parenthetical notes

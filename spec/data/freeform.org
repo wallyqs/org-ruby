@@ -6,7 +6,10 @@
 #+KEYWORDS: 
 #+LANGUAGE:  en
 #+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
-#+OPTIONS:   TeX:t LaTeX:nil skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+OPTIONS:   TeX:t LaTeX:nil skip:nil todo:t pri:nil tags:not-in-toc
+#+OPTIONS:   ':t *:t -:t arch:headline author:t c:nil
+#+OPTIONS:   creator:comment d:(not LOGBOOK) date:t e:t email:nil inline:t
+#+OPTIONS:   p:nil stat:t tasks:t tex:t timestamp:t
 #+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
