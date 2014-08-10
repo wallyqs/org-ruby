@@ -46,7 +46,7 @@ describe Orgmode::Parser do
 
   it "should understand lines before the first headline" do
     parser = Orgmode::Parser.load(FreeformFile)
-    expect(parser.header_lines.count).to eq(19)
+    expect(parser.header_lines.count).to eq(22)
   end
 
   it "should load in-buffer settings" do
