@@ -46,7 +46,7 @@ describe Orgmode::Parser do
 
   it "should understand lines before the first headline" do
     parser = Orgmode::Parser.load(FreeformFile)
-    expect(parser.header_lines.count).to eq(19)
+    expect(parser.header_lines.count).to eq(22)
   end
 
   it "should load in-buffer settings" do
@@ -59,10 +59,44 @@ describe Orgmode::Parser do
 
   it "should understand OPTIONS" do
     parser = Orgmode::Parser.load(FreeformFile)
-    expect(parser.options.count).to eq(19)
-    expect(parser.options["TeX"]).to eql("t")
-    expect(parser.options["todo"]).to eql("t")
-    expect(parser.options["\\n"]).to eql("nil")
+    expect(parser.options.count).to        eq(33)
+    expect(parser.options["TeX"]).to       eql("t")
+    expect(parser.options["todo"]).to      eql("t")
+    expect(parser.options["\\n"]).to       eql("nil")
+    expect(parser.options['H']).to         eq('3')
+    expect(parser.options['num']).to       eq('t')
+    expect(parser.options['toc']).to       eq('nil')
+    expect(parser.options['\n']).to        eq('nil')
+    expect(parser.options['@']).to         eq('t')
+    expect(parser.options[':']).to         eq('t')
+    expect(parser.options['|']).to         eq('t')
+    expect(parser.options['^']).to         eq('t')
+    expect(parser.options['-']).to         eq('t')
+    expect(parser.options['f']).to         eq('t')
+    expect(parser.options['*']).to         eq('t')
+    expect(parser.options['<']).to         eq('t')
+    expect(parser.options['TeX']).to       eq('t')
+    expect(parser.options['LaTeX']).to     eq('nil')
+    expect(parser.options['skip']).to      eq('nil')
+    expect(parser.options['todo']).to      eq('t')
+    expect(parser.options['pri']).to       eq('nil')
+    expect(parser.options['tags']).to      eq('not-in-toc')
+    expect(parser.options["'"]).to         eq('t')
+    expect(parser.options['arch']).to      eq('headline')
+    expect(parser.options['author']).to    eq('t')
+    expect(parser.options['c']).to         eq('nil')
+    expect(parser.options['creator']).to   eq('comment')
+    expect(parser.options['d']).to         eq('(not LOGBOOK)')
+    expect(parser.options['date']).to      eq('t')
+    expect(parser.options['e']).to         eq('t')
+    expect(parser.options['email']).to     eq('nil')
+    expect(parser.options['inline']).to    eq('t')
+    expect(parser.options['p']).to         eq('nil')
+    expect(parser.options['stat']).to      eq('t')
+    expect(parser.options['tasks']).to     eq('t')
+    expect(parser.options['tex']).to       eq('t')
+    expect(parser.options['timestamp']).to eq('t')
+
     expect(parser.export_todo?).to be true
     parser.options.delete("todo")
     expect(parser.export_todo?).to be false
