@@ -19,12 +19,12 @@ Version would be bumped to: 0.9.7
  - Fix code blocks prepended comma stripping
  - Bugfix: Recognize =#+RESULTS: block from named blocks=
 
-* 0.10.X
+* 0.11.X
 
 Purpose of this series of releases is latest features
 for support in other tools and catchup with Org mode 0.8.0 features.
 
-** [0/4] 0.10.0
+** [0/4] 0.11.0
 
 - [ ] Support =#+SETUPFILE=
 
@@ -34,11 +34,11 @@ for support in other tools and catchup with Org mode 0.8.0 features.
 
 - [ ] Adopt OrgSpec instead of Rake tasks for when adding a new feature
 
-* 0.9.X
+* 0.10.X
 
 Purpose of these series of releases is stable support for Github adoption.
 
-** [0/4] 0.9.8
+** [0/4] 0.10.0
 
 - [ ] Read only task lists
   https://github.com/wallyqs/org-ruby/issues/15
@@ -51,6 +51,14 @@ Purpose of these series of releases is stable support for Github adoption.
 
 - [ ] Support cross references
   https://github.com/wallyqs/org-ruby/issues/11
+
+* 0.9.X
+
+Patches and bugfixes before making it to 0.10
+
+** [1/1] 0.9.8
+
+- [X] Bugfix for `#+OPTIONS` parsing
 
 ** [2/2]  0.9.7
 
