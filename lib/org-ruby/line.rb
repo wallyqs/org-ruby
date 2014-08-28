@@ -47,7 +47,7 @@ module Orgmode
     def comment?
       return @assigned_paragraph_type == :comment if @assigned_paragraph_type
       return block_type.casecmp("COMMENT") if begin_block? or end_block?
-      return @line =~ /^#/
+      return @line =~ /^[ \t]*?#[ \t]/
     end
 
     PropertyDrawerRegexp = /^\s*:(PROPERTIES|END):/i

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Orgmode::Line do
 
   it "should tell comments" do
-    comments = ["# hello", "#hello" ]
+    comments = ["# hello", " # hello" ]
     comments.each do |c|
       line = Orgmode::Line.new c
       expect(line.comment?).to be_truthy
