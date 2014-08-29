@@ -6,7 +6,7 @@
 * Current version in use at Github
 
 Currently using: 0.9.1 
-Version would be bumped to: 0.9.7
+Version would be bumped to: 0.9.9
 
 ** Changelog for Github
 
@@ -56,14 +56,4 @@ Purpose of these series of releases is stable support for Github adoption.
 
 Patches and bugfixes before making it to 0.10
 
-** [1/1] 0.9.8
-
-- [X] Bugfix for `#+OPTIONS` parsing
-
-** [2/2]  0.9.7
-
-- [X] Allow custom markup overwrite
-  https://github.com/wallyqs/org-ruby/pull/16
-
-- [X] Fix issue recognizing =#+RESULTS= block
 
