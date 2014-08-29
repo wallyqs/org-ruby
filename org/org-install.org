@@ -1,0 +1,35 @@
+#+TITLE:	Installing latest Org mode
+#+runmode:	idempotent
+#+startup:      showeverything
+
+* TODO Manual install
+
+#+name: org-mode-git-cloned
+#+BEGIN_SRC sh
+[ -e src/org-mode/.git ]
+#+END_SRC
+
+#+name: git-clone-org-mode
+#+BEGIN_SRC sh :unless org-mode-git-cloned
+mkdir src
+git clone git://orgmode.org/org-mode.git src/org-mode
+#+END_SRC
+
+** COMMENT Compile step 
+
+Example of doing this in OS X, should be done on a fresh install as well (=-Q=)
+
+#+name: compile
+#+BEGIN_SRC sh :dir src/org-mode :affinity osx
+# OS X setup
+export EMACS="/Applications/Emacs.app/Contents/MacOS/Emacs"
+$EMACS -batch -Q -L lisp -l ../mk/org-fixup -f org-make-autoloads-compile-force
+#+END_SRC
+
+* DONE Updating Org mode to 0.8.2 with ELPA
+
+Most straighforward way of doing this is as follows:
+
+- Open a fresh Emacs with -q option <-- Important: Otherwise the install breaks and some symbols become undefined
+- M-x package-install RET org-mode RET
+- Start Emacs once again

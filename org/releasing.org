@@ -1,0 +1,18 @@
+#+TITLE:   Releasing a new version of the gem
+#+runmode: idempotent
+
+Bump the current version:
+
+#+BEGIN_SRC ruby :tangle lib/org-ruby/version.rb
+module OrgRuby
+  VERSION = '0.9.7'
+end
+#+END_SRC
+
+Create the gem:
+
+#+name: build-the-gem
+#+BEGIN_SRC sh
+gem build org-ruby.gemspec
+#+END_SRC
+
