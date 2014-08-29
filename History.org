@@ -2,6 +2,10 @@
 #+title:   Changelog
 #+startup: showeverything
 
+* 0.9.9 / 2014-08-30
+
+- Bugfix for comment regex
+
 * 0.9.8 / 2014-08-11
 
 - Bugfix for =#+OPTIONS= values parsing
@@ -22,7 +26,7 @@
 * 0.9.4 / 2014-04-18
 
  - Track block names within the line properties
- - Add option to skip-syntax-highlighting explicitly
+ - Add option to skip syntax highlighting explicitly
 
 * 0.9.3 / 2014-03-25
 
@@ -32,11 +36,11 @@
 
  - Fix Org mode syntax for escaping html: Syntax actually now is =@@html:<text>@@=
 
- - Fix '#=TITLE:' to render as a h1 headline
+ - Fix =#=TITLE:= to render as a h1 headline
 
- - Remove rewriting links to '.org' files as '.html'
+ - Remove rewriting links to =.org= files as =.html=
 
- - Implement :exports options for code blocks
+ - Implement =:exports= options for code blocks
 
 * 0.9.1 / 2014-02-13
 
@@ -49,16 +53,16 @@
 
 * 0.8.3 / 2014-02-02
 
- - Bugfix :: Two backslashes \\ at the end of the line make a line break without breaking paragraph.
+ - Bugfix :: Two backslashes =\\= at the end of the line make a line break without breaking paragraph.
  - Bugfix :: Fix inline formatting not working for definition lists
  - Add basic markdown exporter
 
 * 0.8.2 / 2013-11-09
 
  - Manage the #=INCLUDE tag in org files (contribution by pierre-lecocq)
- - #=INCLUDE is disabled by default. Needs either ORG_RUBY_INCLUDE_ROOT or 
-   ORG_RUBY_ENABLE_INCLUDE_FILES environment variables in order to be enabled.
- - Link abbreviations with #=LINK tag are supported (by pierre-lecocq too, thanks!)
+ - #=INCLUDE is disabled by default. Needs either =ORG_RUBY_INCLUDE_ROOT= or 
+   =ORG_RUBY_ENABLE_INCLUDE_FILES= environment variables in order to be enabled.
+ - Link abbreviations with =#+LINK= tag are supported (by pierre-lecocq too, thanks!)
  - Strip prepended commas added by Emacs Org mode to src/example blocks
 
 * 0.8.1 / 2013-02-17
@@ -68,7 +72,7 @@
 * 0.8.0 / 2013-02-10
 
  - A lot of refactoring work and bugfixes contributed by vonavi (many thanks!)
- - Raw HTML is supported with #=html 
+ - Raw HTML is supported with =#+html=
  - Code indentation for code blocks is fixed now
  - Support for definition lists is improved
  - Bugfix for when including headlines in center and quote blocks.
@@ -104,9 +108,9 @@
 * 0.6.1 / 2012-04-14
 
  - Added encoding directive to support Ruby 1.9.2
- - Headlines with the COMMENT keyword, and the PROPERTIES drawer are not exported
- - Angle links in org-mode are embedded in anchor tags on html output
- - #=BEGIN/END_SRC lang code blocks are embedded in code tags with class that specifies the coding language
+ - Headlines with the =COMMENT= keyword, and the =PROPERTIES= drawer are not exported
+ - Angle links in Org mode are embedded in anchor tags on html output
+ - =#+=BEGIN/END_SRC= lang code blocks are embedded in code tags with class that specifies the coding language
  - Fixed bug in code blocks when a colon was at the beginning
  - More than five dashes create an horizontal rule in html output
 
