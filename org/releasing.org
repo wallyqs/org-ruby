@@ -1,18 +1,28 @@
 #+TITLE:   Releasing a new version of the gem
 #+runmode: idempotent
 
-Bump the current version:
+- Bump the current version
 
-#+BEGIN_SRC ruby :tangle lib/org-ruby/version.rb
+#+begin_src ruby :tangle lib/org-ruby/version.rb
 module OrgRuby
-  VERSION = '0.9.8'
+  VERSION = '0.9.9'
 end
-#+END_SRC
+#+end_src
 
-Create the gem:
+- Create the gem
 
 #+name: build-the-gem
-#+BEGIN_SRC sh
+#+begin_src sh
 gem build org-ruby.gemspec
-#+END_SRC
+#+end_src
 
+- Run tests on the following platforms
+
+#+begin_src yaml :tangle .travis.yml
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1.2
+notifications:
+  disabled: true
+#+end_src
