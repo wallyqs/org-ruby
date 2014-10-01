@@ -35,7 +35,7 @@ module Orgmode
     LineRegexp = /^\*+\s+/
 
     # This matches the tags on a headline
-    TagsRegexp = /\s*:[\w:]*:\s*$/
+    TagsRegexp = /\s*:[\w:@]*:\s*$/
 
     # Special keywords allowed at the start of a line.
     Keywords = %w[TODO DONE]

@@ -26,7 +26,7 @@ What happens when you exceed the number of headline levels to export?
 
 * Exlude me, too!                                       :exclude:
 
-* Headline 1                                        :READING:DVD:
+* Headline 1                         :ALLOWEDSYMBOLS_1234567890@:READING:DVD:
 
 ** Headline 2
 
