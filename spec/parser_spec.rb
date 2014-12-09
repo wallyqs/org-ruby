@@ -192,6 +192,15 @@ EXAMPLE
     end
   end
 
+  describe "Make it possible to disable rubypants pass" do
+    it "should allow the raw dash" do
+      org = "This is a dash -- that will remain as is."
+      parser = Orgmode::Parser.new(org, { :skip_rubypants_pass => true })
+      expected = "<p>#{org}</p>\n"
+      expect(expected).to eq(parser.to_html)
+    end
+  end
+
   describe "Export to HTML test cases" do
     # Dynamic generation of examples from each *.org file in html_examples.
     # Each of these files is convertable to HTML.

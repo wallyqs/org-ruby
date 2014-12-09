@@ -376,7 +376,9 @@ module Orgmode
       end
       output << "\n"
 
-      rp = RubyPants.new(output)
+      return output if @parser_options[:skip_rubypants_pass]
+        
+      rp = RubyPants.new(output) 
       rp.to_html
     end
 

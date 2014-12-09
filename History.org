@@ -2,6 +2,10 @@
 #+title:   Changelog
 #+startup: showeverything
 
+* 0.9.10 / 2014-12-09
+
+- Add option to disable Rubypants
+
 * 0.9.9 / 2014-08-30
 
 - Bugfix for comment regex
