@@ -5,7 +5,7 @@
 
 #+begin_src ruby :tangle lib/org-ruby/version.rb
 module OrgRuby
-  VERSION = '0.9.10'
+  VERSION = '0.9.12'
 end
 #+end_src
 
@@ -23,6 +23,7 @@ rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.2
+  - 2.2.0-dev
 notifications:
   disabled: true
 #+end_src
