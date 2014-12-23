@@ -239,7 +239,7 @@ bundle exec ruby /tmp/print_entities.rb
  * Writing `\prod`, results in: ∏
  * Writing `\micro`, results in: µ
  * Writing `\macr`, results in: ¯
- * Writing `\deg`, results in: deg
+ * Writing `\deg`, results in: °
  * Writing `\prime`, results in: ′
  * Writing `\Prime`, results in: ″
  * Writing `\infin`, results in: ∞
@@ -268,7 +268,7 @@ bundle exec ruby /tmp/print_entities.rb
  * Writing `\ge`, results in: ≥
  * Writing `\sub`, results in: ⊂
  * Writing `\subset`, results in: ⊂
- * Writing `\sup`, results in: sup
+ * Writing `\sup`, results in: ⊃
  * Writing `\supset`, results in: ⊃
  * Writing `\nsub`, results in: ⊄
  * Writing `\sube`, results in: ⊆
