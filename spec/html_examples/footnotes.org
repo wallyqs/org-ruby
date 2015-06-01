@@ -1,14 +1,208 @@
 #+TITLE: Footnotes
 #+OPTIONS: f:t
 
-* Footnotes
-
-Using numbers [fn:0]
-
 Using letters and not defined in the footnote [fn:abc]
 
+Defined in the footnote itself with markup [fn:0:*blub*]
+
+Some example paragraph [fn:1], with text at the end.
+
+Some example paragraph [fn:2], with text at the end.
+
+Some example paragraph [fn:3], with text at the end.
+
+Some example paragraph [fn:4], with text at the end.
+
+Some example paragraph [fn:5], with text at the end.
+
+Some example paragraph [fn:6], with text at the end.
+
+Some example paragraph [fn:7], with text at the end.
+
+Some example paragraph [fn:8], with text at the end.
+
+Some example paragraph [fn:9], with text at the end.
+
+Some example paragraph [fn:10], with text at the end.
+
+Some example paragraph [fn:11], with text at the end.
+
+Some example paragraph [fn:12], with text at the end.
+
+Some example paragraph [fn:13], with text at the end.
+
+Some example paragraph [fn:14], with text at the end.
+
+Some example paragraph [fn:15], with text at the end.
+
+Some example paragraph [fn:16], with text at the end.
+
+Some example paragraph [fn:17], with text at the end.
+
+Some example paragraph [fn:18], with text at the end.
+
+Some example paragraph [fn:19], with text at the end.
+
+Some example paragraph [fn:20], with text at the end.
+
+Some example paragraph [fn:21], with text at the end.
+
+Some example paragraph [fn:22], with text at the end.
+
+Some example paragraph [fn:23], with text at the end.
+
+Some example paragraph [fn:24], with text at the end.
+
+Some example paragraph [fn:25], with text at the end.
+
+Some example paragraph [fn:26], with text at the end.
+
+Some example paragraph [fn:27], with text at the end.
+
+Some example paragraph [fn:28], with text at the end.
+
+Some example paragraph [fn:29], with text at the end.
+
+Some example paragraph [fn:30], with text at the end.
+
+Some example paragraph [fn:31], with text at the end.
+
+Some example paragraph [fn:32], with text at the end.
+
+Some example paragraph [fn:33], with text at the end.
+
+Some example paragraph [fn:34], with text at the end.
+
+Some example paragraph [fn:35], with text at the end.
+
+Some example paragraph [fn:36], with text at the end.
+
+Some example paragraph [fn:37], with text at the end.
+
+Some example paragraph [fn:38], with text at the end.
+
+Some example paragraph [fn:39], with text at the end.
+
+Some example paragraph [fn:40], with text at the end.
+
+Some example paragraph [fn:41], with text at the end.
+
+Some example paragraph [fn:42], with text at the end.
+
+Some example paragraph [fn:43], with text at the end.
+
+Some example paragraph [fn:44], with text at the end.
+
+Some example paragraph [fn:45], with text at the end.
+
+Some example paragraph [fn:46], with text at the end.
+
+Some example paragraph [fn:47], with text at the end.
+
+Some example paragraph [fn:48], with text at the end.
+
+Some example paragraph [fn:49], with text at the end.
+
+Some example paragraph [fn:50], with text at the end.
+
+[fn:1] And some example footnote
+
+[fn:2] And some example footnote
+
+[fn:3] And some example footnote
+
+[fn:4] And some example footnote
+
+[fn:5] And some example footnote
+
+[fn:6] And some example footnote
+
+[fn:7] And some example footnote
+
+[fn:8] And some example footnote
+
+[fn:9] And some example footnote
+
+[fn:10] And some example footnote
+
+[fn:11] And some example footnote
+
+[fn:12] And some example footnote
+
+[fn:13] And some example footnote
+
+[fn:14] And some example footnote
+
+[fn:15] And some example footnote
+
+[fn:16] And some example footnote
+
+[fn:17] And some example footnote
+
+[fn:18] And some example footnote
+
+[fn:19] And some example footnote
+
+[fn:20] And some example footnote
+
+[fn:21] And some example footnote
+
+[fn:22] And some example footnote
+
+[fn:23] And some example footnote
+
+[fn:24] And some example footnote
+
+[fn:25] And some example footnote
+
+[fn:26] And some example footnote
+
+[fn:27] And some example footnote
+
+[fn:28] And some example footnote
+
+[fn:29] And some example footnote
+
+[fn:30] And some example footnote
+
+[fn:31] And some example footnote
+
+[fn:32] And some example footnote
+
+[fn:33] And some example footnote
+
+[fn:34] And some example footnote
+
+[fn:35] And some example footnote
+
+[fn:36] And some example footnote
+
+[fn:37] And some example footnote
+
+[fn:38] And some example footnote
+
+[fn:39] And some example footnote
+
+[fn:40] And some example footnote
+
+[fn:41] And some example footnote
+
+[fn:42] And some example footnote
+
+[fn:43] And some example footnote
+
+[fn:44] And some example footnote
+
+[fn:45] And some example footnote
+
+[fn:46] And some example footnote
+
+[fn:47] And some example footnote
+
+[fn:48] And some example footnote
+
+[fn:49] And some example footnote
+
+[fn:50] And some example footnote
+
 Using letters and defined in the footnote [fn:abc:definition of abc]
-
-Defined in the footnote itself with markup [fn:1:*blub*]
-
-[fn:0] Definition of first footnote

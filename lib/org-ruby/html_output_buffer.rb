@@ -210,12 +210,12 @@ module Orgmode
       return false unless @options[:export_footnotes] and not @footnotes.empty?
 
       @output << "\n<div id=\"footnotes\">\n<h2 class=\"footnotes\">Footnotes:</h2>\n<div id=\"text-footnotes\">\n"
-
-      @footnotes.each do |name, defi|
+      @footnotes.each do |name, (defi, content)|
         @buffer = defi
-        @output << "<p class=\"footnote\"><sup><a class=\"footnum\" name=\"fn.#{name}\" href=\"#fnr.#{name}\">#{name}</a></sup>" \
+        @output << "<div class=\"footdef\"><sup><a id=\"fnr.#{name}\" class=\"footref\" href=\"#fn.#{name}\">#{name}</a></sup>" \
+                << "<p class=\"footpara\">" \
                 << inline_formatting(@buffer) \
-                << "</p>\n"
+                << "</p></div>\n"
       end
 
       @output << "</div>\n</div>"
@@ -340,10 +340,16 @@ module Orgmode
       end
 
       if @options[:export_footnotes] then
+        @re_help.rewrite_footnote_definition str do |name, content|
+          # @footnotes[name] = content
+          quote_tags("<sup><a id=\"fn.#{name}\" class=\"footnum\" href=\"#fnr.#{name}\">") +
+            name + quote_tags("</a></sup> <p class=\"footpara\">#{content}")
+        end
+
         @re_help.rewrite_footnote str do |name, defi|
-          # TODO escape name for url?
+          # TODO: escape name for url?
           @footnotes[name] = defi if defi
-          quote_tags("<sup><a class=\"footref\" name=\"fnr.#{name}\" href=\"#fn.#{name}\">") +
+          quote_tags("<sup><a id=\"fnr.#{name}\" class=\"footref\" href=\"#fn.#{name}\">") +
             name + quote_tags("</a></sup>")
         end
       end
