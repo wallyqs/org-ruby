@@ -58,7 +58,8 @@ module Orgmode
       build_org_emphasis_regexp
       build_org_link_regexp
       @org_subp_regexp = /([_^])\{(.*?)\}/
-      @org_footnote_regexp = /\[fn:(.+?)(:(.*?))?\]/
+      @org_footnote_regexp = /\[fn:(.+?)(:(.*))?\]/
+      @org_footnote_def_regexp = /^\[fn:(.+?)(:(.*))?\]( (.+))?/
     end
 
     # Finds all emphasis matches in a string.
@@ -121,6 +122,12 @@ module Orgmode
     def rewrite_footnote str # :yields: name, definition or nil
       str.gsub! @org_footnote_regexp do |match|
         yield $1, $3
+      end
+    end
+
+    def rewrite_footnote_definition str
+      str.gsub! @org_footnote_def_regexp do |match|
+        yield $1, $5
       end
     end
 
