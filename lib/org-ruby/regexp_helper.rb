@@ -185,7 +185,7 @@ module Orgmode
                              ([^\]\[]+) # This is the friendly text
                           \])?\]/x
       @org_angle_link_text_regexp = /<(\w+:[^\]\s<>]+)>/
-      @org_image_file_regexp = /\.(gif|jpe?g|p(?:bm|gm|n[gm]|pm)|svg|tiff?|x[bp]m)/i
+      @org_image_file_regexp = /\.(gif|jpe?g|p(?:bm|gm|n[gm]|pm)|svgz?|tiff?|x[bp]m)/i
     end
   end                           # class Emphasis
 end                             # module Orgmode
