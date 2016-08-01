@@ -15,8 +15,8 @@ module Orgmode
       end
     end
 
-    def push_mode(mode, indent)
-      super(mode, indent)
+    def push_mode(mode, indent, properties)
+      super(mode, indent, properties)
     end
 
     def pop_mode(mode = nil)

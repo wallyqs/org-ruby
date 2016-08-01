@@ -46,7 +46,8 @@ module Orgmode
       @mode_stack.last
     end
 
-    def push_mode(mode, indent)
+    
+    def push_mode(mode, indent, properties)
       @mode_stack.push(mode)
       @list_indent_stack.push(indent)
     end
@@ -234,10 +235,10 @@ module Orgmode
             mode_is_block? current_mode)
           # Opens the major mode of line if it exists
           if @list_indent_stack.last != line.indent or mode_is_block? current_mode
-            push_mode(line.major_mode, line.indent) if line.major_mode
+            push_mode(line.major_mode, line.indent, line.properties) if line.major_mode
           end
           # Opens tag that precedes text immediately
-          push_mode(line.paragraph_type, line.indent) unless line.end_block?
+          push_mode(line.paragraph_type, line.indent, line.properties) unless line.end_block?
         end
       end
     end
