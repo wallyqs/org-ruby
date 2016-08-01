@@ -59,9 +59,9 @@ module Orgmode
     # Output buffer is entering a new mode. Use this opportunity to
     # write out one of the block tags in the HtmlBlockTag constant to
     # put this information in the HTML stream.
-    def push_mode(mode, indent)
-      super(mode, indent)
-
+    def push_mode(mode, indent, properties={})
+      @logger.debug "Properties: #{properties}"
+      super(mode, indent, properties)
       if HtmlBlockTag[mode]
         unless ((mode_is_table?(mode) and skip_tables?) or
                 (mode == :src and !@options[:skip_syntax_highlight] and defined? Pygments))
@@ -77,12 +77,17 @@ module Orgmode
                       when @options[:decorate_title]
                         " class=\"title\""
                       end
-
           add_paragraph unless @new_paragraph == :start
           @new_paragraph = true
 
           @logger.debug "#{mode}: <#{HtmlBlockTag[mode]}#{css_class}>"
-          @output << "<#{HtmlBlockTag[mode]}#{css_class}>"
+          # Check to see if we need to restart numbering from a
+          # previous interrupted li
+          if mode_is_ol?(mode) && properties.key?(HtmlBlockTag[:list_item])
+            @output << "<#{HtmlBlockTag[mode]} start=#{properties[HtmlBlockTag[:list_item]]}#{css_class}>"
+          else
+            @output << "<#{HtmlBlockTag[mode]}#{css_class}>"
+          end
           # Entering a new mode obliterates the title decoration
           @options[:decorate_title] = nil
         end
@@ -233,6 +238,10 @@ module Orgmode
     def mode_is_table?(mode)
       (mode == :table or mode == :table_row or
        mode == :table_separator or mode == :table_header)
+    end
+
+    def mode_is_ol?(mode)
+      mode == :ordered_list
     end
 
     # Escapes any HTML content in string
