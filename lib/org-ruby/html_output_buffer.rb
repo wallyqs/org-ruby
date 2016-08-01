@@ -83,7 +83,7 @@ module Orgmode
           @logger.debug "#{mode}: <#{HtmlBlockTag[mode]}#{css_class}>"
           # Check to see if we need to restart numbering from a
           # previous interrupted li
-          if mode_is_ol?(mode) and properties.key?(HtmlBlockTag[:list_item])
+          if mode_is_ol?(mode) && properties.key?(HtmlBlockTag[:list_item])
             @output << "<#{HtmlBlockTag[mode]} start=#{properties[HtmlBlockTag[:list_item]]}#{css_class}>"
           else
             @output << "<#{HtmlBlockTag[mode]}#{css_class}>"

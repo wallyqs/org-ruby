@@ -46,8 +46,8 @@ module Orgmode
       @mode_stack.last
     end
 
-    
-    def push_mode(mode, indent, properties)
+
+    def push_mode(mode, indent, _)
       @mode_stack.push(mode)
       @list_indent_stack.push(indent)
     end
@@ -238,7 +238,8 @@ module Orgmode
             push_mode(line.major_mode, line.indent, line.properties) if line.major_mode
           end
           # Opens tag that precedes text immediately
-          push_mode(line.paragraph_type, line.indent, line.properties) unless line.end_block?
+          push_mode(line.paragraph_type, line.indent,
+                    line.properties) unless line.end_block?
         end
       end
     end
