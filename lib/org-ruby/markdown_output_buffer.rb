@@ -15,7 +15,7 @@ module Orgmode
       end
     end
 
-    def push_mode(mode, indent, properties)
+    def push_mode(mode, indent, properties={})
       super(mode, indent, properties)
     end
 

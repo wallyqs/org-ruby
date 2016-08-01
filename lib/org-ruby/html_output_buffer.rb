@@ -59,7 +59,7 @@ module Orgmode
     # Output buffer is entering a new mode. Use this opportunity to
     # write out one of the block tags in the HtmlBlockTag constant to
     # put this information in the HTML stream.
-    def push_mode(mode, indent, properties)
+    def push_mode(mode, indent, properties={})
       @logger.debug "Properties: #{properties}"
       super(mode, indent, properties)
       if HtmlBlockTag[mode]

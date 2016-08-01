@@ -47,7 +47,7 @@ module Orgmode
     end
 
 
-    def push_mode(mode, indent, _)
+    def push_mode(mode, indent, properties={})
       @mode_stack.push(mode)
       @list_indent_stack.push(indent)
     end
