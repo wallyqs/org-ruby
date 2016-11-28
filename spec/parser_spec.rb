@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pathname'
 
 describe Orgmode::Parser do
   it "should open ORG files" do
