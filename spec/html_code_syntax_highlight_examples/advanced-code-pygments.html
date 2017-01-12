@@ -16,7 +16,7 @@
 <p>Two ASCII blobs.</p>
 <h1><span class="heading-number heading-number-1">2</span> BEGIN_SRC</h1>
 <p>And this:</p>
-<div class="highlight"><pre><span class="c1"># Finds all emphasis matches in a string.</span>
+<div class="highlight"><pre><span></span><span class="c1"># Finds all emphasis matches in a string.</span>
 <span class="c1"># Supply a block that will get the marker and body as parameters.</span>
 <span class="k">def</span> <span class="nf">match_all</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
   <span class="n">str</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="vi">@org_emphasis_regexp</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">match</span><span class="o">|</span>
@@ -25,7 +25,7 @@
 <span class="k">end</span>
 </pre></div>
 <p>Now let&#8217;s test case-insensitive code blocks.</p>
-<div class="highlight"><pre><span class="c1"># Finds all emphasis matches in a string.</span>
+<div class="highlight"><pre><span></span><span class="c1"># Finds all emphasis matches in a string.</span>
 <span class="c1"># Supply a block that will get the marker and body as parameters.</span>
 <span class="k">def</span> <span class="nf">match_all</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
   <span class="n">str</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="vi">@org_emphasis_regexp</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">match</span><span class="o">|</span>
@@ -33,7 +33,7 @@
   <span class="k">end</span>
 <span class="k">end</span>
 </pre></div>
-<div class="highlight"><pre><span class="p">(</span><span class="k">def </span><span class="nv">fib-seq</span>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="k">def </span><span class="nv">fib-seq</span>
   <span class="p">(</span><span class="nf">concat</span>
    <span class="p">[</span><span class="mi">0</span> <span class="mi">1</span><span class="p">]</span>
    <span class="p">((</span><span class="k">fn </span><span class="nv">rfib</span> <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span><span class="p">]</span>
@@ -43,7 +43,7 @@
 <span class="p">(</span><span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">5</span> <span class="mi">8</span> <span class="mi">13</span> <span class="mi">21</span> <span class="mi">34</span> <span class="mi">55</span> <span class="mi">89</span> <span class="mi">144</span> <span class="mi">233</span> <span class="mi">377</span> <span class="mi">610</span> <span class="mi">987</span> <span class="mi">1597</span> <span class="mi">2584</span> <span class="mi">4181</span><span class="p">)</span>
 </pre></div>
 <p>Even if no language is set, it is still wrapped in code tags but class is empty.</p>
-<div class="highlight"><pre>echo &#39;Defaults env_keeps=&quot;http_proxy https_proxy ftp_proxy&quot;&#39; | sudo tee -a /etc/sudoers
+<div class="highlight"><pre><span></span>echo &#39;Defaults env_keeps=&quot;http_proxy https_proxy ftp_proxy&quot;&#39; | sudo tee -a /etc/sudoers
 </pre></div>
 <h1><span class="heading-number heading-number-1">3</span> It should be possible to write a colon at the beginning of an example</h1>
 <blockquote>
@@ -51,12 +51,12 @@
     :symbols. They sure are the
     best things in the world!</p>
 </blockquote>
-<div class="highlight"><pre><span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="ss">:one</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
 <span class="ss">:two</span> <span class="o">=&gt;</span> <span class="mi">2</span>
 <span class="p">}</span>
 </pre></div>
-<div class="highlight"><pre><span class="p">(</span><span class="kd">defproject </span><span class="nv">helloworld</span> <span class="s">&quot;0.1&quot;</span>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defproject </span><span class="nv">helloworld</span> <span class="s">&quot;0.1&quot;</span>
 <span class="ss">:dependencies</span> <span class="p">[[</span><span class="nv">org.clojure/clojure</span>
                  <span class="s">&quot;1.1.0-master-SNAPSHOT&quot;</span><span class="p">]</span>
               <span class="p">[</span><span class="nv">org.clojure/clojure-contrib</span>
@@ -65,41 +65,41 @@
 </pre></div>
 <h1><span class="heading-number heading-number-1">4</span> Code syntax highlight with Pygments</h1>
 <h2><span class="heading-number heading-number-2">4.1</span> No language selected</h2>
-<div class="highlight"><pre>&lt;script&gt;alert(&#39;hello world&#39;)&lt;/script&gt;
+<div class="highlight"><pre><span></span>&lt;script&gt;alert(&#39;hello world&#39;)&lt;/script&gt;
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.2</span> CSS example</h2>
-<div class="highlight"><pre><span class="o">*</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="o">*</span> <span class="p">{</span>
  <span class="c">/* apply a natural box layout model to all elements */</span>
- <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span> 
- <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span> 
- <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span> 
+ <span class="k">box-sizing</span><span class="p">:</span> <span class="kc">border-box</span><span class="p">;</span> 
+ <span class="kp">-moz-</span><span class="k">box-sizing</span><span class="p">:</span> <span class="kc">border-box</span><span class="p">;</span> 
+ <span class="kp">-webkit-</span><span class="k">box-sizing</span><span class="p">:</span> <span class="kc">border-box</span><span class="p">;</span> 
 <span class="p">}</span>
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.3</span> HTML example</h2>
-<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
-  <span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;title&gt;</span>Hello<span class="nt">&lt;/title&gt;</span>
-  <span class="nt">&lt;/head&gt;</span>
-  <span class="nt">&lt;body&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>Hello<span class="nt">&lt;/h1&gt;</span>
-  <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
+<div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Hello<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.4</span> Ruby example</h2>
-<div class="highlight"><pre><span class="k">class</span> <span class="nc">Post</span> <span class="o">&lt;&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Post</span> <span class="o">&lt;&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
   <span class="k">def</span> <span class="nf">print_title</span>
     <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">self</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span>
   <span class="k">end</span>
 <span class="k">end</span>
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.5</span> Python example</h2>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">mapnik</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mapnik</span>
 
 <span class="n">m</span> <span class="o">=</span> <span class="n">mapnik</span><span class="o">.</span><span class="n">Map</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">Map</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s">&#39;steelblue&#39;</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">Map</span><span class="o">.</span><span class="n">Color</span><span class="p">(</span><span class="s1">&#39;steelblue&#39;</span><span class="p">)</span>
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.6</span> Javascript example</h2>
-<div class="highlight"><pre><span class="nx">exports</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="nx">exports</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 
 <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
 
@@ -112,20 +112,20 @@
 <span class="p">})(</span><span class="nx">jQuery</span><span class="p">);</span>
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.7</span> JSON example</h2>
-<div class="highlight"><pre><span class="p">{</span> <span class="err">name:</span> <span class="nt">&quot;Waldemar&quot;</span>
+<div class="highlight"><pre><span></span><span class="p">{</span> <span class="err">name:</span> <span class="nt">&quot;Waldemar&quot;</span>
 <span class="p">,</span> <span class="err">surname:</span> <span class="nt">&quot;Quevedo&quot;</span>
 <span class="p">}</span>
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.8</span> PHP example</h2>
-<div class="highlight"><pre><span class="x">echo &quot;Hello&quot;;</span>
+<div class="highlight"><pre><span></span><span class="x">echo &quot;Hello&quot;;</span>
 <span class="x">phpinfo();</span>
 <span class="x">var_dump(some_var);</span>
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.9</span> Elisp example</h2>
-<div class="highlight"><pre><span class="p">(</span><span class="nf">defun</span> <span class="nv">hello</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">defun</span> <span class="nv">hello</span><span class="p">()</span>
   <span class="p">(</span><span class="nf">interactive</span><span class="p">)</span>
   <span class="p">(</span><span class="nf">message</span> <span class="s">&quot;hello&quot;</span><span class="p">))</span>
 </pre></div>
 <h2><span class="heading-number heading-number-2">4.10</span> Not supported language example</h2>
-<div class="highlight"><pre>!+!+++!++!++!++!+
+<div class="highlight"><pre><span></span>!+!+++!++!++!++!+
 </pre></div>

@@ -4,13 +4,13 @@
   this prepended comma should be removed before parsing.</p>
 <p>(Fixes <a href="https://github.com/bdewey/org-ruby/issues/50">https://github.com/bdewey/org-ruby/issues/50</a>)</p>
 <h2>Here the prepended comma will be removed.</h2>
-<div class="highlight"><pre>* Hello
+<div class="highlight"><pre><span></span>* Hello
 ** Goodbye
  *** Not a headline, but prepended comma still removed.
 * I am a headline
 </pre></div>
 <h2>Here the prepended comma is should not be removed.</h2>
-<div class="highlight"><pre><span class="p">{</span>
+<div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="s2">&quot;one&quot;</span><span class="o">:</span>   <span class="mi">1</span>
 <span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="o">:</span>   <span class="mi">2</span>
 <span class="p">,</span> <span class="s2">&quot;three&quot;</span><span class="o">:</span> <span class="mi">3</span>
@@ -19,22 +19,22 @@
 </pre></div>
 <h2>Here the prepended comma is also removed</h2>
 <p>Emacs Org mode implementation also removes it.</p>
-<div class="highlight"><pre><span class="n">text</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="no">TEXT</span>
+<div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="dl">TEXT</span>
 <span class="sh">#+TITLE: Prepended comma world</span>
 <span class="sh">* Hello world</span>
 <span class="sh">More text here</span>
-<span class="no">TEXT</span>
+<span class="dl">TEXT</span>
 </pre></div>
 <h2>Here the prepended comma will be remove for the <code>Hello world</code> headline</h2>
-<div class="highlight"><pre>,  ,* Hi
+<div class="highlight"><pre><span></span>,  ,* Hi
 ,  
 ,  ,* This will be appended a comma
 * Hello world  
 ,  
 </pre></div>
 <h2>Here the prepended comma will be removed</h2>
-<div class="highlight"><pre>#+TITLE: &quot;Hello world&quot;
+<div class="highlight"><pre><span></span>#+TITLE: &quot;Hello world&quot;
 </pre></div>
 <h2>This will be rendered as normal</h2>
-<div class="highlight"><pre>,,,,,,,,,,,,,,,,,*Hello world
+<div class="highlight"><pre><span></span>,,,,,,,,,,,,,,,,,*Hello world
 </pre></div>
