@@ -12,3 +12,13 @@ the inline image. I recognize the following image file types:
  * .png
  * .gif
  * .jpeg
+ * .svg
+ * .svgz
+
+Sample .svg:
+
+[https://www.w3.org/Graphics/SVG/Test/20110816/svg/animate-dom-01-f.svg](https://www.w3.org/Graphics/SVG/Test/20110816/svg/animate-dom-01-f.svg)
+
+Sample .svgz:
+
+[https://www.w3.org/Graphics/SVG/Test/20110816/svg/conform-viewers-01-t.svgz](https://www.w3.org/Graphics/SVG/Test/20110816/svg/conform-viewers-01-t.svgz)
