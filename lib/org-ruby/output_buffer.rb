@@ -89,6 +89,8 @@ module Orgmode
       when ([:definition_term, :list_item, :table_row, :table_header,
              :horizontal_rule].include? line.paragraph_type)
         @buffer << "\n" << line.output_text.strip
+      when line.paragraph_type == :table_separator
+        @buffer << "\n" << line.output_text.strip.tr("+", "|")
       when line.paragraph_type == :paragraph
         @buffer << "\n"
         buffer_indentation
