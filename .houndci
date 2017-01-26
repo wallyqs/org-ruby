@@ -1,0 +1,12 @@
+Style/LineLength:
+  Description: 'Limit lines to 130 characters.'
+  Max: 130
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Style/RedundantBegin:
+  Enabled: false
