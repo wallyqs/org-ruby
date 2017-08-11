@@ -100,7 +100,7 @@ module Orgmode
       @parser_options = parser_options
 
       #
-      # Include file feature disabled by default since 
+      # Include file feature disabled by default since
       # it would be dangerous in some environments
       #
       # http://orgmode.org/manual/Include-files.html
@@ -182,7 +182,7 @@ module Orgmode
           end
           table_header_set = false if !line.table?
 
-        when :example, :html, :src
+        when :example, :html, :src, :export
           # As long as we stay in code mode, force lines to be code.
           # Don't try to interpret structural items, like headings and tables.
           line.assigned_paragraph_type = :code

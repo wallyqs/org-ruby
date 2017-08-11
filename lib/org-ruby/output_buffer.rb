@@ -127,7 +127,7 @@ module Orgmode
 
     # Test if we're in an output mode in which whitespace is significant.
     def preserve_whitespace?
-      [:example, :inline_example, :raw_text, :src].include? current_mode
+      [:example, :inline_example, :raw_text, :src, :export].include? current_mode
     end
 
     ######################################################################
