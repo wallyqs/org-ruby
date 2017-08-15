@@ -308,7 +308,7 @@ module Orgmode
         [link, defi].compact.each do |text|
           # We don't support search links right now. Get rid of it.
           text.sub!(/\A(file:[^\s]+)::[^\s]*?\Z/, "\\1")
-          text.sub!(/\Afile:(?=[^\s]+\Z)/, "")
+          text.sub!(/\Afile(|\+emacs|\+sys):(?=[^\s]+\Z)/, "")
         end
 
         # We don't add a description for images in links, because its
