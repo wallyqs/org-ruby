@@ -13,6 +13,10 @@ sections within documents, etc.
 
   [[file:code-comment.org][Code Comment]]
 
+  [[file+emacs:code-comment.org][Emacs Code Comment]]
+
+  [[file+sys:code-comment.org][Sys Code Comment]]
+
 * Search links
 
   This is a search link into code-comment.org.

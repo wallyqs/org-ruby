@@ -43,4 +43,14 @@ Advanced Lists
 - Three
 - Four
 
-  
+* Continue numbered list
+
+Here comes a multi-part list.
+
+  1. Item the first.
+  2. Item the second.
+
+Here is some intermediate text.
+
+  1. [@3] Item the third.
+  2. Item the fourth.

@@ -11,8 +11,8 @@ module Orgmode
       @footnotes = []
     end
 
-    def push_mode(mode, indent)
-      super(mode, indent)
+    def push_mode(mode, indent, properties={})
+      super(mode, indent, properties)
       @output << "bc. " if mode_is_code? mode
       if mode == :center or mode == :quote
         @add_paragraph = false

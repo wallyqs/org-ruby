@@ -36,6 +36,7 @@ module Orgmode
       @properties = { }
       determine_paragraph_type
       determine_major_mode
+      extract_properties
       @indent = $&.length unless blank?
     end
 
@@ -115,8 +116,25 @@ module Orgmode
       check_assignment_or_regexp(:ordered_list, OrderedListRegexp)
     end
 
+    ContinuedOrderedListRegexp = /^\[@(\d+)\]\s+/
+
     def strip_ordered_list_tag
-      @line.sub(OrderedListRegexp, "")
+      line = @line.sub(OrderedListRegexp, "")
+      if line =~ ContinuedOrderedListRegexp
+        line = line.sub(ContinuedOrderedListRegexp, "")
+      end
+      return line
+    end
+
+    def extract_properties
+      if @line =~ OrderedListRegexp
+        line_without_number =  @line.sub(OrderedListRegexp, "")
+        if line_without_number =~ ContinuedOrderedListRegexp
+          # Extract the start of the ordered list and store it in
+          # properties
+          @properties["li"] = line_without_number.match(ContinuedOrderedListRegexp)[1]
+        end
+      end
     end
 
     HorizontalRuleRegexp = /^\s*-{5,}\s*$/
