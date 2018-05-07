@@ -362,6 +362,8 @@ module Orgmode
       case lang
       when 'emacs-lisp', 'common-lisp', 'lisp'
         'scheme'
+      when 'ipython'
+        'python'
       when ''
         'text'
       else
