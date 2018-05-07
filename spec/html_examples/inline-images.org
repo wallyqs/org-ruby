@@ -15,10 +15,18 @@ the inline image. I recognize the following image file types:
 - .svg
 - .svgz
 
-Sample .svg:
+Sample absolute link to .svg:
 
 [[https://www.w3.org/Graphics/SVG/Test/20110816/svg/animate-dom-01-f.svg]]
 
-Sample .svgz:
+Sample absolute link to .svgz:
 
 [[https://www.w3.org/Graphics/SVG/Test/20110816/svg/conform-viewers-01-t.svgz]]
+
+Sample relative link to .svg:
+
+[[file:images/animate-dom-01-f.svg]]
+
+Sample relative link to .svgz:
+
+[[file:images/conform-viewers-01-t.svgz]]
