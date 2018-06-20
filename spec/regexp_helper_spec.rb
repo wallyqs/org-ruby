@@ -60,4 +60,17 @@ describe Orgmode::RegexpHelper do
     end
     expect(str).to eql("\"http://www.google.com\":http://www.google.com")
   end
+
+  it "should allow quotes within code markup" do
+    e = Orgmode::RegexpHelper.new
+    map = {
+      "~" => "code"
+    }
+    n = e.rewrite_emphasis('This string contains a quote using code markup: ~"~') do |border, str|
+      "<#{map[border]}>#{str}</#{map[border]}>"
+    end
+    n = e.restore_code_snippets n
+
+    expect(n).to eql("This string contains a quote using code markup: <code>\"</code>")
+  end
 end                             # describe Orgmode::RegexpHelper
