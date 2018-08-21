@@ -46,7 +46,7 @@ module Orgmode
       # Set up the emphasis regular expression.
       @pre_emphasis = ' \t\(\'"\{'
       @post_emphasis = '- \t\.,:!\?;\'"\)\}\\\\'
-      @border_forbidden = '\s,"\''
+      @border_forbidden = ' \t\r\n'
       @body_regexp = '.*?'
       @max_newlines = 1
       @body_regexp = "#{@body_regexp}" +
