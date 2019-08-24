@@ -10,6 +10,9 @@ module Orgmode
     # asterisks, the keywords, and the tags.
     attr_reader :headline_text
 
+    # This is the "slug" of the headline text
+    attr_reader :slug
+
     # This contains the lines that "belong" to the headline.
     attr_reader :body_lines
 
@@ -61,6 +64,7 @@ module Orgmode
         end
         @keyword = nil
         parse_keywords
+        @slug = slugify(@headline_text)
       else
         raise "'#{line}' is not a valid headline"
       end
@@ -99,6 +103,19 @@ module Orgmode
         @keyword = words[0]
         @headline_text.sub!(Regexp.new("^#{@keyword}\s*"), "")
       end
+    end
+
+    def slugify(text)
+      # lower case
+      text = text.downcase
+
+      # replace spaces with dash
+      text = text.gsub(/\s+/, '-')
+
+      # remove non-alphanumeric characters
+      text = text.gsub(/[^\p{Alnum}-]/, '')
+
+      text
     end
   end                           # class Headline
 end                             # class Orgmode

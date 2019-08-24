@@ -16,4 +16,13 @@ describe Orgmode::OutputBuffer do
     expect(output_buffer.get_next_headline_number(4)).to eql("5.2.0.1")
   end
 
+  describe Orgmode::HtmlOutputBuffer do
+    it 'generates html ids' do
+      lines = '* Hello world!'
+      parser_options = { export_heading_id: true }
+      expected_output = '<h1><span id="hello-world"></span>Hello world!</h1>'
+      actual_output = Orgmode::Parser.new(lines, parser_options).to_html.strip
+      expect(actual_output).to eql(expected_output)
+    end
+  end
 end
