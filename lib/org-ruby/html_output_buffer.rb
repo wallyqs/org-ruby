@@ -364,6 +364,8 @@ module Orgmode
         'scheme'
       when 'ipython'
         'python'
+      when 'js2'
+        'javascript'
       when ''
         'text'
       else
