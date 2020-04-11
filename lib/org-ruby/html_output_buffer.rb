@@ -342,8 +342,8 @@ module Orgmode
       if @options[:export_footnotes] then
         @re_help.rewrite_footnote_definition str do |name, content|
           # @footnotes[name] = content
-          quote_tags("<sup><a id=\"fn.#{name}\" class=\"footnum\" href=\"#fnr.#{name}\">") +
-            name + quote_tags("</a></sup> <p class=\"footpara\">#{content}</p>")
+          quote_tags("<p class=\"footpara\"><sup><a id=\"fn.#{name}\" class=\"footnum\" href=\"#fnr.#{name}\">") +
+            name + quote_tags("</a></sup> ") + content + quote_tags("</p>")
         end
 
         @re_help.rewrite_footnote str do |name, defi|
