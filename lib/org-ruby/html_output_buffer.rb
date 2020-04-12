@@ -207,15 +207,18 @@ module Orgmode
     end
 
     def output_footnotes!
+      # Only footnotes defined in the footnote (i.e., [fn:0:this is the footnote definition]) will be automatically
+      # added to a separate Footnotes section at the end of the document. All footnotes that are defined separately
+      # from their references will be rendered where they appear in the original Org document.
       return false unless @options[:export_footnotes] and not @footnotes.empty?
 
       @output << "\n<div id=\"footnotes\">\n<h2 class=\"footnotes\">Footnotes:</h2>\n<div id=\"text-footnotes\">\n"
-
-      @footnotes.each do |name, defi|
+      @footnotes.each do |name, (defi, content)|
         @buffer = defi
-        @output << "<p class=\"footnote\"><sup><a class=\"footnum\" name=\"fn.#{name}\" href=\"#fnr.#{name}\">#{name}</a></sup>" \
+        @output << "<div class=\"footdef\"><sup><a id=\"fn.#{name}\" href=\"#fnr.#{name}\">#{name}</a></sup>" \
+                << "<p class=\"footpara\">" \
                 << inline_formatting(@buffer) \
-                << "</p>\n"
+                << "</p></div>\n"
       end
 
       @output << "</div>\n</div>"
@@ -340,10 +343,14 @@ module Orgmode
       end
 
       if @options[:export_footnotes] then
+        @re_help.rewrite_footnote_definition str do |name, content|
+          quote_tags("<sup><a id=\"fn.#{name}\" class=\"footnum\" href=\"#fnr.#{name}\">") +
+            name + quote_tags("</a></sup> ") + content
+        end
+
         @re_help.rewrite_footnote str do |name, defi|
-          # TODO escape name for url?
           @footnotes[name] = defi if defi
-          quote_tags("<sup><a class=\"footref\" name=\"fnr.#{name}\" href=\"#fn.#{name}\">") +
+          quote_tags("<sup><a id=\"fnr.#{name}\" class=\"footref\" href=\"#fn.#{name}\">") +
             name + quote_tags("</a></sup>")
         end
       end
