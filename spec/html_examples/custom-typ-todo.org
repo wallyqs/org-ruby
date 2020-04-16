@@ -1,4 +1,4 @@
-#+TITLE: custom-todo.org
+#+TITLE: custom-typ-todo.org
 #+DESCRIPTION: Makes sure I can handle custom todo entries
 #+TYP_TODO:   TODO(t) INPROGRESS(i) WAITING(w@) | DONE(d) CANCELED(c@)
 #+OPTIONS:    todo:t
