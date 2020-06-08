@@ -195,6 +195,9 @@ module Orgmode
     end
 
     def add_line_attributes headline
+      if @options[:export_heading_id] then
+        @output << "<span id=\"#{headline.slug}\"></span>"
+      end
       if @options[:export_heading_number] then
         level = headline.level
         heading_number = get_next_headline_number(level)
