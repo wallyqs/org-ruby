@@ -346,7 +346,8 @@ module Orgmode
         :export_footnotes      => export_footnotes?,
         :link_abbrevs          => @link_abbrevs,
         :skip_syntax_highlight => @parser_options[:skip_syntax_highlight],
-        :markup_file           => @parser_options[:markup_file]
+        :markup_file           => @parser_options[:markup_file],
+        :generate_heading_id   => @parser_options[:generate_heading_id]
       }
       export_options[:skip_tables] = true if not export_tables?
       output = ""

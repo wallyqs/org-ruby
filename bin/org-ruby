@@ -17,6 +17,10 @@ options_parser = OptionParser.new do |opts|
     options[:debug] = true
   end
 
+  opts.on("-i", "--heading-id", "Add id attribute to HTML headings") do |v|
+    options[:generate_heading_id] = true
+  end
+
   opts.on("-m", "--markup <file>", "Set Custom Markup file") do |f|
     options[:markup_file] = f
   end
@@ -43,7 +47,10 @@ begin
     puts options_parser
   else
     data = IO.read(ARGV[0])
-    p = Orgmode::Parser.new(data, (options[:markup_file] ? {:markup_file => options[:markup_file]} : {}))
+    parser_options = {}
+    parser_options.merge!(options[:markup_file] ? {:markup_file => options[:markup_file]} : {})
+    parser_options.merge!(options[:generate_heading_id] ? {:generate_heading_id => options[:generate_heading_id]} : {})
+    p = Orgmode::Parser.new(data, parser_options)
     $DEBUG = true if options[:debug]
     puts p.to_html if options[:format] == :html
     puts p.to_textile if options[:format] == :textile
