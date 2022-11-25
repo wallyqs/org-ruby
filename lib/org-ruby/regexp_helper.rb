@@ -40,33 +40,18 @@ module Orgmode
     #              non-shy groups here, and don't allow newline here.
     # newline      The maximum number of newlines allowed in an emphasis exp.
 
-    attr_reader :org_image_file_regexp
-
     def initialize
       # Set up the emphasis regular expression.
-      @pre_emphasis = ' \t\(\'"\{'
-      @post_emphasis = '- \t\.,:!\?;\'"\)\}\\\\'
-      @border_forbidden = ' \t\r\n'
-      @body_regexp = '.*?'
-      @max_newlines = 1
-      @body_regexp = "#{@body_regexp}" +
-                     "(?:\\n#{@body_regexp}){0,#{@max_newlines}}" if @max_newlines > 0
-      @markers = '\*\/_=~\+'
       @code_snippet_stack = []
       @logger = Logger.new(STDERR)
       @logger.level = Logger::WARN
-      build_org_emphasis_regexp
-      build_org_link_regexp
-      @org_subp_regexp = /([_^])\{(.*?)\}/
-      @org_footnote_regexp = /\[fn:(.+?)(:(.*))?\]/
-      @org_footnote_def_regexp = /^\[fn:(.+?)(:(.*))?\]( (.+))?/
     end
 
     # Finds all emphasis matches in a string.
     # Supply a block that will get the marker and body as parameters.
     def match_all(str)
-      str.scan(@org_emphasis_regexp) do |match|
-        yield $2, $3
+      str.scan(org_emphasis_regexp) do |_match|
+        yield Regexp.last_match[2], Regexp.last_match[3]
       end
     end
 
@@ -91,43 +76,42 @@ module Orgmode
     # replace "*bold*", "/italic/", and "=code=",
     # respectively. (Clearly this sample string will use HTML-like
     # syntax, assuming +map+ is defined appropriately.)
-    def rewrite_emphasis str
+    def rewrite_emphasis(str)
       # escape the percent signs for safe restoring code snippets
       str.gsub!(/%/, "%%")
       format_str = "%s"
-      str.gsub! @org_emphasis_regexp do |match|
-        pre = $1
+      str.gsub!(org_emphasis_regexp) do |_match|
+        pre = Regexp.last_match(1)
         # preserve the code snippet from further formatting
-        if $2 == "=" or $2 == "~"
-          inner = yield $2, $3
+        inner = yield Regexp.last_match(2), Regexp.last_match(3)
+        if %w[= ~].include?(Regexp.last_match(2))
           # code is not formatted, so turn to single percent signs
           inner.gsub!(/%%/, "%")
           @code_snippet_stack.push inner
           "#{pre}#{format_str}"
         else
-          inner = yield $2, $3
           "#{pre}#{inner}"
         end
       end
     end
 
     # rewrite subscript and superscript (_{foo} and ^{bar})
-    def rewrite_subp str # :yields: type ("_" for subscript and "^" for superscript), text
-      str.gsub! @org_subp_regexp do |match|
-        yield $1, $2
+    def rewrite_subp(str)
+      str.gsub!(org_subp_regexp) do |_match|
+        yield Regexp.last_match(1), Regexp.last_match(2)
       end
     end
 
     # rewrite footnotes
-    def rewrite_footnote str # :yields: name, definition or nil
-      str.gsub! @org_footnote_regexp do |match|
-        yield $1, $3
+    def rewrite_footnote(str)
+      str.gsub!(org_footnote_regexp) do |_match|
+        yield Regexp.last_match(1), Regexp.last_match(3)
       end
     end
 
-    def rewrite_footnote_definition str
-      str.gsub! @org_footnote_def_regexp do |match|
-        yield $1, $5
+    def rewrite_footnote_definition(str)
+      str.gsub!(org_footnote_def_regexp) do |_match|
+        yield Regexp.last_match(1), Regexp.last_match(5)
       end
     end
 
@@ -156,43 +140,76 @@ module Orgmode
     # +http://www.hotmail.com+. In both cases, the block returns an
     # HTML-style link, and that is how things will get recorded in
     # +result+.
-    def rewrite_links str # :yields: link, text
-      str.gsub! @org_link_regexp do |match|
-        yield $1, $3
+    def rewrite_links(str)
+      str.gsub!(org_link_regexp) do |_match|
+        yield Regexp.last_match['url'], Regexp.last_match['friendly_text']
       end
-      str.gsub! @org_angle_link_text_regexp do |match|
-        yield $1, nil
+      str.gsub!(org_angle_link_text_regexp) do |_match|
+        yield Regexp.last_match(1), nil
       end
 
       str # for testing
     end
 
-    def restore_code_snippets str
+    def restore_code_snippets(str)
       str = str % @code_snippet_stack
       @code_snippet_stack = []
       str
     end
 
+    def org_emphasis_regexp
+      Regexp.new("(#{pre_emphasis_regexp})" \
+                 "(#{markers_regexp})" \
+                 "(#{border_forbidden}|" \
+                 "#{border_forbidden}#{body_regexp}" \
+                 "#{border_forbidden})\\2" \
+                 "(?=#{post_emphasis})")
+    end
+
+    def org_link_regexp
+      /\[\[(?<url>[^\[\]]+)\](\[(?<friendly_text>[^\[\]]+)\])?\]/x
+    end
+
+    def org_image_file_regexp
+      /\.(gif|jpe?g|p(?:bm|gm|n[gm]|pm)|svgz?|tiff?|x[bp]m)/i
+    end
+
     private
 
-    def build_org_emphasis_regexp
-      @org_emphasis_regexp = Regexp.new("([#{@pre_emphasis}]|^)" +
-                                        "([#{@markers}])(?!\\2)" +
-                                        "([^#{@border_forbidden}]|" +
-                                        "[^#{@border_forbidden}]#{@body_regexp}" +
-                                        "[^#{@border_forbidden}])\\2" +
-                                        "(?=[#{@post_emphasis}]|$)")
-      @logger.debug "Just created regexp: #{@org_emphasis_regexp}"
+    def pre_emphasis_regexp
+      '^|\s|[\(\'"\{\[]'
     end
 
-    def build_org_link_regexp
-      @org_link_regexp = /\[\[
-                             ([^\]\[]+) # This is the URL
-                          \](\[
-                             ([^\]\[]+) # This is the friendly text
-                          \])?\]/x
-      @org_angle_link_text_regexp = /<(\w+:[^\]\s<>]+)>/
-      @org_image_file_regexp = /\.(gif|jpe?g|p(?:bm|gm|n[gm]|pm)|svgz?|tiff?|x[bp]m)/i
+    def markers_regexp
+      '[\*\/_=~\+]'
     end
-  end                           # class Emphasis
-end                             # module Orgmode
+
+    def border_forbidden
+      '\S'
+    end
+
+    def post_emphasis
+      '\s|[-,\.;:!\?\'"\)\}\]]|$'
+    end
+
+    def body_regexp
+      '.*?(?:\\n.*?){0,1}'
+    end
+
+    def org_subp_regexp
+      /([_^])\{(.*?)\}/
+    end
+
+    def org_footnote_regexp
+      /\[fn:(.+?)(:(.*))?\]/
+    end
+
+    def org_footnote_def_regexp
+      /^\[fn:(.+?)(:(.*))?\]( (.+))?/
+    end
+
+    def org_angle_link_text_regexp
+      /<(\w+:[^\]\s<>]+)>/
+    end
+  end
+end

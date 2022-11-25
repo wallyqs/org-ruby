@@ -6,7 +6,7 @@ things... like elipses. Oh -- and dashes.
  * Question: What does org-mode do for ampersands, like R&R? or &lt;?
  * Answer: Those get escaped, too. ☺
 
-# <Even in headlines! funner & funner!>
+## <Even in headlines! funner & funner!>
 
 « They α should β be γ
 able δ to η exist θ in ε
@@ -24,7 +24,7 @@ Though they appear in center blocks
 
 To work they have to be separated, like ♥ ♥, not like ♥\hearts.
 
-# List of entities supported
+## List of entities supported
 
 ```
 # Script to generate the list of currently supported entities
@@ -383,7 +383,7 @@ bundle exec ruby /tmp/print_entities.rb
  * Writing `\Diamond`, results in: ⋄
  * Writing `\loz`, results in: ◊
 
-# Some special cases
+## Some special cases
 
 In case nothing matches, the string is returned as is.
 

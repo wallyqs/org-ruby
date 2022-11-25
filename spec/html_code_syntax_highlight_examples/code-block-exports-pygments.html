@@ -1,7 +1,7 @@
 <h1 class="title">Support for :exports options from code blocks</h1>
 <p>According to the <a href="http://orgmode.org/manual/Exporting-code-blocks.html#Exporting-code-blocks">Org mode docs</a>, it is possible to customize whether
   the code block will be exported or not.</p>
-<h1>About the <code>#+RESULTS:</code> block</h1>
+<h2>About the <code>#+RESULTS:</code> block</h2>
 <p>Using Org Babel features, it is possible to set <code>:results output</code>
   to a code block and render the results within a <code>#+RESULTS:</code> code block:</p>
 <div class="highlight"><pre><span></span>#+begin_src ruby :results output :exports both
@@ -74,7 +74,7 @@ puts &#39;10&#39;
 </pre></div>
   </li>
 </ol>
-<h1>Default options</h1>
+<h2>Default options</h2>
 <p>The default is to export only the code blocks.</p>
 <p>The following is an code block written in Emacs Lisp
   and its result should not be exported.</p>
@@ -87,7 +87,7 @@ puts &#39;10&#39;
 </pre></div>
 <p>
 </p>
-<h1>:exports code</h1>
+<h2>:exports code</h2>
 <p>Only the code would be in the output,
   the same as when no option is set.</p>
 <div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
@@ -102,13 +102,13 @@ puts &#39;10&#39;
 </pre></div>
 <p>
 </p>
-<h1>:exports none</h1>
+<h2>:exports none</h2>
 <p>This omits both the resulting block,
   and the code block itself.</p>
 <p>This should work as well when using an example block.</p>
 <p>
 </p>
-<h1>:exports both</h1>
+<h2>:exports both</h2>
 <div class="highlight"><pre><span></span><span class="no">Math</span><span class="o">::</span><span class="no">PI</span> <span class="o">+</span> <span class="mi">1</span>
 </pre></div>
 <pre class="example">
@@ -140,7 +140,7 @@ would appear underneath the
 block that was executed.
 This happens after 10 lines by default.
 </pre>
-<h1>:exports results</h1>
+<h2>:exports results</h2>
 <p>This option can&#8217;t be completely supported by OrgRuby since
   we would have to eval the code block using :lang,
   so Org Babel features would have to be implemented as well.</p>

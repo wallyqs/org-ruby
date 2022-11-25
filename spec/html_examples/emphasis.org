@@ -1,4 +1,5 @@
 * Inline Formatting test for emphasis
+Fix issue [[https://github.com/wallyqs/org-ruby/issues/48][#48]] ~~/.bash~ and ~C-'~
 ** Simple feature test
 
 *bold*
@@ -9,7 +10,7 @@
 
 ~verbatim~
 
-_underline_ 
+_underline_
 
 +strikethrough+
 
@@ -231,112 +232,112 @@ end
 all.each {|e| puts e}
 #+end_example
 
-*Starting the line here 
+*Starting the line here
 *and continuing here to close**
 
-*Starting the line here 
+*Starting the line here
 /and continuing here to close/*
 
-*Starting the line here 
+*Starting the line here
 =and continuing here to close=*
 
-*Starting the line here 
+*Starting the line here
 ~and continuing here to close~*
 
-*Starting the line here 
+*Starting the line here
 _and continuing here to close_*
 
-*Starting the line here 
+*Starting the line here
 +and continuing here to close+*
 
-/Starting the line here 
+/Starting the line here
 *and continuing here to close*/
 
-/Starting the line here 
+/Starting the line here
 /and continuing here to close//
 
-/Starting the line here 
+/Starting the line here
 =and continuing here to close=/
 
-/Starting the line here 
+/Starting the line here
 ~and continuing here to close~/
 
-/Starting the line here 
+/Starting the line here
 _and continuing here to close_/
 
-/Starting the line here 
+/Starting the line here
 +and continuing here to close+/
 
-=Starting the line here 
+=Starting the line here
 *and continuing here to close*=
 
-=Starting the line here 
+=Starting the line here
 /and continuing here to close/=
 
-=Starting the line here 
+=Starting the line here
 =and continuing here to close==
 
-=Starting the line here 
+=Starting the line here
 ~and continuing here to close~=
 
-=Starting the line here 
+=Starting the line here
 _and continuing here to close_=
 
-=Starting the line here 
+=Starting the line here
 +and continuing here to close+=
 
-~Starting the line here 
+~Starting the line here
 *and continuing here to close*~
 
-~Starting the line here 
+~Starting the line here
 /and continuing here to close/~
 
-~Starting the line here 
+~Starting the line here
 =and continuing here to close=~
 
-~Starting the line here 
+~Starting the line here
 ~and continuing here to close~~
 
-~Starting the line here 
+~Starting the line here
 _and continuing here to close_~
 
-~Starting the line here 
+~Starting the line here
 +and continuing here to close+~
 
-_Starting the line here 
+_Starting the line here
 *and continuing here to close*_
 
-_Starting the line here 
+_Starting the line here
 /and continuing here to close/_
 
-_Starting the line here 
+_Starting the line here
 =and continuing here to close=_
 
-_Starting the line here 
+_Starting the line here
 ~and continuing here to close~_
 
-_Starting the line here 
+_Starting the line here
 _and continuing here to close__
 
-_Starting the line here 
+_Starting the line here
 +and continuing here to close+_
 
-+Starting the line here 
++Starting the line here
 *and continuing here to close*+
 
-+Starting the line here 
++Starting the line here
 /and continuing here to close/+
 
-+Starting the line here 
++Starting the line here
 =and continuing here to close=+
 
-+Starting the line here 
++Starting the line here
 ~and continuing here to close~+
 
-+Starting the line here 
++Starting the line here
 _and continuing here to close_+
 
-+Starting the line here 
++Starting the line here
 +and continuing here to close++
 
 ** Multiline support test :: two lines
@@ -353,147 +354,147 @@ end
 all.each {|e| puts e}
 #+end_example
 
-*Starting the line here 
+*Starting the line here
 *and continuing here
 to close**
 
-*Starting the line here 
+*Starting the line here
 /and continuing here
 to close/*
 
-*Starting the line here 
+*Starting the line here
 =and continuing here
 to close=*
 
-*Starting the line here 
+*Starting the line here
 ~and continuing here
 to close~*
 
-*Starting the line here 
+*Starting the line here
 _and continuing here
 to close_*
 
-*Starting the line here 
+*Starting the line here
 +and continuing here
 to close+*
 
-/Starting the line here 
+/Starting the line here
 *and continuing here
 to close*/
 
-/Starting the line here 
+/Starting the line here
 /and continuing here
 to close//
 
-/Starting the line here 
+/Starting the line here
 =and continuing here
 to close=/
 
-/Starting the line here 
+/Starting the line here
 ~and continuing here
 to close~/
 
-/Starting the line here 
+/Starting the line here
 _and continuing here
 to close_/
 
-/Starting the line here 
+/Starting the line here
 +and continuing here
 to close+/
 
-=Starting the line here 
+=Starting the line here
 *and continuing here
 to close*=
 
-=Starting the line here 
+=Starting the line here
 /and continuing here
 to close/=
 
-=Starting the line here 
+=Starting the line here
 =and continuing here
 to close==
 
-=Starting the line here 
+=Starting the line here
 ~and continuing here
 to close~=
 
-=Starting the line here 
+=Starting the line here
 _and continuing here
 to close_=
 
-=Starting the line here 
+=Starting the line here
 +and continuing here
 to close+=
 
-~Starting the line here 
+~Starting the line here
 *and continuing here
 to close*~
 
-~Starting the line here 
+~Starting the line here
 /and continuing here
 to close/~
 
-~Starting the line here 
+~Starting the line here
 =and continuing here
 to close=~
 
-~Starting the line here 
+~Starting the line here
 ~and continuing here
 to close~~
 
-~Starting the line here 
+~Starting the line here
 _and continuing here
 to close_~
 
-~Starting the line here 
+~Starting the line here
 +and continuing here
 to close+~
 
-_Starting the line here 
+_Starting the line here
 *and continuing here
 to close*_
 
-_Starting the line here 
+_Starting the line here
 /and continuing here
 to close/_
 
-_Starting the line here 
+_Starting the line here
 =and continuing here
 to close=_
 
-_Starting the line here 
+_Starting the line here
 ~and continuing here
 to close~_
 
-_Starting the line here 
+_Starting the line here
 _and continuing here
 to close__
 
-_Starting the line here 
+_Starting the line here
 +and continuing here
 to close+_
 
-+Starting the line here 
++Starting the line here
 *and continuing here
 to close*+
 
-+Starting the line here 
++Starting the line here
 /and continuing here
 to close/+
 
-+Starting the line here 
++Starting the line here
 =and continuing here
 to close=+
 
-+Starting the line here 
++Starting the line here
 ~and continuing here
 to close~+
 
-+Starting the line here 
++Starting the line here
 _and continuing here
 to close_+
 
-+Starting the line here 
++Starting the line here
 +and continuing here
 to close++
 
@@ -507,7 +508,7 @@ to close++
 
 ~verbatim~ *bold* ~verbatim~
 
-_underline_  *bold* _underline_ 
+_underline_  *bold* _underline_
 
 +strikethrough+ *bold* +strikethrough+
 
@@ -531,7 +532,7 @@ _underline_  *bold* _underline_
 
 ~verbatim~ /italic/ ~verbatim~
 
-_underline_  /italic/ _underline_ 
+_underline_  /italic/ _underline_
 
 +strikethrough+ /italic/ +strikethrough+
 
@@ -555,7 +556,7 @@ _underline_  /italic/ _underline_
 
 ~verbatim~ =code= ~verbatim~
 
-_underline_  =code= _underline_ 
+_underline_  =code= _underline_
 
 +strikethrough+ =code= +strikethrough+
 
@@ -579,7 +580,7 @@ _underline_  =code= _underline_
 
 ~verbatim~ ~verbatim~ ~verbatim~
 
-_underline_  ~verbatim~ _underline_ 
+_underline_  ~verbatim~ _underline_
 
 +strikethrough+ ~verbatim~ +strikethrough+
 
@@ -603,7 +604,7 @@ _underline_  ~verbatim~ _underline_
 
 ~verbatim~ _underline_  ~verbatim~
 
-_underline_  _underline_  _underline_ 
+_underline_  _underline_  _underline_
 
 +strikethrough+ _underline_  +strikethrough+
 
@@ -627,7 +628,7 @@ _underline_  _underline_  _underline_
 
 ~verbatim~ +strikethrough+ ~verbatim~
 
-_underline_  +strikethrough+ _underline_ 
+_underline_  +strikethrough+ _underline_
 
 +strikethrough+ +strikethrough+ +strikethrough+
 
@@ -651,7 +652,7 @@ _underline_  +strikethrough+ _underline_
 
 ~verbatim~ [[http://www.bing.com]] ~verbatim~
 
-_underline_  [[http://www.bing.com]] _underline_ 
+_underline_  [[http://www.bing.com]] _underline_
 
 +strikethrough+ [[http://www.bing.com]] +strikethrough+
 
@@ -675,7 +676,7 @@ _underline_  [[http://www.bing.com]] _underline_
 
 ~verbatim~ [[http://www.google.com]] ~verbatim~
 
-_underline_  [[http://www.google.com]] _underline_ 
+_underline_  [[http://www.google.com]] _underline_
 
 +strikethrough+ [[http://www.google.com]] +strikethrough+
 
@@ -699,7 +700,7 @@ _underline_  [[http://www.google.com]] _underline_
 
 ~verbatim~ [[http://www.xkcd.com][helpful text link]] ~verbatim~
 
-_underline_  [[http://www.xkcd.com][helpful text link]] _underline_ 
+_underline_  [[http://www.xkcd.com][helpful text link]] _underline_
 
 +strikethrough+ [[http://www.xkcd.com][helpful text link]] +strikethrough+
 
@@ -723,7 +724,7 @@ _underline_  [[http://www.xkcd.com][helpful text link]] _underline_
 
 ~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] ~verbatim~
 
-_underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_ 
+_underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _underline_
 
 +strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] +strikethrough+
 
@@ -747,7 +748,7 @@ _underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] _
 
 ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] ~verbatim~
 
-_underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_ 
+_underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _underline_
 
 +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] +strikethrough+
 
@@ -771,7 +772,7 @@ _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] _u
 
 ~verbatim~ <http://www.google.com> ~verbatim~
 
-_underline_  <http://www.google.com> _underline_ 
+_underline_  <http://www.google.com> _underline_
 
 +strikethrough+ <http://www.google.com> +strikethrough+
 
@@ -801,4 +802,3 @@ _underline_  <http://www.google.com> _underline_
 | *bold* [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | /italic/ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | =code= [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | ~verbatim~ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | _underline_  [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | +strikethrough+ [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.bing.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.google.com]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][helpful text link]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] | <http://www.google.com> [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] |
 | *bold* [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | /italic/ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | =code= [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | ~verbatim~ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | _underline_  [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | +strikethrough+ [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.bing.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.google.com]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][helpful text link]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       | <http://www.google.com> [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]]                       |
 | *bold* <http://www.google.com>                                       | /italic/ <http://www.google.com>                                       | =code= <http://www.google.com>                                       | ~verbatim~ <http://www.google.com>                                       | _underline_  <http://www.google.com>                                       | +strikethrough+ <http://www.google.com>                                       | [[http://www.bing.com]] <http://www.google.com>                                       | [[http://www.google.com]] <http://www.google.com>                                       | [[http://www.xkcd.com][helpful text link]] <http://www.google.com>                                       | [[http://farm7.static.flickr.com/6078/6084185195_552aa270b2.jpg]] <http://www.google.com>                                       | [[http://www.xkcd.com][http://imgs.xkcd.com/comics/t_cells.png]] <http://www.google.com>                                       | <http://www.google.com> <http://www.google.com>                                       |
-

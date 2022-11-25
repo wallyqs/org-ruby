@@ -1,6 +1,24 @@
 require 'spec_helper'
 
 describe Orgmode::RegexpHelper do
+  let(:helper) { Orgmode::RegexpHelper.new }
+
+  describe '#org-emphasis-regexp' do
+    it 'match emphasis expresions' do
+      expect(helper.org_emphasis_regexp).to match '~code~'
+    end
+    example { expect(helper.org_emphasis_regexp).to match '[[a][~a~]]' }
+  end
+
+  describe '#org-link-regexp' do
+    it 'match org-links' do
+      expect(helper.org_link_regexp).to match '[[url][description]]'
+    end
+
+    example { expect(helper.org_link_regexp).to match '[[url]]' }
+    example { expect(helper.org_link_regexp).to match '[[a][~a~]]' }
+  end
+
   it "should recognize simple markup" do
     e = Orgmode::RegexpHelper.new
     total = 0
@@ -73,4 +91,4 @@ describe Orgmode::RegexpHelper do
 
     expect(n).to eql("This string contains a quote using code markup: <code>\"</code>")
   end
-end                             # describe Orgmode::RegexpHelper
+end

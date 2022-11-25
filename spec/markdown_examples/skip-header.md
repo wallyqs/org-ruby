@@ -9,6 +9,6 @@ Even this code snippet shouldn't be there.
 Like a ninja. You can't see me.
 ```
 
-# First heading
+## First heading
 
 This should be the first text in the output.

@@ -1,5 +1,5 @@
 
-h1. Footnotes
+h2. Footnotes
 
 p. Using numbers [0]
 

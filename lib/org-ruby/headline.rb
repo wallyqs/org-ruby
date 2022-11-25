@@ -45,14 +45,15 @@ module Orgmode
     # This matches a headline marked as COMMENT
     CommentHeadlineRegexp = /^COMMENT\s+/
 
-    def initialize(line, parser = nil, offset=0)
+    def initialize(line, parser = nil, offset = 0)
       super(line, parser)
       @body_lines = []
       @tags = []
       @export_state = :exclude
       @property_drawer = { }
       if (@line =~ LineRegexp) then
-        @level = $&.strip.length + offset
+        new_offset = (parser && parser.title?) ? offset + 1 : offset
+        @level = $&.strip.length + new_offset
         @headline_text = $'.strip
         if (@headline_text =~ TagsRegexp) then
           @tags = $&.split(/:/)              # split tag text on semicolon
@@ -86,6 +87,11 @@ module Orgmode
     # Overrides Line.paragraph_type.
     def paragraph_type
       :"heading#{@level}"
+    end
+
+    def headline_level
+      title_offset = (parser && parser.title?) ? 1 : 0
+      level - title_offset
     end
 
     ######################################################################

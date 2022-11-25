@@ -232,22 +232,14 @@ module Orgmode
     # TODO: COMMENT block should be considered here
     def block_should_be_exported?
       export_state = block_header_arguments[':exports']
-      case
-      when ['both', 'code', nil, ''].include?(export_state)
-        true
-      when ['none', 'results'].include?(export_state)
-        false
-      end
+      ['both', 'code', nil, ''].include?(export_state) ||
+        !['none', 'results'].include?(export_state)
     end
 
     def results_block_should_be_exported?
       export_state = block_header_arguments[':exports']
-      case
-      when ['results', 'both'].include?(export_state)
-        true
-      when ['code', 'none', nil, ''].include?(export_state)
-        false
-      end
+      ['results', 'both'].include?(export_state) ||
+        !['code', 'none', nil, ''].include?(export_state)
     end
 
     InlineExampleRegexp = /^\s*:\s/

@@ -1,8 +1,8 @@
 <h1 class="title">Example of including a file</h1>
-<h1>Basic tests</h1>
+<h2>Basic tests</h2>
 <p>Advanced Lists</p>
 <p><code>org-ruby</code> supports the following list features of <code>org-mode</code>:</p>
-<h1>Nested lists</h1>
+<h2>Nested lists</h2>
 <ul>
   <li>You can have nested lists</li>
   <li>This is first-level
@@ -21,7 +21,7 @@
 </ul>
 <p>Note the list ends just some more text. Make sure both list blocks
   are closed.</p>
-<h1>Multi-paragraph list items</h1>
+<h2>Multi-paragraph list items</h2>
 <p>This list will end with the end-of-file. Make sure all blocks are closed.</p>
 <ul>
   <li>This is a list item</li>
@@ -36,7 +36,7 @@
     </ul>
   </li>
 </ul>
-<h1>Hyphen, Plus and Asterisk can be used to create lists</h1>
+<h2>Hyphen, Plus and Asterisk can be used to create lists</h2>
 <ul>
   <li>One
     <ul>
@@ -61,7 +61,7 @@
   <li>Three</li>
   <li>Four</li>
 </ul>
-<h1>Continue numbered list</h1>
+<h2>Continue numbered list</h2>
 <p>Here comes a multi-part list.</p>
 <ol>
   <li>Item the first.</li>
@@ -75,14 +75,14 @@
 <p>BLOCKCOMMENT</p>
 <p>Testing that the next part is ignored</p>
 <p>And now back to normal!</p>
-<h1>Within a commented block</h1>
+<h2>Within a commented block</h2>
 <pre class="example">
 &lt;li&gt;[ ] &amp;#8220;smart quotes&amp;#8221;&lt;/li&gt; 
 &lt;li&gt;[ ] I think I need this for &amp;#8216;single quotes&amp;#8217; too. Don&amp;#8217;t I?&lt;/li&gt; 
 &lt;li&gt;[ ] Em dashes would be great &amp;#8212; wouldn&amp;#8217;t they?&lt;/li&gt; 
 &lt;li&gt;[ ] I hope to develop an en dash sometime in 2010 &amp;#8211; 2011.&lt;/li&gt; 
 </pre>
-<h1>Within a center block</h1>
+<h2>Within a center block</h2>
 <div style="text-align: center">
   <p>The following included file will be centered:</p>
   <p>Inline Images</p>
@@ -108,7 +108,7 @@
   <p>Sample relative link to .svgz:</p>
   <p><img src="images/conform-viewers-01-t.svgz" alt="images/conform-viewers-01-t.svgz" /></p>
 </div>
-<h1>Within a blockquote</h1>
+<h2>Within a blockquote</h2>
 <p>This is similar to the center block:</p>
 <blockquote>
   <p>Before
@@ -136,11 +136,11 @@
   <p><img src="images/conform-viewers-01-t.svgz" alt="images/conform-viewers-01-t.svgz" /></p>
   <p>After</p>
 </blockquote>
-<h1>Within an example block, it should not be possible to include a file.</h1>
+<h2>Within an example block, it should not be possible to include a file.</h2>
 <pre class="example">
 #+INCLUDE: &quot;./spec/html_examples/only-list.org&quot;
 </pre>
-<h1>Within a list</h1>
+<h2>Within a list</h2>
 <ul>
   <li>A list that has an included file directive
     <ul>
@@ -161,20 +161,20 @@
 <ul>
   <li>3rd level, though it should be a different list</li>
 </ul>
-<h1>Within a table, cannot be included</h1>
+<h2>Within a table, cannot be included</h2>
 <table>
   <tr><th>One</th><th>Two</th><th>Three</th></tr>
   <tr><td>#+INCLUDE: &#8220;./spec/html_examples/only-list.org&#8221;</td><td>Five</td><td>Six</td></tr>
   <tr><td>Seven</td><td>Eight</td><td>Nine</td></tr>
 </table>
-<h1>When including a file as an example</h1>
+<h2>When including a file as an example</h2>
 <pre class="example">
 - This file has only a list
 - Note it will end with nothing other than a list item.
 - the world wants to know: Will org-ruby write the closing ul tag?
 
 </pre>
-<h1>When including a file as an quote</h1>
+<h2>When including a file as an quote</h2>
 <blockquote>
   <ul>
     <li>This file has only a list</li>

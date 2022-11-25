@@ -2,28 +2,28 @@
 <p>Org-mode export supports a lot of link features. I&#8217;ve covered &#8220;simple&#8221;
   HTML links elsewhere. Now let&#8217;s cover links to other org files, other
   sections within documents, etc.</p>
-<h1>Links to other org files</h1>
+<h2>Links to other org files</h2>
 <p>This is a link to the <code>code-comment.org</code> file in the same
   directory. In <code>emacs</code>, if you click it, the other file opens. We
   want the same behavior in the HTML export.</p>
 <p><a href="code-comment.org">Code Comment</a></p>
 <p><a href="code-comment.org">Emacs Code Comment</a></p>
 <p><a href="code-comment.org">Sys Code Comment</a></p>
-<h1>Search links</h1>
+<h2>Search links</h2>
 <p>This is a search link into code-comment.org.</p>
 <p><a href="code-comment.org">Code Comment</a></p>
-<h1>Correct handling of .org URIs in HTML markup routine (thanks @rayl!)</h1>
+<h2>Correct handling of .org URIs in HTML markup routine (thanks @rayl!)</h2>
 <ul>
   <li><a href="http://foo.com">foo.com website</a></li>
   <li><a href="http://foo.org">foo.org website</a></li>
   <li><a href="http://foo.org/foo.org">foo.org/foo.org</a></li>
   <li><a href="http://localhost:4567/foo.org">localhost:4567/foo.org</a></li>
 </ul>
-<h1>In these links, .org used to be converted to .html. Not anymore since 0.9.2 version of the gem</h1>
+<h2>In these links, .org used to be converted to .html. Not anymore since 0.9.2 version of the gem</h2>
 <ul>
   <li><a href="path.org">file:path.org label</a></li>
   <li><a href="notes/path.org">file:notes/path.org label</a></li>
 </ul>
-<h1>Links abbreviations</h1>
+<h2>Links abbreviations</h2>
 <p>URLs can be abbreviated by a LINK definition in the org file</p>
 <p><a href="http://example.com/something">This is an abbreviated link example</a></p>

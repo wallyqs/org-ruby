@@ -44,6 +44,7 @@ module Orgmode
     # that subtree will not get exported.
     def export_exclude_tags
       return Array.new unless @in_buffer_settings["EXPORT_EXCLUDE_TAGS"]
+
       @in_buffer_settings["EXPORT_EXCLUDE_TAGS"].split
     end
 
@@ -79,28 +80,33 @@ module Orgmode
       @options["^"] != "nil"
     end
 
+    # Support for left to right when buffer or parser option.
+    def left_to_right?
+      @options["ltr"] == 't' || @parser_options[:ltr]
+    end
+
+    def initialize_lines(lines)
+      return lines if lines.is_a? Array
+      return lines.split("\n") if lines.is_a? String
+
+      raise "Unsupported type for +lines+: #{lines.class}"
+    end
+
     # I can construct a parser object either with an array of lines
     # or with a single string that I will split along \n boundaries.
-    def initialize(lines, parser_options={ })
-      if lines.is_a? Array then
-        @lines = lines
-      elsif lines.is_a? String then
-        @lines = lines.split("\n")
-      else
-        raise "Unsupported type for +lines+: #{lines.class}"
-      end
-
+    def initialize(lines, parser_options = {})
+      @lines = initialize_lines lines
       @custom_keywords = []
-      @headlines = Array.new
+      @headlines = []
       @current_headline = nil
       @header_lines = []
-      @in_buffer_settings = { }
-      @options = { }
-      @link_abbrevs = { }
+      @in_buffer_settings = {}
+      @options = {}
+      @link_abbrevs = {}
       @parser_options = parser_options
 
       #
-      # Include file feature disabled by default since 
+      # Include file feature disabled by default since
       # it would be dangerous in some environments
       #
       # http://orgmode.org/manual/Include-files.html
@@ -116,8 +122,8 @@ module Orgmode
       #   e.g. Orgmode::Parser.new(org_text, { :allow_include_files => false })
       #
       if @parser_options[:allow_include_files].nil?
-        if ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] == 'true' \
-          or not ENV['ORG_RUBY_INCLUDE_ROOT'].nil?
+        if (ENV['ORG_RUBY_ENABLE_INCLUDE_FILES'] == 'true') \
+          || !ENV['ORG_RUBY_INCLUDE_ROOT'].nil?
           @parser_options[:allow_include_files] = true
         end
       end
@@ -129,17 +135,15 @@ module Orgmode
 
     # Check include file availability and permissions
     def check_include_file(file_path)
-      can_be_included = File.exists? file_path
+      can_be_included = File.exist? file_path
 
-      if not ENV['ORG_RUBY_INCLUDE_ROOT'].nil?
+      unless ENV['ORG_RUBY_INCLUDE_ROOT'].nil?
         # Ensure we have full paths
         root_path = File.expand_path ENV['ORG_RUBY_INCLUDE_ROOT']
         file_path = File.expand_path file_path
 
         # Check if file is in the defined root path and really exists
-        if file_path.slice(0, root_path.length) != root_path
-          can_be_included = false
-        end
+        can_be_included = false if file_path.slice(0, root_path.length) != root_path
       end
 
       can_be_included
@@ -153,10 +157,11 @@ module Orgmode
         line = Line.new text, self
 
         if @parser_options[:allow_include_files]
-          if line.include_file? and not line.include_file_path.nil?
-            next if not check_include_file line.include_file_path
+          if line.include_file? && !line.include_file_path.nil?
+            next unless check_include_file line.include_file_path
+
             include_data = get_include_data line
-            include_lines = Orgmode::Parser.new(include_data, @parser_options).lines
+            include_lines = initialize_lines include_data
             parse_lines include_lines
           end
         end
@@ -167,20 +172,20 @@ module Orgmode
           @link_abbrevs[link_abbrev_data[0]] = link_abbrev_data[1]
         end
 
-        mode = :normal if line.end_block? and [line.paragraph_type, :comment].include?(mode)
-        mode = :normal if line.property_drawer_end_block? and mode == :property_drawer
+        mode = :normal if line.end_block? && [line.paragraph_type, :comment].include?(mode)
+        mode = :normal if line.property_drawer_end_block? && (mode == :property_drawer)
 
         case mode
         when :normal, :quote, :center
           if Headline.headline? line.to_s
             line = Headline.new line.to_s, self, @parser_options[:offset]
           elsif line.table_separator?
-            if previous_line and previous_line.paragraph_type == :table_row and !table_header_set
+            if previous_line && (previous_line.paragraph_type == :table_row) && !table_header_set
               previous_line.assigned_paragraph_type = :table_header
               table_header_set = true
             end
           end
-          table_header_set = false if !line.table?
+          table_header_set = false unless line.table?
 
         when :example, :html, :src
           if previous_line
@@ -211,15 +216,11 @@ module Orgmode
 
           # We treat the results code block differently since the exporting can be omitted
           if line.begin_block?
-            if line.results_block_should_be_exported?
-              @next_results_block_should_be_exported = true
-            else
-              @next_results_block_should_be_exported = false
-            end
+            @next_results_block_should_be_exported = line.results_block_should_be_exported?
           end
         end
 
-        if mode == :property_drawer and @current_headline
+        if (mode == :property_drawer) && @current_headline
           @current_headline.property_drawer[line.property_drawer_item.first] = line.property_drawer_item.last
         end
 
@@ -245,14 +246,14 @@ module Orgmode
         # Get options
         include_file_lines = line.include_file_options[1].gsub('"', '').split('-')
         include_file_lines[0] = include_file_lines[0].empty? ? 1 : include_file_lines[0].to_i
-        include_file_lines[1] = include_file_lines[1].to_i if !include_file_lines[1].nil?
+        include_file_lines[1] = include_file_lines[1].to_i unless include_file_lines[1].nil?
 
         # Extract request lines. Note that the second index is excluded, according to the doc
         line_index = 1
         include_data = []
-        File.open(line.include_file_path, "r") do |fd|
+        File.open(line.include_file_path, 'r') do |fd|
           while line_data = fd.gets
-            if (line_index >= include_file_lines[0] and (include_file_lines[1].nil? or line_index < include_file_lines[1]))
+            if (line_index >= include_file_lines[0]) && (include_file_lines[1].nil? || (line_index < include_file_lines[1]))
               include_data << line_data.chomp
             end
             line_index += 1
@@ -261,14 +262,14 @@ module Orgmode
 
       when 'src', 'example', 'quote'
         # Prepare tags
-        begin_tag = '#+BEGIN_%s' % [line.include_file_options[0].upcase]
-        if line.include_file_options[0] == 'src' and !line.include_file_options[1].nil?
+        begin_tag = format('#+BEGIN_%s', line.include_file_options[0].upcase)
+        if (line.include_file_options[0] == 'src') && !line.include_file_options[1].nil?
           begin_tag += ' ' + line.include_file_options[1]
         end
-        end_tag = '#+END_%s' % [line.include_file_options[0].upcase]
+        end_tag = format('#+END_%s', line.include_file_options[0].upcase)
 
         # Get lines. Will be transformed into an array at processing
-        include_data = "%s\n%s\n%s" % [begin_tag, IO.read(line.include_file_path), end_tag]
+        include_data = format("%s\n%s\n%s", begin_tag, IO.read(line.include_file_path), end_tag)
 
       else
         include_data = []
@@ -286,22 +287,22 @@ module Orgmode
 
     def set_mode_for_results_block_contents(previous_line, line)
       if previous_line.start_of_results_code_block? \
-        or previous_line.assigned_paragraph_type == :comment
-        unless @next_results_block_should_be_exported or line.paragraph_type == :blank
+        || (previous_line.assigned_paragraph_type == :comment)
+        unless @next_results_block_should_be_exported || (line.paragraph_type == :blank)
           line.assigned_paragraph_type = :comment
         end
       end
     end
 
     # Creates a new parser from the data in a given file
-    def self.load(fname, opts = {})
+    def self.load(fname, _opts = {})
       lines = IO.readlines(fname)
-      return self.new(lines, opts = {})
+      new(lines, opts = {})
     end
 
     # Saves the loaded orgmode file as a textile file.
     def to_textile
-      output = ""
+      output = ''
       output_buffer = TextileOutputBuffer.new(output)
 
       translate(@header_lines, output_buffer)
@@ -315,14 +316,15 @@ module Orgmode
     def to_markdown
       mark_trees_for_export
       export_options = {
-        :markup_file        => @parser_options[:markup_file]
+        markup_file: @parser_options[:markup_file]
       }
-      output = ""
+      output = ''
       output_buffer = MarkdownOutputBuffer.new(output, export_options)
 
       translate(@header_lines, output_buffer)
       @headlines.each do |headline|
         next if headline.export_state == :exclude
+
         case headline.export_state
         when :exclude
           # NOTHING
@@ -339,32 +341,34 @@ module Orgmode
     def to_html
       mark_trees_for_export
       export_options = {
-        :decorate_title        => @in_buffer_settings["TITLE"],
-        :export_heading_number => export_heading_number?,
-        :export_todo           => export_todo?,
-        :use_sub_superscripts  => use_sub_superscripts?,
-        :export_footnotes      => export_footnotes?,
-        :link_abbrevs          => @link_abbrevs,
-        :skip_syntax_highlight => @parser_options[:skip_syntax_highlight],
-        :markup_file           => @parser_options[:markup_file]
+        decorate_title: in_buffer_settings['TITLE'],
+        export_heading_number: export_heading_number?,
+        export_todo: export_todo?,
+        use_sub_superscripts: use_sub_superscripts?,
+        export_footnotes: export_footnotes?,
+        link_abbrevs: @link_abbrevs,
+        skip_syntax_highlight: @parser_options[:skip_syntax_highlight],
+        markup_file: @parser_options[:markup_file],
+        footnotes_title: @parser_options[:footnotes_title],
+        ltr: left_to_right?
       }
-      export_options[:skip_tables] = true if not export_tables?
-      output = ""
+      export_options[:skip_tables] = true unless export_tables?
+      output = ''
       output_buffer = HtmlOutputBuffer.new(output, export_options)
 
-      if @in_buffer_settings["TITLE"]
-
+      if title?
         # If we're given a new title, then just create a new line
         # for that title.
-        title = Line.new(@in_buffer_settings["TITLE"], self, :title)
-        translate([title], output_buffer)
+        title_line = Line.new(title, self, :title)
+        translate([title_line], output_buffer)
       end
       translate(@header_lines, output_buffer) unless skip_header_lines?
 
       # If we've output anything at all, remove the :decorate_title option.
-      export_options.delete(:decorate_title) if (output.length > 0)
+      export_options.delete(:decorate_title) if output.length > 0
       @headlines.each do |headline|
         next if headline.export_state == :exclude
+
         case headline.export_state
         when :exclude
           # NOTHING
@@ -377,10 +381,19 @@ module Orgmode
       output << "\n"
 
       return output if @parser_options[:skip_rubypants_pass]
-        
-      rp = RubyPants.new(output) 
+
+      rp = RubyPants.new(output)
       rp.to_html
     end
+
+    # Hack note (another)
+    def title?
+      !in_buffer_settings['TITLE'].nil?
+    end
+    def title
+      in_buffer_settings['TITLE']
+    end
+    #ends hack
 
     ######################################################################
     private
@@ -408,18 +421,19 @@ module Orgmode
 
       # First pass: See if any headlines are explicitly selected
       @headlines.each do |headline|
-        ancestor_stack.pop while not ancestor_stack.empty? and headline.level <= ancestor_stack.last.level
-        if inherit_export_level and headline.level > inherit_export_level
+        ancestor_stack.pop while !ancestor_stack.empty? &&
+                                 (headline.level <= ancestor_stack.last.level)
+        if inherit_export_level && (headline.level > inherit_export_level)
           headline.export_state = :all
         else
           inherit_export_level = nil
           headline.tags.each do |tag|
-            if (select.include? tag) then
-              marked_any = true
-              headline.export_state = :all
-              ancestor_stack.each { |a| a.export_state = :headline_only unless a.export_state == :all }
-              inherit_export_level = headline.level
-            end
+            next unless select.include? tag
+
+            marked_any = true
+            headline.export_state = :all
+            ancestor_stack.each { |a| a.export_state = :headline_only unless a.export_state == :all }
+            inherit_export_level = headline.level
           end
         end
         ancestor_stack.push headline
@@ -430,12 +444,12 @@ module Orgmode
 
       # Second pass. Look for things that should be excluded, and get rid of them.
       @headlines.each do |headline|
-        if inherit_export_level and headline.level > inherit_export_level
+        if inherit_export_level && (headline.level > inherit_export_level)
           headline.export_state = :exclude
         else
           inherit_export_level = nil
           headline.tags.each do |tag|
-            if (exclude.include? tag) then
+            if exclude.include? tag
               headline.export_state = :exclude
               inherit_export_level = headline.level
             end
@@ -450,7 +464,7 @@ module Orgmode
 
     # Stores an in-buffer setting.
     def store_in_buffer_setting(key, value)
-      if key == "OPTIONS"
+      if key == 'OPTIONS'
 
         # Options are stored in a hash. Special-case.
         value.scan(/([^ ]*):((((\(.*\))))|([^ ])*)/) do |o, v|
@@ -459,13 +473,14 @@ module Orgmode
       elsif key =~ /^(TODO|SEQ_TODO|TYP_TODO)$/
         # Handle todo keywords specially.
         value.split.each do |keyword|
-          keyword.gsub!(/\(.*\)/, "") # Get rid of any parenthetical notes
+          keyword.gsub!(/\(.*\)/, '') # Get rid of any parenthetical notes
           keyword = Regexp.escape(keyword)
-          next if keyword == "\\|"      # Special character in the todo format, not really a keyword
+          next if keyword == '\\|' # Special character in the todo format, not really a keyword
+
           @custom_keywords << keyword
         end
       else
-        @in_buffer_settings[key] = value
+        in_buffer_settings[key] = value
       end
     end
   end                             # class Parser

@@ -4,19 +4,19 @@ b :: world
 
 Text
 
-# Asterisk can be used for lists
+## Asterisk can be used for lists
 
 One :: The first number.
 Two :: The second number.
 Three :: The second number.
 
-# Corner cases of definition lists
+## Corner cases of definition lists
 
 The following examples show how org-ruby behave
 when handling some cases of definition lists.
 (Many thanks to [vonavi](https://github.com/vonavi) for his contributions here)
 
-## Definition List Items
+### Definition List Items
 
  * Regular list
 Key :: Value (k1)
@@ -45,7 +45,7 @@ Key:: MoreKey :: Value (k2)
   * Case 3
 :: Key :: Value (k3)
 
-## Not Definition List Items
+### Not Definition List Items
 
 The following cases will not be considered as definition lists
 but just regular lists.
@@ -58,7 +58,7 @@ Value (n4)
  * Key
 :: Value (n5)
 
-## Definition List Item without Definition
+### Definition List Item without Definition
 
 ??? will be shown in this case
 

@@ -1,5 +1,5 @@
 
-# Footnotes
+## Footnotes
 
 Using numbers [fn:0]
 

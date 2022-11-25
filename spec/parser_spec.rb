@@ -329,6 +329,32 @@ EXAMPLE
     end
   end
 
+  describe "Footnotes title" do
+    base_dir = File.join(File.dirname(__FILE__), "html_examples")
+    org_file = File.join(base_dir, "footnotes.org")
+    html_file = File.join(base_dir, "footnotes_title.html")
+    it 'accept footnotes_title option' do
+      expected = IO.read(html_file)
+      parser = Orgmode::Parser.new(IO.read(org_file), :footnotes_title => "Footnotes Title")
+      actual = parser.to_html
+      expect(actual).to be_kind_of(String)
+      expect(actual).to eq(expected)
+    end
+  end
+
+  describe "Left to right support by" do
+    base_dir = File.join(File.dirname(__FILE__), "html_examples")
+    org_file = File.join(base_dir, "left-to-right.org")
+    html_file = File.join(base_dir, "left-to-right-with-dir.html")
+
+    it 'adds dir="auto" as global attribute' do
+      expected = IO.read(html_file)
+      parser = Orgmode::Parser.new(IO.read(org_file), :ltr => 't')
+      actual = parser.to_html
+      expect(actual).to eq(expected)
+    end
+  end
+
   describe "Export to Markdown test cases" do
     data_directory = File.join(File.dirname(__FILE__), "markdown_examples")
     org_files = File.expand_path(File.join(data_directory, "*.org" ))
@@ -489,4 +515,3 @@ EXAMPLE
     end
   end
 end
-
