@@ -139,7 +139,7 @@ module Orgmode
     end
 
     def do_custom_markup
-      if File.exists? @options[:markup_file]
+      if File.exist? @options[:markup_file]
         load_custom_markup
         if @custom_blocktags.empty?
           no_valid_markup_found

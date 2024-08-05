@@ -4,36 +4,36 @@
   this prepended comma should be removed before parsing.</p>
 <p>(Fixes <a href="https://github.com/bdewey/org-ruby/issues/50">https://github.com/bdewey/org-ruby/issues/50</a>)</p>
 <h2>Here the prepended comma will be removed.</h2>
-<div class="highlight"><pre><span></span>* Hello
-** Goodbye
- *** Not a headline, but prepended comma still removed.
-* I am a headline
+<div class="highlight"><pre><span></span><span class="gh">* Hello</span>
+<span class="gu">** Goodbye</span>
+ <span class="gs">***</span> Not a headline, but prepended comma still removed.
+<span class="gh">* I am a headline</span>
 </pre></div>
 <h2>Here the prepended comma is should not be removed.</h2>
 <div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="s2">&quot;one&quot;</span><span class="o">:</span>   <span class="mi">1</span>
-<span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="o">:</span>   <span class="mi">2</span>
-<span class="p">,</span> <span class="s2">&quot;three&quot;</span><span class="o">:</span> <span class="mi">3</span>
-<span class="p">,</span> <span class="s2">&quot;four&quot;</span><span class="o">:</span>  <span class="mi">4</span>
+<span class="w">  </span><span class="s2">&quot;one&quot;</span><span class="o">:</span><span class="w">   </span><span class="mf">1</span>
+<span class="p">,</span><span class="w"> </span><span class="s2">&quot;two&quot;</span><span class="o">:</span><span class="w">   </span><span class="mf">2</span>
+<span class="p">,</span><span class="w"> </span><span class="s2">&quot;three&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span>
+<span class="p">,</span><span class="w"> </span><span class="s2">&quot;four&quot;</span><span class="o">:</span><span class="w">  </span><span class="mf">4</span>
 <span class="p">}</span>
 </pre></div>
 <h2>Here the prepended comma is also removed</h2>
 <p>Emacs Org mode implementation also removes it.</p>
-<div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="dl">TEXT</span>
+<div class="highlight"><pre><span></span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">TEXT</span>
 <span class="sh">#+TITLE: Prepended comma world</span>
 <span class="sh">* Hello world</span>
 <span class="sh">More text here</span>
 <span class="dl">TEXT</span>
 </pre></div>
 <h2>Here the prepended comma will be remove for the <code>Hello world</code> headline</h2>
-<div class="highlight"><pre><span></span>,  ,* Hi
-,  
-,  ,* This will be appended a comma
-* Hello world  
+<div class="highlight"><pre><span></span>,  ,<span class="gs">* Hi</span>
+<span class="gs">,  </span>
+<span class="gs">,  ,*</span> This will be appended a comma
+<span class="gh">* Hello world  </span>
 ,  
 </pre></div>
 <h2>Here the prepended comma will be removed</h2>
-<div class="highlight"><pre><span></span>#+TITLE: &quot;Hello world&quot;
+<div class="highlight"><pre><span></span><span class="nn">#+TITLE:</span> &quot;Hello world&quot;
 </pre></div>
 <h2>This will be rendered as normal</h2>
 <div class="highlight"><pre><span></span>,,,,,,,,,,,,,,,,,*Hello world
