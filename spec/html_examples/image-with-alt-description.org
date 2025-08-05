@@ -1,0 +1,5 @@
+Image with alt description
+
+This image should use the description as the alt attribute:
+
+[[file:screenshots/cool_screenshot.jpg][A screenshot of our new UI]]
