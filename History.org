@@ -2,6 +2,27 @@
 #+title:   Changelog
 #+startup: showeverything
 
+* 0.10.0 / 2026-10-09
+
+- Requires Ruby >= 3.1 (tested on Ruby 3.1 through 4.0)
+- Upgrade =rubypants= dependency to =~> 0.7=
+- Add =logger= as a runtime dependency (no longer a default gem as of Ruby 4.0)
+- Replace =File.exists?= (removed in Ruby 3.2) with =File.exist?=
+- Support =file+emacs= and =file+sys= links
+- Handle continued numbered lists
+- Recognize =js2= source blocks as JavaScript and =ipython= source blocks as Python
+- Support relative links to svg/svgz files as inline images
+- Change emphasis border regexp to match org.el
+- Improve footnote HTML export: better anchoring between references and
+  definitions, no HTML escaping of footnote content, fix missing closing
+  paragraph tag
+- Require =pathname= explicitly and default properties hash to empty
+- Replace Travis CI with GitHub Actions
+
+* 0.9.12 / 2014-12-22
+
+- Remove duplicated hash keys
+
 * 0.9.10 / 2014-12-09
 
 - Add option to disable Rubypants
