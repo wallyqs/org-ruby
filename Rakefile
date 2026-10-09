@@ -9,21 +9,18 @@ end
 Dir['tasks/*'].each {|task| import task }
 
 task :test do
-  exit_status = nil
+  runs = {
+    "without CodeRay nor Pygments" => "pygments:coderay",
+    "with CodeRay"                 => "pygments",
+    "with Pygments"                => "coderay",
+  }
 
-  puts "Testing without CodeRay nor Pygments for code syntax highlight"
-  system('bundle --without pygments:coderay > /dev/null 2>&1')
-  exit_status = system('bundle exec rake spec')
+  results = runs.map do |desc, without|
+    puts "Testing #{desc} for code syntax highlight"
+    system({ "BUNDLE_WITHOUT" => without }, "bundle exec rake spec")
+  end
 
-  puts "Testing with CodeRay for code syntax highlight"
-  system('bundle --without pygments > /dev/null 2>&1')
-  exit_status = system('bundle exec rake spec')
-
-  puts "Testing with Pygments for code syntax highlight"
-  system('bundle --without coderay > /dev/null 2>&1')
-  exit_status = system('bundle exec rake spec')
-
-  exit exit_status
+  exit results.all?
 end
 
 task :default => 'test'
