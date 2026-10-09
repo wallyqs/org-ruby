@@ -162,6 +162,23 @@ EXAMPLE
     it "should not match blank as a custom keyword" do
       expect(("" =~ p.custom_keyword_regexp)).to be_nil
     end
+
+    it "should treat regexp metacharacters in a matched keyword as literal text" do
+      parser = Orgmode::Parser.new("#+TODO: WAIT[.] | DONE\n* WAIT[.] Keep waiting")
+      headline = parser.headlines.first
+
+      expect(headline.keyword).to eq("WAIT[.]")
+      expect(headline.headline_text).to eq("Keep waiting")
+    end
+
+    it "should not compile repeat expressions from a matched keyword" do
+      keyword = "REPEAT{1,1000000000}"
+      parser = Orgmode::Parser.new("#+TODO: #{keyword} | DONE\n* #{keyword} Keep waiting")
+      headline = parser.headlines.first
+
+      expect(headline.keyword).to eq(keyword)
+      expect(headline.headline_text).to eq("Keep waiting")
+    end
   end
 
   describe "Custom include/exclude parser" do
@@ -489,4 +506,3 @@ EXAMPLE
     end
   end
 end
-

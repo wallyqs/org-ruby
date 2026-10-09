@@ -97,7 +97,7 @@ module Orgmode
       words = @headline_text.split
       if words.length > 0 && words[0] =~ re then
         @keyword = words[0]
-        @headline_text.sub!(Regexp.new("^#{@keyword}\s*"), "")
+        @headline_text.sub!(Regexp.new("^#{Regexp.escape(@keyword)}\s*"), "")
       end
     end
   end                           # class Headline
