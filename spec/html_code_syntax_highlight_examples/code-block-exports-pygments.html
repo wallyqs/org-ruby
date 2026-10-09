@@ -4,35 +4,35 @@
 <h1>About the <code>#+RESULTS:</code> block</h1>
 <p>Using Org Babel features, it is possible to set <code>:results output</code>
   to a code block and render the results within a <code>#+RESULTS:</code> code block:</p>
-<div class="highlight"><pre><span></span>#+begin_src ruby :results output :exports both
+<div class="highlight"><pre><span></span><span class="ow">#+begin_src ruby :results output :exports both</span>
 puts &quot;Hello world&quot;
-#+end_src
+<span class="ow">#+end_src</span>
 
-#+RESULTS:
+<span class="nn">#+RESULTS:</span>
 : Hello world
 </pre></div>
 <p>One thing about the <code>#+RESULTS:</code> code blocks, is that they exist in several forms:</p>
 <ol>
   <li>As an accumulated group of inline examples:
-<div class="highlight"><pre><span></span>#+begin_src python :results output :exports both
+<div class="highlight"><pre><span></span><span class="ow">#+begin_src python :results output :exports both</span>
 print &quot;like&quot;
 print &quot;this&quot;
 print &quot;etc...&quot;
-#+end_src
+<span class="ow">#+end_src</span>
 
-#+RESULTS:
+<span class="nn">#+RESULTS:</span>
 : like
 : this
 : etc...
 </pre></div>
   </li>
   <li>As an example code block.
-<div class="highlight"><pre><span></span>#+begin_src ruby :results output :exports both
+<div class="highlight"><pre><span></span><span class="ow">#+begin_src ruby :results output :exports both</span>
 10.times {|n| puts n }
-#+end_src
+<span class="ow">#+end_src</span>
 
-#+RESULTS:
-#+begin_example
+<span class="nn">#+RESULTS:</span>
+<span class="ow">#+begin_example</span>
 0
 1
 2
@@ -43,19 +43,19 @@ print &quot;etc...&quot;
 7
 8
 9
-#+end_example
+<span class="ow">#+end_example</span>
 </pre></div>
   </li>
   <li>Also, in case <code>:results output code</code> is used, the results would
     be a src block of the same language as the original one.
-<div class="highlight"><pre><span></span>#+begin_src ruby :results output code
+<div class="highlight"><pre><span></span><span class="ow">#+begin_src ruby :results output code</span>
 counter = 0
 10.times { puts &quot;puts &#39;#{counter += 1}&#39;&quot; } # Displayed in first code block
 puts counter # Displayed in second code block
-#+end_src
+<span class="ow">#+end_src</span>
 
-#+RESULTS:
-#+begin_src ruby
+<span class="nn">#+RESULTS:</span>
+<span class="ow">#+begin_src ruby</span>
 puts &#39;1&#39;
 puts &#39;2&#39;
 puts &#39;3&#39;
@@ -67,9 +67,9 @@ puts &#39;8&#39;
 puts &#39;9&#39;
 puts &#39;10&#39;
 10
-#+end_src
+<span class="ow">#+end_src</span>
 
-#+RESULTS:
+<span class="nn">#+RESULTS:</span>
 : 10
 </pre></div>
   </li>
@@ -78,26 +78,26 @@ puts &#39;10&#39;
 <p>The default is to export only the code blocks.</p>
 <p>The following is an code block written in Emacs Lisp
   and its result should not be exported.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">message</span> <span class="s">&quot;hello world&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">message</span><span class="w"> </span><span class="s">&quot;hello world&quot;</span><span class="p">)</span>
 </pre></div>
 <p>The following is a code block written in Python
   and its result should not be exported.</p>
 <div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">12</span><span class="p">):</span>
-  <span class="k">print</span> <span class="s2">&quot;import this&quot;</span>
+  <span class="nb">print</span> <span class="s2">&quot;import this&quot;</span>
 </pre></div>
 <p>
 </p>
 <h1>:exports code</h1>
 <p>Only the code would be in the output,
   the same as when no option is set.</p>
-<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
 </pre></div>
 <p>And as block example too:</p>
-<div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
-<span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="kd">var</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Hello world!&quot;</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">&lt;</span><span class="w"> </span><span class="mf">10</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">message</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 <p>
@@ -109,13 +109,13 @@ puts &#39;10&#39;
 <p>
 </p>
 <h1>:exports both</h1>
-<div class="highlight"><pre><span></span><span class="no">Math</span><span class="o">::</span><span class="no">PI</span> <span class="o">+</span> <span class="mi">1</span>
+<div class="highlight"><pre><span></span><span class="no">Math</span><span class="o">::</span><span class="no">PI</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
 </pre></div>
 <pre class="example">
 4.14159265358979
 </pre>
 <p>Should behave the same when within a block example.</p>
-<div class="highlight"><pre><span></span><span class="n">hello</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="dl">HELLO</span>
+<div class="highlight"><pre><span></span><span class="n">hello</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="dl">HELLO</span>
 <span class="sh">The following is a text</span>
 <span class="sh">that will contain at least 10 lines or more</span>
 <span class="sh">so that when C-c C-c is pressed</span>

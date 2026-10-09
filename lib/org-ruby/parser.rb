@@ -129,7 +129,7 @@ module Orgmode
 
     # Check include file availability and permissions
     def check_include_file(file_path)
-      can_be_included = File.exists? file_path
+      can_be_included = File.exist? file_path
 
       if not ENV['ORG_RUBY_INCLUDE_ROOT'].nil?
         # Ensure we have full paths

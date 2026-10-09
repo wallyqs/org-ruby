@@ -1,2 +1,4 @@
 *.tmproj
 /util/gen-special-replace.elc
+Gemfile.lock
+/pkg/

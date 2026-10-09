@@ -16,15 +16,10 @@ end
 gem build org-ruby.gemspec
 #+end_src
 
-- Run tests on the following platforms
+- Make sure CI is green on GitHub Actions (see =.github/workflows/ci.yml=),
+  which runs the specs on each supported Ruby with and without
+  CodeRay/Pygments. Locally the same matrix can be run with:
 
-#+begin_src yaml :tangle .travis.yml
-rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.2
-  - 2.2.0-rc1
-
-notifications:
-  disabled: true
+#+begin_src sh
+bundle exec rake test
 #+end_src

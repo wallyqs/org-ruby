@@ -2,7 +2,7 @@
 
 * OrgRuby
 
-[[https://secure.travis-ci.org/wallyqs/org-ruby.png?branch=master]]
+[[https://github.com/wallyqs/org-ruby/actions/workflows/ci.yml][https://github.com/wallyqs/org-ruby/actions/workflows/ci.yml/badge.svg]]
 
 An [[http://orgmode.org][Org-mode]] parser written in Ruby.
 
