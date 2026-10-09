@@ -2,6 +2,11 @@
 #+title:   Changelog
 #+startup: showeverything
 
+* 0.10.1 / 2026-10-09
+
+- Escape custom TODO keywords containing regexp special characters
+  (by [[https://github.com/mockra][@mockra]])
+
 * 0.10.0 / 2026-10-09
 
 - Requires Ruby >= 3.1 (tested on Ruby 3.1 through 4.0)
