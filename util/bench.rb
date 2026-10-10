@@ -15,7 +15,11 @@ $:.unshift lib
 require 'org-ruby'
 
 examples = File.join(__dir__, '..', 'spec', 'html_examples', '*.org')
-corpus = Dir[examples].sort.reject { |f| f =~ /include-file/ }.map { |f| File.read(f, encoding: 'UTF-8') }.join("\n\n")
+# Drop in-buffer settings that would apply to the whole concatenated
+# corpus (export tag selection in particular hides nearly everything).
+corpus = Dir[examples].sort.reject { |f| f =~ /include-file/ }.map do |f|
+  File.read(f, encoding: 'UTF-8').gsub(/^#\+(EXPORT_SELECT_TAGS|EXPORT_EXCLUDE_TAGS|OPTIONS|TITLE|SEQ_TODO|TYP_TODO|TODO|INCLUDE):.*\n/i, "")
+end.join("\n\n")
 text = ([corpus] * multiplier).join("\n\n")
 
 best = Hash.new(Float::INFINITY)
@@ -30,3 +34,4 @@ end
 puts "org-ruby #{OrgRuby::VERSION} (#{lib}), #{RUBY_DESCRIPTION}"
 puts "corpus: #{text.lines.size} lines, #{text.bytesize} bytes, best of 5 runs"
 best.each { |phase, secs| printf "  %-9s %.3fs\n", phase, secs }
+puts "html output: #{Orgmode::Parser.new(text, skip_syntax_highlight: true).to_html.bytesize} bytes" 
