@@ -1,0 +1,13 @@
+#+TITLE: Export blocks
+
+Org 9 export blocks replace the old backend-specific blocks.
+
+#+BEGIN_EXPORT html
+<div class="raw">kept <b>as is</b></div>
+#+END_EXPORT
+
+#+begin_export latex
+\textbf{dropped in HTML}
+#+end_export
+
+After the blocks.

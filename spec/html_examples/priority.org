@@ -1,0 +1,5 @@
+#+OPTIONS: todo:t
+* TODO [#A] Important task
+* [#B] Medium task
+* DONE [#1] Numeric priority                                            :tag:
+* Not [#A] a priority

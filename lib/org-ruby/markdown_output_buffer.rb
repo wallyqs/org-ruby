@@ -17,7 +17,11 @@ module Orgmode
 
     def push_mode(mode, indent, properties={})
       super(mode, indent, properties)
+      @checkbox = properties["checkbox"] if mode == :list_item
     end
+
+    # Markdown task list markers, by checkbox state.
+    CheckboxMarkup = { "on" => "[x] ", "off" => "[ ] ", "trans" => "[-] " }
 
     def pop_mode(mode = nil)
       m = super(mode)
@@ -81,6 +85,10 @@ module Orgmode
       @buffer.gsub!(/\A\n*/, "")
 
       case
+      when current_mode == :verse
+        # Hard line breaks keep the verse layout.
+        lines = @buffer.split("\n").map { |l| inline_formatting(l) }
+        @output << lines.join("  \n") << "\n"
       when mode_is_code?(current_mode)
         @output << "```#{@block_lang}\n"
         @output << @buffer << "\n"
@@ -98,6 +106,10 @@ module Orgmode
 
         when :list_item
           @output << " " * @mode_stack.count(:list_item) << "* "
+          if @checkbox
+            @output << CheckboxMarkup[@checkbox]
+            @checkbox = nil
+          end
 
         when :horizontal_rule
           @output << "---"
@@ -109,7 +121,7 @@ module Orgmode
     end
 
     def add_line_attributes headline
-      @output << "#" * headline.level
+      @output << "#" * [headline.level, 6].min
       @output << " "
     end
   end                           # class MarkdownOutputBuffer

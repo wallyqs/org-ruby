@@ -1,0 +1,11 @@
+* Verse
+
+#+BEGIN_VERSE
+Great clouds overhead
+Tiny black birds rise and fall
+   Snow covers *Emacs*
+
+    -- AlexSchroeder
+#+END_VERSE
+
+Text after the verse.

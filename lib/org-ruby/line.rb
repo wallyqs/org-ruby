@@ -135,7 +135,20 @@ module Orgmode
       return line
     end
 
+    # A checkbox at the start of a list item: [ ], [X], [x] or [-].
+    CheckboxRegexp = /\A\[([ xX-])\](?:\s+|$)/
+
+    # Checkbox state => the CSS class ox-html gives the list item.
+    Checkboxes = { " " => "off", "X" => "on", "x" => "on", "-" => "trans" }
+
     def extract_properties
+      if (ordered_list? or unordered_list?) and not definition_list?
+        item_text = ordered_list? ? strip_ordered_list_tag : strip_unordered_list_tag
+        if item_text =~ CheckboxRegexp
+          @properties["checkbox"] = Checkboxes[$1]
+        end
+      end
+
       if match(OrderedListRegexp)
         line_without_number =  @line.sub(OrderedListRegexp, "")
         if line_without_number =~ ContinuedOrderedListRegexp
@@ -155,11 +168,17 @@ module Orgmode
     # Extracts meaningful text and excludes org-mode markup,
     # like identifiers for lists or headings.
     def output_text
-      return strip_ordered_list_tag if ordered_list?
-      return strip_unordered_list_tag if unordered_list?
+      return strip_checkbox(strip_ordered_list_tag) if ordered_list?
+      return strip_checkbox(strip_unordered_list_tag) if unordered_list?
       return @line.sub(InlineExampleRegexp, "") if inline_example?
       return strip_raw_text_tag if raw_text?
       return @line
+    end
+
+    # Removes the checkbox from a list item's text; the exporters
+    # render it themselves from properties["checkbox"].
+    def strip_checkbox(text)
+      @properties["checkbox"] ? text.sub(CheckboxRegexp, "") : text
     end
 
     def plain_text?
@@ -222,6 +241,18 @@ module Orgmode
 
     def code_block?
       block_type =~ /^(EXAMPLE|SRC)$/i
+    end
+
+    # The block type as a symbol, with Org 9 export blocks mapped onto
+    # the older backend-specific block types: "#+BEGIN_EXPORT html"
+    # behaves like "#+BEGIN_HTML", and an export block for any other
+    # backend is dropped like a comment block. "#+END_EXPORT" names no
+    # backend, so it is treated as :html, which also closes the
+    # comment mode in the parser.
+    def effective_block_type
+      type = block_type.downcase.to_sym
+      return type unless type == :export
+      (end_block? or block_lang.to_s.casecmp?("html")) ? :html : :comment
     end
 
     def block_switches
@@ -371,9 +402,9 @@ module Orgmode
         :metadata
       when block_type
         if block_should_be_exported?
-          case block_type.downcase.to_sym
-          when :center, :comment, :example, :html, :quote, :src
-            block_type.downcase.to_sym
+          case effective_block_type
+          when :center, :comment, :example, :html, :quote, :src, :verse
+            effective_block_type
           else
             :comment
           end

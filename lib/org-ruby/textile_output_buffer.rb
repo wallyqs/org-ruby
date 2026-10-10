@@ -12,8 +12,12 @@ module Orgmode
       @footnote_index = { }   # footnote name => index into @footnotes
     end
 
+    # Textile has no checkbox syntax, so the checkbox is kept as text.
+    CheckboxMarkup = { "on" => "[X] ", "off" => "[ ] ", "trans" => "[-] " }
+
     def push_mode(mode, indent, properties={})
       super(mode, indent, properties)
+      @checkbox = properties["checkbox"] if mode == :list_item
       @output << "bc. " if mode_is_code? mode
       if mode == :center or mode == :quote
         @add_paragraph = false
@@ -136,6 +140,10 @@ module Orgmode
           else # corresponds to unordered list
             @output << "*" * @mode_stack.count(:list_item) << " "
           end
+          if @checkbox
+            @output << CheckboxMarkup[@checkbox]
+            @checkbox = nil
+          end
 
         when :definition_term
           if @support_definition_list
@@ -149,7 +157,7 @@ module Orgmode
     end
 
     def add_line_attributes headline
-      @output << "h#{headline.level}. "
+      @output << "h#{[headline.level, 6].min}. "
     end
   end                           # class TextileOutputBuffer
 end                             # module Orgmode

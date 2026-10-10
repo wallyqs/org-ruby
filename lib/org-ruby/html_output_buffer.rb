@@ -17,6 +17,7 @@ module Orgmode
       :src              => "pre",
       :inline_example   => "pre",
       :center           => "div",
+      :verse            => "p",
       :heading1         => "h1",
       :heading2         => "h2",
       :heading3         => "h3",
@@ -24,6 +25,13 @@ module Orgmode
       :heading5         => "h5",
       :heading6         => "h6",
       :title            => "h1"
+    }
+
+    # Markup ox-html emits for a list item checkbox, by state.
+    CheckboxMarkup = {
+      "on"    => "<code>[X]</code> ",
+      "off"   => "<code>[&#xa0;]</code> ",
+      "trans" => "<code>[-]</code> "
     }
 
     attr_reader :options
@@ -74,6 +82,10 @@ module Orgmode
                         " class=\"example\""
                       when mode == :center
                         " style=\"text-align: center\""
+                      when mode == :verse
+                        " class=\"verse\""
+                      when (mode == :list_item and properties["checkbox"])
+                        " class=\"#{properties["checkbox"]}\""
                       when @options[:decorate_title]
                         " class=\"title\""
                       end
@@ -88,6 +100,7 @@ module Orgmode
           else
             @output << "<#{HtmlBlockTag[mode]}#{css_class}>"
           end
+          @output << CheckboxMarkup[properties["checkbox"]] if mode == :list_item and properties["checkbox"]
           # Entering a new mode obliterates the title decoration
           @options[:decorate_title] = nil
         end
@@ -144,6 +157,8 @@ module Orgmode
               @buffer = CodeRay.scan(@buffer, 'text').html(:wrap => nil, :css => :style)
             end
           end
+        when current_mode == :verse
+          @buffer = verse_formatting @buffer
         when (current_mode == :html or current_mode == :raw_text)
           @buffer.gsub!(/\A\n/, "") if @new_paragraph == :start
           @new_paragraph = true
@@ -363,6 +378,21 @@ module Orgmode
       escape_string! str
       Orgmode.special_symbols_to_html str
       str = @re_help.restore_code_snippets str
+    end
+
+    # Formats the contents of a verse block the way ox-html does:
+    # inline markup is applied, every line ends with <br />, and
+    # leading whitespace is kept as non-breaking spaces. The common
+    # indentation of the block is removed first, as for code blocks.
+    def verse_formatting(buffer)
+      lines = buffer.sub(/\A\n/, "").split("\n", -1)
+      indent = lines.reject { |l| l.strip.empty? }.map { |l| l[/\A */].length }.min || 0
+      formatted = lines.map do |l|
+        l = (l[indent..-1] || "").sub(/\\\\\s*\z/, "")
+        leading = l[/\A */].length
+        "&#xa0;" * leading + inline_formatting(l[leading..-1]) + "<br />"
+      end
+      "\n" + formatted.join("\n")
     end
 
     def normalize_lang(lang)

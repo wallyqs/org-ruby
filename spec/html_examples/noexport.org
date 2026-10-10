@@ -1,0 +1,19 @@
+* Public section
+
+This is exported.
+
+** Private subsection                                             :noexport:
+
+This is not exported.
+
+*** Nested in private
+
+Neither is this.
+
+** Also public
+
+Still exported.
+
+* Archived                                                :ARCHIVE:noexport:
+
+Hidden.

@@ -40,6 +40,10 @@ module Orgmode
 
     # A set of tags that, if present on any headlines in the org-file, means
     # only those headings will get exported.
+    #
+    # Unlike Emacs (org-export-select-tags defaults to "export") there
+    # is no default here: a single :export: tag would otherwise hide
+    # the rest of the document, which is surprising for READMEs.
     def export_select_tags
       return Array.new unless @in_buffer_settings["EXPORT_SELECT_TAGS"]
       @in_buffer_settings["EXPORT_SELECT_TAGS"].split
@@ -47,8 +51,10 @@ module Orgmode
 
     # A set of tags that, if present on any headlines in the org-file, means
     # that subtree will not get exported.
+    #
+    # Defaults to "noexport", like org-export-exclude-tags in Emacs.
     def export_exclude_tags
-      return Array.new unless @in_buffer_settings["EXPORT_EXCLUDE_TAGS"]
+      return ["noexport"] unless @in_buffer_settings["EXPORT_EXCLUDE_TAGS"]
       @in_buffer_settings["EXPORT_EXCLUDE_TAGS"].split
     end
 
@@ -194,7 +200,7 @@ module Orgmode
           end
           table_header_set = false if !line.table?
 
-        when :example, :html, :src
+        when :example, :html, :src, :verse
           if previous_line
             set_name_for_code_block(previous_line, line)
             set_mode_for_results_block_contents(previous_line, line)

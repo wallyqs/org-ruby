@@ -133,7 +133,7 @@ module Orgmode
 
     # Test if we're in an output mode in which whitespace is significant.
     def preserve_whitespace?
-      [:example, :inline_example, :raw_text, :src].include? current_mode
+      [:example, :inline_example, :raw_text, :src, :verse].include? current_mode
     end
 
     def do_custom_markup
@@ -181,7 +181,7 @@ module Orgmode
     end
 
     def mode_is_block?(mode)
-      [:quote, :center, :example, :src].include? mode
+      [:quote, :center, :example, :src, :verse].include? mode
     end
 
     def mode_is_code?(mode)
@@ -259,7 +259,7 @@ module Orgmode
       return false unless current_mode
 
       # Special case: Handles accumulating block content and example lines
-      if mode_is_code? current_mode
+      if mode_is_code? current_mode or current_mode == :verse
         return true unless (line.end_block? and
                             line.paragraph_type == current_mode)
       end

@@ -19,6 +19,9 @@ module Orgmode
     # Optional keyword found at the beginning of the headline.
     attr_reader :keyword
 
+    # Optional priority cookie found after the keyword, e.g. "A" for [#A].
+    attr_reader :priority
+
     # Valid states for partial export.
     # exclude::       The entire subtree from this heading should be excluded.
     # headline_only:: The headline should be exported, but not the body.
@@ -42,6 +45,9 @@ module Orgmode
 
     KeywordsRegexp = Regexp.new("^(#{Keywords.join('|')})\$")
 
+    # This matches a priority cookie at the start of the headline text
+    PriorityRegexp = /\A\[#([A-Z0-9]+)\]\s*/
+
     # This matches a headline marked as COMMENT
     CommentHeadlineRegexp = /^COMMENT\s+/
 
@@ -61,6 +67,7 @@ module Orgmode
         end
         @keyword = nil
         parse_keywords
+        parse_priority
       else
         raise "'#{line}' is not a valid headline"
       end
@@ -83,13 +90,23 @@ module Orgmode
       @headline_text =~ CommentHeadlineRegexp
     end
 
-    # Overrides Line.paragraph_type.
+    # Overrides Line.paragraph_type. HTML has no heading element
+    # beyond h6, so deeper headlines are rendered as h6.
     def paragraph_type
-      :"heading#{@level}"
+      :"heading#{[@level, 6].min}"
     end
 
     ######################################################################
     private
+
+    # Like ox-html with the default pri:nil, the priority cookie is
+    # removed from the exported headline but kept in +priority+.
+    def parse_priority
+      if @headline_text =~ PriorityRegexp
+        @priority = $1
+        @headline_text = $'
+      end
+    end
 
     def parse_keywords
       re = @parser.custom_keyword_regexp if @parser
