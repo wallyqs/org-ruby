@@ -181,6 +181,8 @@ Markdown, your YAML file should look like this:
 
 - If you see a feature missing, please create an issue so that the maintainer considers its implementation
 - Also, PRs are always welcome! Before submitting make sure to check what breaks by running =rake spec=
+- For performance work, =rake bench= (or =ruby util/bench.rb 8 ../other-checkout/lib= to compare two checkouts)
+- See =ROADMAP.org= for planned work
 
 ** Projects using it
 

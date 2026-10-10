@@ -2,6 +2,27 @@
 #+title:   Changelog
 #+startup: showeverything
 
+* Unreleased
+
+- Speed up parsing: memoize regexp matches per line and skip regexps
+  that cannot match, build headlines directly, stop compiling a regexp
+  per headline
+- Speed up HTML export: apply RubyPants to each piece of formatted
+  text instead of once over the whole document (it dominated the
+  export time and rewrote raw HTML blocks)
+- Speed up Textile export: index footnotes by name
+- Read files as UTF-8 in =Parser.load= and the CLI; =Parser.load= now
+  honours its options argument
+- Add =util/bench.rb= and =rake bench=
+- Support Org 9 =#+BEGIN_EXPORT html= blocks; drop export blocks for
+  other backends
+- Support =#+BEGIN_VERSE= blocks (they were dropped)
+- Exclude =:noexport:= subtrees by default, like Emacs
+- Render list item checkboxes (=[ ]=, =[X]=, =[-]=)
+- Strip priority cookies (=[#A]=) from headlines; expose
+  =Headline#priority=
+- Render headlines deeper than six levels as =h6=
+
 * 0.10.1 / 2026-10-09
 
 - Escape custom TODO keywords containing regexp special characters

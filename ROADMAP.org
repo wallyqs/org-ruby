@@ -1,0 +1,255 @@
+#+title:   Roadmap: performance and Org 9 compatibility
+#+startup: showeverything
+
+This document plans a series of releases for org-ruby focused on two
+goals: making the gem fast on large documents, and catching up with
+the syntax and export behaviour of current Emacs Org mode (9.8.x,
+shipped with Emacs 30 and 31). The =claude/nice-bardeen-12uxf0=
+branch carries the first prototypes; the sections below say what was
+measured, what was changed, and what should come next, in order.
+
+* Where the time goes
+
+Measured with =ruby util/bench.rb= (added in this branch) on a corpus
+made of the spec examples repeated 8 times: ~20,500 lines, ~650 KB of
+Org, ~900 KB of HTML. Best of 5 runs, Ruby 3.3, no YJIT.
+
+| phase    | main (0.10.1) | this branch | notes                                        |
+|----------+---------------+-------------+----------------------------------------------|
+| parse    |         0.42s |       0.34s | Line classification regexps                  |
+| html     |         5.40s |       1.40s | RubyPants was ~90% of this                   |
+| markdown |         0.30s |       0.28s |                                              |
+| textile  |         0.59s |       0.30s | footnote lookup was quadratic                |
+
+Findings from profiling with stackprof:
+
+- *RubyPants dominated HTML export.* =Parser#to_html= ran the smart
+  quotes pass once over the entire output string. The pass grew faster
+  than linearly with document size (5s of the 5.5s at 20k lines) and it
+  also rewrote the contents of raw HTML blocks.
+- *Line classification re-ran the same regexps many times.* Every
+  predicate on =Line= (=blank?=, =table_row?=, =begin_block?= ...)
+  matched its regexp again on each call, the parser built a =Line= and
+  then a =Headline= for every headline, and every headline compiled a
+  fresh =Regexp= to strip its keyword. A paragraph line went through
+  about 40 regexp matches.
+- *Textile footnotes were quadratic*: each reference scanned the array
+  of footnotes and then called =Array#index= on it.
+- *The locale leaks in.* =Parser.load= and =bin/org-ruby= read files
+  with the default external encoding, so under a non UTF-8 locale any
+  non-ASCII file raised "invalid byte sequence in US-ASCII" (the spec
+  suite fails that way under =LANG=C=).
+
+* Done in this branch
+
+** Performance (no output changes)
+
+- =Line= memoizes regexp matches in an identity-keyed cache and skips
+  regexps that cannot match given the first non-blank character of the
+  line (a table row must start with =|=, a block with =#=, ...).
+- The parser builds a =Headline= directly; =custom_keyword_regexp= is
+  memoized; the keyword is stripped without compiling a regexp.
+- Textile footnotes are indexed by name.
+- RubyPants runs on each piece of formatted text as it is flushed
+  rather than once over the document, and is skipped for text that
+  contains none of the characters it rewrites. Output is identical on
+  the whole spec corpus; raw HTML blocks are no longer touched.
+- =Parser.load= and the CLI read files as UTF-8; =Parser.load= now
+  passes its options through (it silently dropped them before).
+- =util/bench.rb= and =rake bench= for A/B measurements against another
+  checkout: =ruby util/bench.rb 8 ../org-ruby-main/lib=.
+
+** Org 9 compatibility
+
+- =#+BEGIN_EXPORT html= / =#+END_EXPORT= (which replaced
+  =#+BEGIN_HTML= in Org 9) is exported like an HTML block; export
+  blocks for other backends are dropped, as ox-html does
+  ([[https://github.com/wallyqs/org-ruby/issues/108][#108]] in part).
+- =#+BEGIN_VERSE= blocks were silently dropped
+  ([[https://github.com/wallyqs/org-ruby/issues/82][#82]]); they now
+  render as =<p class="verse">= with =<br />= line ends and
+  non-breaking spaces for indentation, following ox-html.
+- =:noexport:= excludes a subtree by default, like
+  =org-export-exclude-tags=
+  ([[https://github.com/wallyqs/org-ruby/issues/26][#26]]).
+- Checkboxes in list items render as =<li class="on|off|trans">= with
+  =<code>[X]</code>= markers, as task lists in Markdown.
+- Priority cookies (=[#A]=) are removed from exported headlines and
+  kept in =Headline#priority=.
+- Headlines deeper than six levels render as =h6= instead of bare text.
+
+* Phase 1: performance (release 0.10.2)
+
+Ship the performance commits on their own, since they do not change
+output. Remaining items, cheapest first:
+
+- [ ] =OutputBuffer#insert= builds a debug string for every line
+  (="Looking at #{...}"=) even at WARN level. Use the block form of
+  =Logger#debug= everywhere.
+- [ ] =HtmlOutputBuffer#escape_string!= uses =$`= (prematch) inside a
+  =gsub!= block, which copies the text before each =<= on every match:
+  quadratic in paragraph length. Rewrite with a single regexp that
+  recognises =@@html:<...>@@= directly.
+- [ ] Use =Regexp#match?= for predicates that never need captures
+  (=blank?=, =table_row?=, lists) to avoid allocating =MatchData=; GC
+  is 15–20% of parse time.
+- [ ] Measure memory with =memory_profiler=: every =Line= keeps its
+  match cache alive for the life of the parser. Clear it after export,
+  or cache only the few regexps that need captures.
+- [ ] Upstream a linear =tokenize= to the =rubypants= gem (its
+  =MatchData#end= on large strings is what made the pass superlinear),
+  so users who still call RubyPants on whole documents benefit.
+- [ ] Run =util/bench.rb= in CI as an informational job, and add a
+  large real document to the benchmark inputs (for example the Org
+  manual source, fetched on demand, not committed).
+- [ ] Try the CI matrix with =RUBY_YJIT_ENABLE=1=; the parser is pure
+  Ruby and regexp-bound, so gains should be visible for free.
+- [ ] =#+INCLUDE= builds a whole nested =Parser= just to get its
+  lines; split the included text instead.
+
+* Phase 2: Org 9.8 syntax and export compatibility (release 0.11.0)
+
+Reference: [[https://orgmode.org/worg/org-syntax.html][Org Syntax]]
+and the =ox-html= backend. Items are ordered by how often they appear
+in READMEs and wiki pages (the main consumers through github/markup,
+Gollum and GitLab) and by how many open issues they close.
+
+1. [ ] *Headline anchors and internal links.* Give every headline an
+   =id= (=CUSTOM_ID= from the property drawer, else a slug), and
+   resolve =[[*Headline]]=, =[[#custom-id]]=, =[[id:...]]= and
+   =<<dedicated targets>>= to =href="#..."=. Today they are emitted
+   literally as =href="*Headline"=.
+   ([[https://github.com/wallyqs/org-ruby/issues/107][#107]],
+   [[https://github.com/wallyqs/org-ruby/issues/41][#41]],
+   [[https://github.com/wallyqs/org-ruby/issues/11][#11]])
+2. [ ] *Special blocks.* =#+BEGIN_foo= for an unknown =foo= is dropped
+   as a comment today; ox-html renders it as =<div class="foo">=.
+   Low risk, and it stops losing content.
+3. [ ] *Timestamps and planning lines.* =<2024-01-01 Mon>=,
+   =[2024-01-01 Mon]=, ranges and =SCHEDULED:= / =DEADLINE:= /
+   =CLOSED:= lines. Today active timestamps are escaped as text and
+   planning lines are dropped. ox-html emits
+   =<span class="timestamp-wrapper"><span class="timestamp">...</span></span>=
+   and =<span class="timestamp-kwd">=.
+4. [ ] *Drawers.* =:LOGBOOK:= and custom drawers. Emacs skips LOGBOOK
+   and exports the contents of other drawers (=org-export-with-drawers=
+   defaults to =(not "LOGBOOK")=). Today a drawer confuses the parser
+   enough that the paragraph after it loses its =<p>=.
+   ([[https://github.com/wallyqs/org-ruby/issues/67][#67]])
+5. [ ] *LaTeX fragments.* =$...$=, =\(...\)=, =\[...\]= and LaTeX
+   environments must at least pass through untouched (today
+   =$e^{i\pi}$= gets a =<sup>= in the middle); ox-html emits them for
+   MathJax. ([[https://github.com/wallyqs/org-ruby/issues/81][#81]],
+   [[https://github.com/wallyqs/org-ruby/issues/34][#34]],
+   [[https://github.com/wallyqs/org-ruby/issues/108][#108]])
+6. [ ] *Emphasis and verbatim edge cases.* Nested markup
+   (=*bold /italic/ bold*=), verbatim with leading or trailing commas,
+   quotes and tildes, markup inside link descriptions, line breaks in
+   link descriptions. The regexp rewriting in =RegexpHelper= has hit
+   its limit; replace it with a small object tokenizer that follows
+   =org-emphasis-regexp-components= exactly.
+   ([[https://github.com/wallyqs/org-ruby/issues/99][#99]],
+   [[https://github.com/wallyqs/org-ruby/issues/87][#87]],
+   [[https://github.com/wallyqs/org-ruby/issues/85][#85]],
+   [[https://github.com/wallyqs/org-ruby/issues/84][#84]],
+   [[https://github.com/wallyqs/org-ruby/issues/83][#83]],
+   [[https://github.com/wallyqs/org-ruby/issues/79][#79]],
+   [[https://github.com/wallyqs/org-ruby/issues/73][#73]],
+   [[https://github.com/wallyqs/org-ruby/issues/72][#72]],
+   [[https://github.com/wallyqs/org-ruby/issues/48][#48]],
+   [[https://github.com/wallyqs/org-ruby/issues/45][#45]],
+   [[https://github.com/wallyqs/org-ruby/issues/36][#36]])
+7. [ ] *Footnotes.* Anonymous inline footnotes =[fn::text]=, footnotes
+   whose definition is a link, Markdown footnote output (currently a
+   TODO in =MarkdownOutputBuffer=).
+   ([[https://github.com/wallyqs/org-ruby/issues/6][#6]],
+   [[https://github.com/wallyqs/org-ruby/issues/2][#2]])
+8. [ ] *Links.* Auto-link plain =https://= URLs like Emacs does;
+   image descriptions as =alt= text; =#+ATTR_HTML= attributes on the
+   following image, link or table; =#+CAPTION= on images and tables.
+   ([[https://github.com/wallyqs/org-ruby/issues/102][#102]],
+   [[https://github.com/wallyqs/org-ruby/issues/52][#52]],
+   [[https://github.com/wallyqs/org-ruby/issues/42][#42]],
+   [[https://github.com/wallyqs/org-ruby/issues/12][#12]])
+9. [ ] *Tables.* =<thead>= / =<tbody>=, drop alignment cookie rows
+   (=<r>=, =<l>=) and column-group rows instead of rendering them as
+   cells, =#+NAME= as =id=.
+   ([[https://github.com/wallyqs/org-ruby/issues/33][#33]],
+   [[https://github.com/wallyqs/org-ruby/issues/89][#89]])
+10. [ ] *Inline source and results.* =src_lang{...}= as
+    =<code class="src src-lang">=, and the =#+RESULTS:= edge cases
+    ([[https://github.com/wallyqs/org-ruby/issues/92][#92]],
+    [[https://github.com/wallyqs/org-ruby/issues/70][#70]],
+    [[https://github.com/wallyqs/org-ruby/issues/62][#62]],
+    [[https://github.com/wallyqs/org-ruby/issues/61][#61]]).
+11. [ ] *Keywords and export options.* =#+TOC: headlines N= and =toc:=
+    ([[https://github.com/wallyqs/org-ruby/issues/17][#17]]); the =H:=
+    option (deeper headlines become lists in Emacs); =pri:t=;
+    =tasks:= ([[https://github.com/wallyqs/org-ruby/issues/25][#25]]);
+    =#+MACRO= and ={{{name(args)}}}=
+    ([[https://github.com/wallyqs/org-ruby/issues/10][#10]]);
+    =#+SETUPFILE=; =#+INCLUDE= with =:minlevel= and source blocks
+    ([[https://github.com/wallyqs/org-ruby/issues/75][#75]]).
+12. [ ] *Statistics cookies* =[1/3]= / =[33%]= as =<code>= like ox-html.
+13. [ ] *Code block switches* =-n=, =+n=, =-r= (line numbers and
+    references) on src and example blocks.
+14. [ ] *Regenerate the entity tables* from Org 9.8's =org-entities=
+    with =util/gen-special-replace.el=; they date from 2014.
+15. [ ] *Markdown backend*: pass raw HTML blocks through (GitHub
+    flavoured Markdown allows them), footnotes, tables.
+
+Decisions for the maintainer, each a deliberate difference from Emacs
+today:
+
+- =org-export-select-tags= defaults to =export= in Emacs: a single
+  =:export:= tag restricts the export to that subtree. This branch
+  keeps no default, since that would hide most of a README that uses
+  the tag casually; the =export-exclude-only= spec documents the
+  choice.
+- Emacs exports TODO keywords by default (=todo:t=); org-ruby requires
+  =#+OPTIONS: todo:t=
+  ([[https://github.com/wallyqs/org-ruby/issues/74][#74]]).
+- With a =#+TITLE=, ox-html starts headlines at =<h2>=
+  (=org-html-toplevel-hlevel=); org-ruby uses =<h1>=
+  ([[https://github.com/wallyqs/org-ruby/issues/88][#88]]). Could be
+  an option (=html_toplevel_hlevel=) defaulting to today's behaviour.
+
+* Phase 3: foundations (release 0.12.0)
+
+- [ ] *An Emacs compatibility harness.* A =util/emacs-export.el= that
+  runs =emacs --batch= with =ox-html= over =spec/emacs_compat/*.org=
+  and stores the normalised body (ids and whitespace stripped), plus a
+  spec that compares org-ruby's output with an allow-list of known
+  differences. Run it in a dedicated CI job (=emacs-nox= is available
+  on ubuntu runners). This turns "compatible with Org mode" into a
+  number that can only go up.
+- [ ] *A document model.* The exporters work line by line with a mode
+  stack, which is why internal links, nested emphasis, footnote
+  collection and tables of contents are hard: they need a pass over
+  the whole document before output. Introduce a small element tree
+  (headline, section, paragraph, list, table, block, drawer) built from
+  the existing =Line= / =Headline= classes, keep =Parser#to_html= and
+  friends as the public API, and port one exporter at a time.
+- [ ] *Never raise on input.* Invalid or hostile documents must not
+  crash the renderer
+  ([[https://github.com/wallyqs/org-ruby/issues/58][#58]]). Add a
+  fuzz script (random lines from the spec corpus, random bytes) and
+  scrub invalid byte sequences in =Parser.new=.
+- [ ] *Tilt.* Tilt 2.x deprecated lazily loading =org-ruby= and
+  removed =engine_initialized?= / =initialize_engine=; Tilt 3 will drop
+  the lazy mapping entirely
+  ([[https://github.com/wallyqs/org-ruby/issues/98][#98]]). Trim
+  =lib/org-ruby/tilt.rb= to =prepare= / =evaluate=, document that
+  applications must =require "org-ruby"=, and consider passing parser
+  options through Tilt options.
+- [ ] *CLI.* Expose the parser options (=--no-smart-quotes=,
+  =--offset=, =--allow-includes=, =--include-root=).
+
+* Release plan
+
+| release | contents                                                       |
+|---------+----------------------------------------------------------------|
+|  0.10.2 | Phase 1: performance only, byte-identical output               |
+|  0.11.0 | Org 9 compatibility: this branch's exporter changes + items 1–5 |
+|  0.11.x | Remaining Phase 2 items, grouped by area                        |
+|  0.12.0 | Compatibility harness and document model                        |

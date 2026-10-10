@@ -3,6 +3,8 @@
 #+startup:      showeverything
 #+options:      todo:t
 
+* See ROADMAP.org for the current plan (performance and Org 9 compatibility)
+
 * Current version in use at Github
 
 Currently using: 0.9.1 
