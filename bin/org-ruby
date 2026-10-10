@@ -42,7 +42,7 @@ begin
   if (ARGV.length == 0) then
     puts options_parser
   else
-    data = IO.read(ARGV[0])
+    data = File.read(ARGV[0], encoding: "UTF-8")
     p = Orgmode::Parser.new(data, (options[:markup_file] ? {:markup_file => options[:markup_file]} : {}))
     $DEBUG = true if options[:debug]
     puts p.to_html if options[:format] == :html

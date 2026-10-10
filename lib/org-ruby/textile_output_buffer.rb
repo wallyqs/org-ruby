@@ -9,6 +9,7 @@ module Orgmode
       @add_paragraph = true
       @support_definition_list = true # TODO this should be an option
       @footnotes = []
+      @footnote_index = { }   # footnote name => index into @footnotes
     end
 
     def push_mode(mode, indent, properties={})
@@ -81,17 +82,18 @@ module Orgmode
       @re_help.rewrite_footnote input do |name, definition|
         # textile only support numerical names, so we need to do some conversion
         # Try to find the footnote and use its index
-        footnote = @footnotes.select {|f| f[:name] == name }.first
-        if footnote
+        index = @footnote_index[name]
+        if index
+          footnote = @footnotes[index]
           # The latest definition overrides other ones
           footnote[:definition] = definition if definition and not footnote[:definition]
         else
           # There is no footnote with the current name so we add it
-          footnote = { :name => name, :definition => definition }
-          @footnotes << footnote
+          @footnotes << { :name => name, :definition => definition }
+          index = @footnote_index[name] = @footnotes.length - 1
         end
 
-        "[#{@footnotes.index(footnote)}]"
+        "[#{index}]"
       end
       Orgmode.special_symbols_to_textile(input)
       input = @re_help.restore_code_snippets input
@@ -101,8 +103,7 @@ module Orgmode
     def output_footnotes!
       return false if @footnotes.empty?
 
-      @footnotes.each do |footnote|
-        index = @footnotes.index(footnote)
+      @footnotes.each_with_index do |footnote, index|
         @output << "\nfn#{index}. #{footnote[:definition] || 'DEFINITION NOT FOUND' }\n"
       end
 

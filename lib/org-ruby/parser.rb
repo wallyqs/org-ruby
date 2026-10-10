@@ -30,7 +30,12 @@ module Orgmode
     # Regexp that recognizes words in custom_keywords.
     def custom_keyword_regexp
       return nil if @custom_keywords.empty?
-      Regexp.new("^(#{@custom_keywords.join('|')})\$")
+      # Memoized: this is called once per headline.
+      if @custom_keyword_regexp_source != @custom_keywords
+        @custom_keyword_regexp_source = @custom_keywords.dup
+        @custom_keyword_regexp = Regexp.new("^(#{@custom_keywords.join('|')})\$")
+      end
+      @custom_keyword_regexp
     end
 
     # A set of tags that, if present on any headlines in the org-file, means
@@ -150,7 +155,14 @@ module Orgmode
       previous_line = nil
       table_header_set = false
       lines.each do |text|
-        line = Line.new text, self
+        # Build a Headline right away when the line is one and we are
+        # in a mode where headlines are structural, instead of building
+        # a Line and then re-parsing the same text as a Headline.
+        line = if (mode == :normal or mode == :quote or mode == :center) and Headline.headline?(text)
+                 Headline.new text, self, @parser_options[:offset]
+               else
+                 Line.new text, self
+               end
 
         if @parser_options[:allow_include_files]
           if line.include_file? and not line.include_file_path.nil?
@@ -172,8 +184,8 @@ module Orgmode
 
         case mode
         when :normal, :quote, :center
-          if Headline.headline? line.to_s
-            line = Headline.new line.to_s, self, @parser_options[:offset]
+          if line.kind_of? Headline
+            # Already built above.
           elsif line.table_separator?
             if previous_line and previous_line.paragraph_type == :table_row and !table_header_set
               previous_line.assigned_paragraph_type = :table_header
@@ -194,7 +206,7 @@ module Orgmode
         end
 
         if mode == :normal
-          @headlines << @current_headline = line if Headline.headline? line.to_s
+          @headlines << @current_headline = line if line.kind_of? Headline
           # If there is a setting on this line, remember it.
           line.in_buffer_setting? do |key, value|
             store_in_buffer_setting key.upcase, value
@@ -295,8 +307,9 @@ module Orgmode
 
     # Creates a new parser from the data in a given file
     def self.load(fname, opts = {})
-      lines = IO.readlines(fname)
-      return self.new(lines, opts = {})
+      # Org files are UTF-8 by convention; don't depend on the locale.
+      lines = File.readlines(fname, encoding: "UTF-8")
+      return self.new(lines, opts)
     end
 
     # Saves the loaded orgmode file as a textile file.

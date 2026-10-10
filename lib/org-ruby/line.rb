@@ -30,14 +30,16 @@ module Orgmode
     def initialize(line, parser=nil, assigned_paragraph_type=nil)
       @parser = parser
       @line = line
-      @indent = 0
-      @line =~ /\s*/
       @assigned_paragraph_type = assigned_paragraph_type
       @properties = { }
+      # Memoizes the result of matching each regexp against the line so
+      # that the many predicate methods below only pay for a regexp once.
+      @match_cache = { }.compare_by_identity
+      find_first_char
+      @indent = blank? ? 0 : @line[/\A\s*/].length
       determine_paragraph_type
       determine_major_mode
       extract_properties
-      @indent = $&.length unless blank?
     end
 
     def to_s
@@ -48,17 +50,21 @@ module Orgmode
     def comment?
       return @assigned_paragraph_type == :comment if @assigned_paragraph_type
       return block_type.casecmp("COMMENT") if begin_block? or end_block?
-      return @line =~ /^[ \t]*?#[ \t]/
+      return match(CommentRegexp)
     end
+
+    CommentRegexp = /^[ \t]*?#[ \t]/
 
     PropertyDrawerRegexp = /^\s*:(PROPERTIES|END):/i
 
     def property_drawer_begin_block?
-      @line =~ PropertyDrawerRegexp && $1 =~ /PROPERTIES/
+      m = match(PropertyDrawerRegexp)
+      m && m[1] =~ /PROPERTIES/
     end
 
     def property_drawer_end_block?
-      @line =~ PropertyDrawerRegexp && $1 =~ /END/
+      m = match(PropertyDrawerRegexp)
+      m && m[1] =~ /END/
     end
 
     def property_drawer?
@@ -68,27 +74,30 @@ module Orgmode
     PropertyDrawerItemRegexp = /^\s*:([0-9A-Za-z_\-]+):\s*(.*)$/i
 
     def property_drawer_item?
-      @line =~ PropertyDrawerItemRegexp
+      match(PropertyDrawerItemRegexp)
     end
 
     def property_drawer_item
-      @line =~ PropertyDrawerItemRegexp
-
-      [$1, $2]
+      m = match(PropertyDrawerItemRegexp)
+      m ? [m[1], m[2]] : [nil, nil]
     end
 
     # Tests if a line contains metadata instead of actual content.
     def metadata?
-      check_assignment_or_regexp(:metadata, /^\s*(CLOCK|DEADLINE|START|CLOSED|SCHEDULED):/)
+      check_assignment_or_regexp(:metadata, MetadataRegexp)
     end
+
+    MetadataRegexp = /^\s*(CLOCK|DEADLINE|START|CLOSED|SCHEDULED):/
 
     def nonprinting?
       comment? || metadata? || begin_block? || end_block? || include_file?
     end
 
     def blank?
-      check_assignment_or_regexp(:blank, /^\s*$/)
+      check_assignment_or_regexp(:blank, BlankRegexp)
     end
+
+    BlankRegexp = /^\s*$/
 
     def plain_list?
       ordered_list? or unordered_list? or definition_list?
@@ -127,7 +136,7 @@ module Orgmode
     end
 
     def extract_properties
-      if @line =~ OrderedListRegexp
+      if match(OrderedListRegexp)
         line_without_number =  @line.sub(OrderedListRegexp, "")
         if line_without_number =~ ContinuedOrderedListRegexp
           # Extract the start of the ordered list and store it in
@@ -157,10 +166,13 @@ module Orgmode
       not metadata? and not blank? and not plain_list?
     end
 
+    TableRowRegexp = /^\s*\|/
+    TableSeparatorRegexp = /^\s*\|[-\|\+]*\s*$/
+
     def table_row?
       # for an org-mode table, the first non-whitespace character is a
       # | (pipe).
-      check_assignment_or_regexp(:table_row, /^\s*\|/)
+      check_assignment_or_regexp(:table_row, TableRowRegexp)
     end
 
     def table_separator?
@@ -168,7 +180,7 @@ module Orgmode
       # character as a | (pipe), then consists of nothing else other
       # than pipes, hyphens, and pluses.
 
-      check_assignment_or_regexp(:table_separator, /^\s*\|[-\|\+]*\s*$/)
+      check_assignment_or_regexp(:table_separator, TableSeparatorRegexp)
     end
 
     # Checks if this line is a table header.
@@ -189,19 +201,23 @@ module Orgmode
     BlockRegexp = /^\s*#\+(BEGIN|END)_(\w*)\s*([0-9A-Za-z_\-]*)?\s*([^\":\n]*\"[^\"\n*]*\"[^\":\n]*|[^\":\n]*)?\s*([^\n]*)?/i
 
     def begin_block?
-      @line =~ BlockRegexp && $1 =~ /BEGIN/i
+      m = match(BlockRegexp)
+      m && m[1].casecmp?("BEGIN")
     end
 
     def end_block?
-      @line =~ BlockRegexp && $1 =~ /END/i
+      m = match(BlockRegexp)
+      m && m[1].casecmp?("END")
     end
 
     def block_type
-      $2 if @line =~ BlockRegexp
+      m = match(BlockRegexp)
+      m[2] if m
     end
 
     def block_lang
-      $3 if @line =~ BlockRegexp
+      m = match(BlockRegexp)
+      m[3] if m
     end
 
     def code_block?
@@ -209,14 +225,16 @@ module Orgmode
     end
 
     def block_switches
-      $4 if @line =~ BlockRegexp
+      m = match(BlockRegexp)
+      m[4] if m
     end
 
     def block_header_arguments
+      return @block_header_arguments if @block_header_arguments
       header_arguments = { }
 
-      if @line =~ BlockRegexp
-        header_arguments_string = $5
+      if (m = match(BlockRegexp))
+        header_arguments_string = m[5]
         harray = header_arguments_string.split(' ')
         harray.each_with_index do |arg, i|
           next_argument = harray[i + 1]
@@ -226,7 +244,7 @@ module Orgmode
         end
       end
 
-      header_arguments
+      @block_header_arguments = header_arguments
     end
 
     # TODO: COMMENT block should be considered here
@@ -266,7 +284,8 @@ module Orgmode
     end
 
     def raw_text_tag
-      $2.upcase if @line =~ RawTextRegexp
+      m = match(RawTextRegexp)
+      m[2].upcase if m
     end
 
     def strip_raw_text_tag
@@ -285,12 +304,11 @@ module Orgmode
     # the key and value for the setting.
     def in_buffer_setting?
       return false if @assigned_paragraph_type && @assigned_paragraph_type != :comment
+      m = match(InBufferSettingRegexp)
       if block_given? then
-        if @line =~ InBufferSettingRegexp
-          yield $1, $2
-        end
+        yield m[1], m[2] if m
       else
-        @line =~ InBufferSettingRegexp
+        m
       end
     end
 
@@ -303,31 +321,34 @@ module Orgmode
     ResultsBlockStartsRegexp = /^\s*#\+RESULTS:\s*(.+)?$/i
 
     def start_of_results_code_block?
-      @line =~ ResultsBlockStartsRegexp
+      match(ResultsBlockStartsRegexp)
     end
 
     LinkAbbrevRegexp = /^\s*#\+LINK:\s*(\w+)\s+(.+)$/i
 
     def link_abbrev?
-      @line =~ LinkAbbrevRegexp
+      match(LinkAbbrevRegexp)
     end
 
     def link_abbrev_data
-      [$1, $2] if @line =~ LinkAbbrevRegexp
+      m = match(LinkAbbrevRegexp)
+      [m[1], m[2]] if m
     end
 
     IncludeFileRegexp = /^\s*#\+INCLUDE:\s*"([^"]+)"(\s+([^\s]+)\s+(.*))?$/i
 
     def include_file?
-      @line =~ IncludeFileRegexp
+      match(IncludeFileRegexp)
     end
 
     def include_file_path
-      File.expand_path $1 if @line =~ IncludeFileRegexp
+      m = match(IncludeFileRegexp)
+      File.expand_path m[1] if m
     end
 
     def include_file_options
-      [$3, $4] if @line =~ IncludeFileRegexp and !$2.nil?
+      m = match(IncludeFileRegexp)
+      [m[3], m[4]] if m and !m[2].nil?
     end
 
     # Determines the paragraph type of the current line.
@@ -414,7 +435,66 @@ module Orgmode
     #              this regexp.
     def check_assignment_or_regexp(assignment, regexp)
       return @assigned_paragraph_type == assignment if @assigned_paragraph_type
-      return @line =~ regexp
+      return match(regexp)
     end
+
+    # Matches +regexp+ against the line once and memoizes the
+    # MatchData (or nil). The line text never changes after
+    # construction, so the cache is always valid.
+    #
+    # Most of the regexps in this class can only match when the first
+    # non-blank character of the line is one of a few characters (for
+    # example a table row has to start with "|"). FirstCharFilter
+    # records that, so for the common paragraph line we skip the
+    # regexp entirely instead of running a dozen that cannot match.
+    def match(regexp)
+      return @match_cache[regexp] if @match_cache.key?(regexp)
+      allowed = FirstCharFilter[regexp]
+      if allowed and @first_char
+        # "" in the table means the regexp only matches blank lines.
+        possible = @first_char.empty? ? allowed.empty? : allowed.include?(@first_char)
+        return @match_cache[regexp] = nil unless possible
+      end
+      @match_cache[regexp] = regexp.match(@line)
+    end
+
+    WhitespaceBytes = [0x20, 0x09, 0x0a, 0x0b, 0x0c, 0x0d] # same set as /\s/
+
+    # Finds the first non-whitespace character of the line, "" when the
+    # line is blank, or nil when the line contains an embedded newline
+    # (then "^" could match in the middle and the filter is unsafe).
+    def find_first_char
+      newline = @line.index("\n")
+      if newline and newline != @line.length - 1
+        @first_char = nil
+        return
+      end
+      i = 0
+      i += 1 while WhitespaceBytes.include?(@line.getbyte(i))
+      @first_char = @line[i] || ""
+    end
+
+    # Regexp => the characters that can start a matching line (after
+    # leading whitespace). Regexps not listed here always run.
+    FirstCharFilter = {
+      BlankRegexp              => "",
+      CommentRegexp            => "#",
+      MetadataRegexp           => "CDS",
+      PropertyDrawerRegexp     => ":",
+      PropertyDrawerItemRegexp => ":",
+      InlineExampleRegexp      => ":",
+      UnorderedListRegexp      => "-+*",
+      DefinitionListRegexp     => "-+*",
+      OrderedListRegexp        => "0123456789",
+      HorizontalRuleRegexp     => "-",
+      TableRowRegexp           => "|",
+      TableSeparatorRegexp     => "|",
+      BlockRegexp              => "#",
+      RawTextRegexp            => "#",
+      InBufferSettingRegexp    => "#",
+      ResultsBlockStartsRegexp => "#",
+      LinkAbbrevRegexp         => "#",
+      IncludeFileRegexp        => "#",
+    }.compare_by_identity
   end                           # class Line
 end                             # module Orgmode
