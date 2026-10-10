@@ -378,7 +378,21 @@ module Orgmode
       escape_string! str
       Orgmode.special_symbols_to_html str
       str = @re_help.restore_code_snippets str
+      smart_punctuation str
     end
+
+    # Applies the RubyPants pass (smart quotes, dashes and ellipses) to
+    # a piece of formatted text. RubyPants leaves the contents of
+    # <code> and <pre> alone, so code snippets are safe here.
+    def smart_punctuation(str)
+      return str if @options[:skip_rubypants_pass]
+      # With its default options RubyPants only rewrites quotes,
+      # backticks, "--" dashes and ellipses; skip it otherwise.
+      return str unless str.match?(SmartPunctuationRegexp)
+      RubyPants.new(str).to_html
+    end
+
+    SmartPunctuationRegexp = /["'`]|--|\.\.\.|\. \. \./
 
     # Formats the contents of a verse block the way ox-html does:
     # inline markup is applied, every line ends with <br />, and

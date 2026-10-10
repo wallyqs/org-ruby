@@ -365,6 +365,7 @@ module Orgmode
         :export_footnotes      => export_footnotes?,
         :link_abbrevs          => @link_abbrevs,
         :skip_syntax_highlight => @parser_options[:skip_syntax_highlight],
+        :skip_rubypants_pass   => @parser_options[:skip_rubypants_pass],
         :markup_file           => @parser_options[:markup_file]
       }
       export_options[:skip_tables] = true if not export_tables?
@@ -395,10 +396,11 @@ module Orgmode
       end
       output << "\n"
 
-      return output if @parser_options[:skip_rubypants_pass]
-        
-      rp = RubyPants.new(output) 
-      rp.to_html
+      # The RubyPants (smart quotes and dashes) pass is applied by the
+      # output buffer to each piece of formatted text. Running it once
+      # over the whole document was by far the most expensive part of
+      # the HTML export and it also rewrote raw HTML blocks.
+      output
     end
 
     ######################################################################
